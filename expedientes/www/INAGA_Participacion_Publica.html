@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Visor Participación Pública</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script>
+    $(document).bind('mobileinit',function(){
+        $.mobile.changePage.defaults.changeHash = false;
+        $.mobile.hashListeningEnabled = false;
+        $.mobile.pushStateEnabled = false;
+    });
+</script> 
+
+    <script src="scripts/jquery-1.8.0.min.js"></script>
+    <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
+ <link rel="stylesheet" href="http://js.arcgis.com/3.20/dijit/themes/claro/claro.css">
+   <link rel="stylesheet" href="http://js.arcgis.com/3.20/esri/css/esri.css">
+  <script src="http://js.arcgis.com/3.20/"></script>
+<script> 
+    var map, tb, url, coordx, coordy,poligonoConsulta;
+    require([
+		"dojo/dom",
+		"dojo/dom-style",
+        "dojo/_base/array",
+        "dojo/parser",
+        "dojo/query",
+        "dojo/on",
+
+        "esri/Color",
+        "esri/config",
+        "esri/map",
+        "esri/graphic",
+		"esri/units",
+		"esri/InfoTemplate",
+		
+		"esri/geometry/Circle",
+        "esri/geometry/normalizeUtils",
+		"esri/geometry/webMercatorUtils", 
+        "esri/tasks/GeometryService",
+        "esri/tasks/BufferParameters",
+		"esri/tasks/query",
+		
+        "esri/toolbars/draw",
+  
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/symbols/SimpleFillSymbol",
+        
+		"esri/dijit/Popup",
+        "esri/dijit/PopupTemplate",
+		"esri/dijit/Measurement",	  
+		"esri/dijit/OverviewMap",
+		"esri/dijit/BasemapGallery",
+		"esri/dijit/Scalebar", 
+		"esri/dijit/Search", 
+		"esri/dijit/HomeButton",
+		"esri/dijit/Legend",  
+		"esri/dijit/LocateButton",
+		
+		"esri/layers/FeatureLayer", 	       
+		"esri/layers/ArcGISDynamicMapServiceLayer",
+	   
+        "dijit/layout/BorderContainer",
+        "dijit/layout/ContentPane",
+        "dijit/form/Button", 
+		"dojo/domReady!",
+		"dijit/layout/AccordionContainer"
+		
+    ], 
+	function( dom, domStyle, array, parser, query, on, Color, esriConfig, Map, Graphic,Units, InfoTemplate,Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query ,Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+		Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Scalebar, Search,  HomeButton, Legend, LocateButton, FeatureLayer) 
+	{
+		parser.parse();
+		
+		valores = getGET();
+
+		// variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
+		var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
+		var tituloVisor = "<center><font color='white'>Localización de expedientes INAGA</br>en plazo de participación pública</font></center>"		
+		//var urlDocumentacion = "http://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
+		//dom.byId("documentacion").href = urlDocumentacion;
+		dom.byId("tituloVisor").innerHTML = tituloVisor;
+		var numCapaInf = 9;
+		var searchFields = ["SOLICITANTE","NUMEXP"];
+		var displayField = "SOLICITANTE";
+		var exactMatch = false;
+		var name = "Información Pública (Solicitante,Expediente)";
+		var infoTemplate = new InfoTemplate("");
+		infoTemplate.setTitle("<b>Tipo Publicación: </b> ${TIPO_PUBLICACION}");
+		infoTemplate.setContent(getTextContent);
+		function getTextContent(graphic)	  
+		   {
+			var urlvisor = graphic.attributes.URL_VISOR;				
+			var texto="</br><b> Nº Expediente: </b> " + graphic.attributes.NUMEXP + 
+					"</br><b> Descripción: </b> " + graphic.attributes.DENOMINACION + 
+					"</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
+					"</br>" +
+					"</br><b> Tipo Publicación: </b> " + graphic.attributes.TIPO_PUBLICACION  +
+					"</br><b> Fecha Inicio: </b> " + new Date(parseInt(graphic.attributes.FINI)).toLocaleDateString() +
+					"</br><b> Fecha Fin: </b> " + new Date(parseInt(graphic.attributes.FFIN)).toLocaleDateString() +
+					"</br>" +
+					"</br><b> Precisión: </b> " + graphic.attributes.DORIGEN +	"<br>" +
+					"</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>Documentación en " + graphic.attributes.TIPO_PUBLICACION; + "</a>"
+			return texto;	
+		   }	
+		   
+		var dynamicMSLayer = new esri.layers.ArcGISDynamicMapServiceLayer(rutaServicio,{
+			id:"Participacion",
+			//opacity: 0.5,
+			outFields: ["*"]
+			});		
+		dynamicMSLayer.setInfoTemplates({				
+			0: { infoTemplate: infoTemplate },
+			1: { infoTemplate: infoTemplate },
+			2: { infoTemplate: infoTemplate },
+			3: { infoTemplate: infoTemplate },
+			4: { infoTemplate: infoTemplate },
+			5: { infoTemplate: infoTemplate },
+			6: { infoTemplate: infoTemplate },
+			7: { infoTemplate: infoTemplate }
+			});
+		dynamicMSLayer.setVisibleLayers([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+		dynamicMSLayer.setImageFormat("png32", true);
+		//  otras variables -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		var d = new Date();		
+		var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();	
+		dom.byId("hora").innerHTML = "INAGA  " + fecha;
+		var sls = new SimpleLineSymbol("solid", new Color("#444444"), 3);
+		var sfs = new SimpleFillSymbol("solid", sls, new Color([68, 68, 68, 0.25]));
+		gsvc = new GeometryService("http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+		esriConfig.defaults.geometryService = gsvc;
+		esriConfig.defaults.io.alwaysUseProxy = false;
+		// incicializar mapa -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		map = new Map("map", {
+			basemap:"gray",	  
+			extent: new esri.geometry.Extent(-2.4, 39.6, 0.7, 43.3)
+		});
+		map.disableKeyboardNavigation();
+		map.addLayer(new esri.layers.GraphicsLayer({ "id": "Geodesic" }));
+		map.infoWindow.resize(400,300);
+		
+		// widgets -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		// widget geolocate
+		geoLocate = new LocateButton({map: map}, "LocateButton"	);
+		geoLocate.startup();
+		// widget scalebar
+		var scalebar = new Scalebar({map: map, scalebarUnit: "metric"});
+		// widget medicion
+		var measurement = new Measurement({
+			map: map,
+			defaultAreaUnit: Units.HECTARES,
+			defaultLengthUnit: Units.KILOMETERS
+			}, dom.byId("measurementDiv")
+		);
+		measurement.startup();
+		// widget overview
+		var overviewMapDijit = new OverviewMap({
+			map: map,		  
+			attachTo: "bottom-right",
+			expandFactor: 3,
+			height: 200,
+			width: 200,
+			color:" #D84E13",
+			visible: false,
+			opacity: .40
+		}); 
+		overviewMapDijit.startup();
+		// widget basemap
+		var basemapGallery = new BasemapGallery({
+			showArcGISBasemaps: true,
+			map: map
+			}, "basemapGallery"
+		);
+		basemapGallery.startup();
+		basemapGallery.on("error", function(msg) {
+			//console.log("basemap gallery error:  ", msg);
+		});
+		// widget home
+		var home = new HomeButton({
+		map: map
+		}, "HomeButton");
+		home.startup();
+		
+		// Capas necesarias -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		var fcInf = new FeatureLayer(rutaServicio + "/" + numCapaInf);
+		var fcMunis = new FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");												
+		var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos",{
+			id:"xLimites",
+			outFields: ["*"]
+		});					
+		dynamicMSLayerBasico.setVisibleLayers([1,2,3]);
+		
+		if (valores != undefined) {
+		    var coordenadasZoom = valores["zoomEnvelope"].split(":");
+		    zoomExtension(coordenadasZoom[0], coordenadasZoom[1], coordenadasZoom[2], coordenadasZoom[3]);
+		}
+		//Eventos -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		$(document).on('change', '#slider-100', function(){ 
+			console.log($("#slider-100").val());
+			dynamicMSLayer.setOpacity($("#slider-100").val()/100);
+		});
+
+		//click handler for the draw tool buttons
+		query(".tool").on("click", function(evt){
+			if(tb){
+				tb.activate(evt.target.id);
+				map.setInfoWindowOnClick(false);
+			}
+		});
+		map.on("update-end",function(){map.setMapCursor("default");	});
+		map.on("update-start",function(){map.setMapCursor("wait");});	
+		//add the legend
+		map.on("layers-add-result", function (evt) {
+			var layerInfo = array.map(evt.layers, function (layer, index) {
+				return {layer:layer.layer, title:layer.layer.name};
+			});
+			if (layerInfo.length > 0) {
+				var legendDijit = new Legend({
+				map: map,
+				layerInfos: layerInfo
+				}, "legendDiv");
+				legendDijit.startup();
+				console.debug("legend actualizada");
+			}
+		});
+		
+		map.on("update-end",function(){
+		    projectEnveToEtrs89();
+		    dameCoord4326();
+			map.setMapCursor("default");
+			domStyle.set(dom.byId("procesando"), "display", "none");
+		});
+		map.on("update-start",function(){
+			map.setMapCursor("wait");
+			domStyle.set(dom.byId("procesando"), "display", "inline-block");
+		});		
+
+		on(dom.byId("clearGraphicsM"), "click", function(){
+			if(map){
+			measurement.clearResult();
+			measurement.setTool("area", false);
+			measurement.setTool("distance", false);
+			measurement.setTool("location", false);		
+			map.setInfoWindowOnClick(true);			
+			}
+		});
+		measurement.on("measure-end", function (evt) { 
+			if(evt.toolName == "location"){
+				projectToEtrs89(evt.geometry);				
+			}
+		});
+		measurement.on("tool-change",function(evt){map.setInfoWindowOnClick(false);dom.byId("etrs").innerHTML = ""});
+		
+		
+
+		// funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		function getGET() {
+		    // capturamos la url
+		    var loc = document.location.href;
+		    // si existe el interrogante
+		    if (loc.indexOf('?') > 0) {
+		        // cogemos la parte de la url que hay despues del interrogante
+		        var getString = loc.split('?')[1];
+		        // obtenemos un array con cada clave=valor
+		        var GET = getString.split('&');
+		        var get = {};
+		        // recorremos todo el array de valores
+		        for (var i = 0, l = GET.length; i < l; i++) {
+		            var pos = GET[i].indexOf('=');
+		            var longitud = GET[i].length;
+		            var mikey = GET[i].substring(0, pos);
+		            var miVal = GET[i].substring(pos + 1, longitud);
+		            var tmp = GET[i].split('=');
+		            get[mikey] = unescape(decodeURI(miVal));
+		        }
+		        return get;
+		    }
+		}
+
+		function zoomExtension(minx, miny, maxx, maxy) {
+		    var _extent = new esri.geometry.Extent(minx, miny, maxx, maxy, new esri.SpatialReference({ wkid: 25830 }))
+		    var outSR = new esri.SpatialReference(3857);
+		    var params = new esri.tasks.ProjectParameters();
+		    params.geometries = [_extent];
+		    params.outSR = outSR;
+		    gsvc.project(params, function (projectedPoints) {
+		        pt = projectedPoints[0];
+		        map.setExtent(projectedPoints[0], true);
+		    });
+		}
+
+		function projectToEtrs89(geometry) {
+			var outSR = new esri.SpatialReference(25830);
+			var params = new esri.tasks.ProjectParameters();
+			params.geometries = [geometry]; //[pt.normalize()];
+			params.outSR = outSR;
+			var pt;
+			gsvc.project(params, function(projectedPoints) {
+				pt = projectedPoints[0];
+				coordx = pt.x.toFixed(0);
+				coordy = pt.y.toFixed(0);
+				dom.byId("etrs").innerHTML = "<hr /><b>Coordenada en ETRS89 30N</br><table style='width:100%'><tr><th>X</th><th>Y</th></tr><tr><td>" + pt.x.toFixed(0) + "</td><td>" + pt.y.toFixed(0) + "</td></tr></table><hr />";				
+			});
+		}
+		function dameCoord4326() {
+		    var outSR = new esri.SpatialReference(4326);
+		    var params = new esri.tasks.ProjectParameters();
+		    params.geometries = [map.extent.getCenter()]; //[pt.normalize()];
+		    params.outSR = outSR;
+		    var pt;
+		    var newurl = "";
+		    gsvc.project(params, function (projectedPoints) {
+		        pt = projectedPoints[0];
+		        dom.byId("label3d").href = "http://www.aragon.es/estaticos/GobiernoAragon/Organismos/InstitutoAragonesGestionAmbiental/StaticFiles/cartografia/INAGA_3d.html?x=" + pt.x.toFixed(5) + "&y=" + (pt.y.toFixed(5) - 0.03);
+		    });
+		}
+		function projectEnveToEtrs89() {
+			var outSR = new esri.SpatialReference(25830);
+			var params = new esri.tasks.ProjectParameters();
+			params.geometries = [map.extent]; //[pt.normalize()];
+			params.outSR = outSR;
+			var pt;
+			gsvc.project(params, function(projectedPoints) {
+				pt = projectedPoints[0];
+				console.log(pt);
+				xmin = pt.xmin.toFixed(0);
+				ymin = pt.ymin.toFixed(0);
+				xmax = pt.xmax.toFixed(0);
+				ymax = pt.ymax.toFixed(0);						
+				dom.byId("sitar").href = "http://idearagon.aragon.es/visor/index.html?BOX=" + xmin + ":" + ymin + ":" + xmax + ":" + ymax;
+				dom.byId("enlaceCapturaCoordenadas").href = "http://www.aragon.es/estaticos/GobiernoAragon/Organismos/InstitutoAragonesGestionAmbiental/StaticFiles/cartografia/INAGA_CapturaCoordenadas.html?zoomEnvelope=" + xmin + ":" + ymin + ":" + xmax + ":" + ymax;
+				dom.byId("enlaceParticipacion_Publica").href = "http://www.aragon.es/estaticos/GobiernoAragon/Organismos/InstitutoAragonesGestionAmbiental/StaticFiles/cartografia/INAGA_Participacion_Publica.html?zoomEnvelope=" + xmin + ":" + ymin + ":" + xmax + ":" + ymax;
+				dom.byId("enlaceResolucionesPublicas").href = "http://www.aragon.es/estaticos/GobiernoAragon/Organismos/InstitutoAragonesGestionAmbiental/StaticFiles/cartografia/INAGA_Resolucion_Publica.html?zoomEnvelope=" + xmin + ":" + ymin + ":" + xmax + ":" + ymax;
+			});
+		}
+		function showLoading() {
+			domStyle.set(dom.byId("loading"), "display", "inline-block");
+		}
+		function hideLoading() {
+			domStyle.set(dom.byId("loading"), "display", "none");
+		}		
+		function OpenInNewTab(url) {
+		  var win = window.open(url);
+		  win.focus();
+		}		
+		
+		// busquedas -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		var s = new Search({
+			enableButtonMode: true, 
+            enableLabel: false,
+            enableInfoWindow: true,
+            showInfoWindowOnSelect: true,
+			enableSuggestions: true,
+			enableSuggestionsMenu: true,
+            map: map
+			}, "search");
+		var sources = [
+		{
+			featureLayer: fcInf,
+			searchFields: searchFields, //["SOLICITANTE","NUMEXP"],
+            displayField: displayField, //"SOLICITANTE",
+            exactMatch: exactMatch, //false,
+            name: name, //"Resolución Pública (Solicitante,Expediente)",
+            outFields: ["*"],
+            placeholder: " ",
+			maxResults: 6,
+			maxSuggestions: 6,            
+			enableSuggestions: true,
+			minCharacters: 0
+			//,infoTemplate: infoTemplate
+		},{
+			featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),  
+			searchFields: ["REFPAR"],
+			displayField: "REFPAR",
+			exactMatch: true,
+			name: "Parcelas Catastrales",
+			outFields: ["*"],
+			placeholder: "14 primeros dígitos de REFPAR",
+			maxResults: 6,
+			maxSuggestions: 6,            
+			enableSuggestions: true,
+			minCharacters: 0
+		},{
+			featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/7"),  
+			searchFields: ["REFPAR"],
+			displayField: "REFPAR",
+			exactMatch: true,
+			name: "Parcelas Sigpac",
+			outFields: ["*"],
+			placeholder: " ",
+			maxResults: 6,
+			maxSuggestions: 6,            
+			enableSuggestions: true,
+			minCharacters: 0
+		},{
+			featureLayer: fcMunis, 
+			searchFields: ["D_MUNI_INE"],
+			displayField: "D_MUNI_INE",
+			exactMatch: false,
+			name: "Municipios",
+			outFields: ["*"],
+			placeholder: " ",
+			maxResults: 6,
+			maxSuggestions: 6,            
+			enableSuggestions: true,
+			minCharacters: 0
+		},{
+			locator: new  esri.tasks.Locator("//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
+			singleLineFieldName: "SingleLine", 
+			name: "Geocoding Service",
+			localSearchOptions: {
+			minScale: 300000,
+			distance: 50000
+			},
+			placeholder: "Search Geocoder",
+			maxResults: 3,
+			maxSuggestions: 6,
+			enableSuggestions: false,
+			minCharacters: 0
+		}]
+		s.set("sources", sources);
+		s.startup();
+		// carga capas -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		map.addLayers([ dynamicMSLayerBasico,dynamicMSLayer]);
+		
+    });
+  </script> 
+</head>
+<style>
+	#pageone{
+		height: 100%;
+	}
+	body{
+	font-family: arial;
+	}
+	.ui-page-theme-a .ui-bar-inherit
+	{
+		text-shadow: 0 0px 
+	}	
+	.ui-header .ui-title
+	{
+		height: 10%;			
+	}	
+	.ui-content 
+	{
+		height: 88%;
+		padding-top: 0px;
+		padding-right: 0px;
+		padding-bottom: 0px;
+		padding-left: 0px;
+	}
+	.ui-footer
+	{
+		height: 2%;
+	}
+	#HomeButton {
+	  position: absolute;
+	  top: 95px;
+	  left: 20px;
+	  z-index: 50;
+	}
+	#LocateButton {
+	  position: absolute;
+	  top: 135px;
+	  left: 20px;
+	  z-index: 50;
+	}
+	#search {
+		 display: block;
+		 position: absolute;
+		 z-index: 2;
+		 top: 20px;
+		 left: 74px;
+	  }
+	.dijitTitlePane {
+		  display: block;	
+		  overflow: hidden;
+		  background-color: #C0C0C0;
+		  color: #000000;
+		  font-weight: bold;
+		  font-size: 80%;
+		}
+	.Cabecera {		
+			width:100%;
+			height:50px;
+			display: table;	
+			background-color:#013253;					
+		}
+	.titulo {
+		width:360px;
+		display: table-cell;	
+		vertical-align: middle;			
+		background-color:#013253;			
+	}	
+	.logo2 {
+		display: table-cell;	
+		background:url("https://aplicaciones.aragon.es/inadocpubl/imagenes/logoweb_Inaga_2.jpg") no-repeat scroll 0 0 #003153;
+		background-position: right;					
+	} 
+	.logo1 {
+		background:url("https://aplicaciones.aragon.es/inadocpubl/imagenes/logoDga.jpg") no-repeat scroll 0 0 #003153;;			
+		display: table-cell;	
+		background-position: left;					
+	} 
+	.details{
+		font-size:14px;
+		font-weight:600;
+		padding-bottom:20px;
+	  }
+
+	  button{
+		margin:2px;
+		cursor:pointer;
+	  }
+	#point{
+		background-image: url('http://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Center-Direction-icon.png' );
+		background-size: 48px 48px;
+		height: 48px;  
+		width: 48px;
+		float:left;
+		font-size: 10px;
+		margin-right: 30px
+	}
+	#polyline{
+		background-image: url('http://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polyline-icon.png' );
+		background-size: 48px 48px;
+		height: 48px;  
+		width: 48px;
+		float:left;font-size: 10px;
+	}
+	#polygon{
+		background-image: url('http://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polygon-icon.png' );
+		background-size: 48px 48px;
+		height: 48px;  
+		width: 48px;
+		font-size: 10px;
+	}
+	#freehandpolyline{
+		background-image: url('http://icons.iconarchive.com/icons/franksouza183/fs/48/Actions-draw-freehand-icon.png' );
+		background-size: 48px 48px;
+		height: 48px;  
+		width: 48px;
+		float:left;font-size: 10px;
+	}
+	#freehandpolygon
+	{
+		background-image: url('http://icons.iconarchive.com/icons/custom-icon-design/pretty-office-9/48/elipse-icon.png'); 
+		background-size: 48px 48px;
+		height: 48px;  
+		width: 48px;
+		font-size: 10px;
+	}
+ .esriLegendLayerLabel, .esriLegendLayer{  
+	font-family:'Arial';  
+	font-size:12px;
+	color:black;  
+  } 	
+  .esriLegendService img{  
+	width:30px;  
+  } 	
+  .esriLegendServiceLabel { display: none; } 
+  
+/* Second Loadin Circle */
+
+.circle {
+	background-color: rgba(0,0,0,0);
+	border:5px solid rgba(0,183,229,0.9);
+	opacity:.9;
+	border-right:5px solid rgba(0,0,0,0);
+	border-left:5px solid rgba(0,0,0,0);
+	border-radius:30px;
+	width:30px;
+	height:30px;
+	margin:0 auto;
+	-moz-animation:spinPulse 1s infinite ease-in-out;
+	-webkit-animation:spinPulse 1s infinite linear;
+}
+.circle1 {
+	background-color: rgba(0,0,0,0);
+	border:5px solid rgba(0,183,229,0.9);
+	opacity:.9;
+	border-left:5px solid rgba(0,0,0,0);
+	border-right:5px solid rgba(0,0,0,0);
+	border-radius:30px;
+	box-shadow: 0 0 15px #2187e7; 
+	width:10px;
+	height:10px;
+	margin:0 auto;
+	position:relative;
+	top:-30px;
+	-moz-animation:spinoffPulse 1s infinite linear;
+	-webkit-animation:spinoffPulse 1s infinite linear;
+}
+
+@-moz-keyframes spinPulse {
+	0% { -moz-transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #2187e7;}
+	50% { -moz-transform:rotate(145deg); opacity:1; }
+	100% { -moz-transform:rotate(-320deg); opacity:0; }
+}
+@-moz-keyframes spinoffPulse {
+	0% { -moz-transform:rotate(0deg); }
+	100% { -moz-transform:rotate(360deg);  }
+}
+@-webkit-keyframes spinPulse {
+	0% { -webkit-transform:rotate(160deg); opacity:0; box-shadow:0 0 1px #2187e7; }
+	50% { -webkit-transform:rotate(145deg); opacity:1;}
+	100% { -webkit-transform:rotate(-320deg); opacity:0; }
+}
+@-webkit-keyframes spinoffPulse {
+	0% { -webkit-transform:rotate(0deg); }
+	100% { -webkit-transform:rotate(360deg); }
+}
+
+</style>
+<body>
+<div data-role="page" id="pageone">
+  <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="false" data-swipe-close="false">   
+
+	 <a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Herramientas</a>
+	 <div data-role="main" class="ui-content" >
+		<div data-role="collapsible-set">
+		  <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+			<h3>Leyenda</h3>
+			<div id="legendDiv"></div>
+		  </div>		  
+		  <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+			<h3>Medición</h3>
+			<div id="measurementDiv"></div>		
+			<div id="etrs" style="font-size: 12px;text-align: left;vertical-align: middle;"></div>			
+			<button type="button" id="clearGraphicsM"  type="button" style="width: 150px;height: 40px;font-size: 10px;text-align: center;vertical-align: middle;position:relative;">Borra medición</button>			
+		  </div>
+		  <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+			<h3>Opacidad</h3>
+			<div id="opacidadDiv">		
+			<form>				
+				<input type="range" name="slider-10" id="slider-100" min="0" max="100" step=".1" value="100">				
+			</form>
+			</div>
+		  </div>
+		  <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+			<h3>SIG Expedientes INAGA</h3>			
+                <a href="" id="sitar" target="_blank" style="font-size: 12px;">Ver en IDE Aragón</a>
+                </br><a id="enlaceCapturaCoordenadas" href="" target="_blank" style="font-size: 12px;">Captura Coordenadas</a>
+                </br><a id="label3d" href="" target="_blank" style="font-size:12px">Visor INAGA 3D</a>
+                </br><a id="enlaceParticipacion_Publica" href="" target="_blank" style="font-size: 12px;">Participacion Publica</a>
+                </br><a id="enlaceResolucionesPublicas" href="" target="_blank" style="font-size: 12px;">Resoluciones Públicas</a>					
+			    <!--</br><a href="" id="documentacion" target="_blank" style="font-size: 12px;">Documentación</a>-->		
+		  </div>		  
+		</div>
+        </br>
+         </br>
+        <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px;width=300px">Cláusula Legal</a>
+        <div data-role="popup" id="popupBasic">
+            <p>
+                <b>Cláusula legal:</b>
+                </br>El contenido de las capas que se ofrecen a través del visor es meramente informativo y carece de efectos vinculantes para la Administración. En cualquier caso, la información ofrecida no podrá ser alegada en procesos contradictorios con la Administración Pública.
+            </p>
+        </div>
+
+	  </div>
+		
+  </div> 
+
+  <div data-role="header" class="Cabecera" style="height: 5%;">
+    <div class="logo1" onclick="window.open('http://www.aragon.es')"></div>
+    <div id="tituloVisor" class="titulo"></div>
+    <div class="logo2" onclick="window.open('http://www.aragon.es/DepartamentosOrganismosPublicos/Organismos/InstitutoAragonesGestionAmbiental')"></div>
+  </div>
+
+  <div data-role="main" class="ui-content" style="height: 92.5%;" >
+     
+	<div id="map"
+       data-dojo-type="dijit/layout/ContentPane"
+       data-dojo-props="region:'center'"
+       style="position: absolute;height: 92.5%;width: 100%;">
+	   <div style="position:absolute; right:25px; top:70px; z-Index:999;">
+        <div data-dojo-type="dijit/TitlePane" 
+             data-dojo-props="title:'Mapa Base', closable:true, open:false">
+          <div data-dojo-type="dijit/layout/ContentPane" style="width:150px; height:680px; overflow:auto;background-color: #f9f9f9;">
+            <div id="basemapGallery"></div>
+          </div>
+        </div>
+      </div>
+
+	   <div id="HomeButton"></div>
+	   <div id="LocateButton"></div>
+	   <div id="search"></div>
+	   <div id="info2" style="position:absolute; right:10px; top:10px; color:#000; z-index:50;">
+	   <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow">Herramientas</a>
+	   </div>
+	</div>
+	<div id="procesando" class="container" style="position:absolute; right:50%; top:50%; z-Index:999;display: none;">
+		<div class="content">
+		<div class="circle"></div>
+		<div class="circle1"></div>
+		</div>
+	</div>
+  </div>
+
+  <div data-role="footer" style="height: 2%;">
+    <span id="info" style="position:absolute; left:15px; color:#000; z-index:50;"></span>
+	<span id="hora" style="position:absolute; right:15px; color:#000; z-index:50;"></span>
+  </div> 
+
+</div> 
+  
+</body>
+</html>
