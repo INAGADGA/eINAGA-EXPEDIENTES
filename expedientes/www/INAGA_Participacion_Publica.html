@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<head>    
     <title>Visor Participación Pública</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
-    <!--<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>-->
+    <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset=UTF-8" name="viewport"/>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <script>
         $(document).bind('mobileinit', function () {
             $.mobile.changePage.defaults.changeHash = false;
@@ -14,12 +12,11 @@
         });
     </script>
 
-    <script src="scripts/jquery-1.8.0.min.js"></script>
-    <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
-    <link rel="stylesheet" href="http://js.arcgis.com/3.20/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="http://js.arcgis.com/3.20/esri/css/esri.css">
+    <script src="https://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.20/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
     <script src="https://js.arcgis.com/3.22compact/init.js"></script>
-    <!--<script src="http://js.arcgis.com/3.20/"></script>-->
     <script>
 
         var map, tb, url, coordx, coordy, poligonoConsulta;
@@ -82,8 +79,7 @@
                 var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
                 var tituloVisor = "<center><font color='white'>Localización de expedientes INAGA</br>en plazo de participación pública</font></center>"
                 //var urlDocumentacion = "http://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
-                //dom.byId("documentacion").href = urlDocumentacion;
-
+                //dom.byId("documentacion").href = urlDocumentacion;                
                 var numCapaInf = 9;
                 var searchFields = ["SOLICITANTE", "NUMEXP"];
                 var displayField = "SOLICITANTE";
@@ -91,7 +87,7 @@
                 var name = "Información Pública (Solicitante,Expediente)";
                 var infoTemplate = new InfoTemplate("");
                 infoTemplate.setTitle("<b>Tipo Publicación: </b> ${TIPO_PUBLICACION}");
-                infoTemplate.setContent(getTextContent);
+                infoTemplate.setContent(getTextContent);                
                 function getTextContent(graphic) {
                     var urlvisor = graphic.attributes.URL_VISOR;
                     var texto = "</br><b> Nº Expediente: </b> " + graphic.attributes.NUMEXP +
@@ -139,7 +135,7 @@
                 });
                 map.disableKeyboardNavigation();
                 map.addLayer(new esri.layers.GraphicsLayer({ "id": "Geodesic" }));
-                map.infoWindow.resize(400, 300);
+                map.infoWindow.resize(200, 200);
 
                 // widgets -------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 // widget geolocate
@@ -430,9 +426,11 @@
 </head>
 <style>
     #pageone {
-        height: 100%;
+        height: 100%;        
     }
-
+    #myPanel {
+        background-color:rgba(255, 255, 255, 0.5);
+    }
     body {
         font-family: arial;
     }
@@ -446,7 +444,7 @@
     }
 
     .ui-content {
-        height: 88%;
+        height: 100%;
         padding-top: 0px;
         padding-right: 0px;
         padding-bottom: 0px;
@@ -459,14 +457,14 @@
 
     #HomeButton {
         position: absolute;
-        top: 95px;
+        top: 130px;
         left: 20px;
         z-index: 50;
     }
 
     #LocateButton {
         position: absolute;
-        top: 135px;
+        top: 175px;
         left: 20px;
         z-index: 50;
     }
@@ -475,10 +473,13 @@
         display: block;
         position: absolute;
         z-index: 2;
-        top: 20px;
+        top: 60px;
         left: 74px;
     }
-
+    .esriSimpleSliderTL {
+        top: 60px;
+        left: 20px;
+    }
     .dijitTitlePane {
         display: block;
         overflow: hidden;
@@ -486,33 +487,6 @@
         color: #000000;
         font-weight: bold;
         font-size: 80%;
-    }
-
-    .Cabecera {
-        width: 100%;
-        height: 50px;
-        display: table;
-        background-color: #013253;
-    }
-
-    .titulo {
-        width: 360px;
-        display: table-cell;
-        vertical-align: middle;
-        background-color: #013253;
-    }
-
-    .logo2 {
-        display: table-cell;
-        background: url("https://aplicaciones.aragon.es/inadocpubl/imagenes/logoweb_Inaga_2.jpg") no-repeat scroll 0 0 #003153;
-        background-position: right;
-    }
-
-    .logo1 {
-        background: url("https://aplicaciones.aragon.es/inadocpubl/imagenes/logoDga.jpg") no-repeat scroll 0 0 #003153;
-        ;
-        display: table-cell;
-        background-position: left;
     }
 
     .details {
@@ -677,7 +651,7 @@
     <div data-role="page" id="pageone">
         <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="false" data-swipe-close="false">
 
-            <a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Herramientas</a>
+            <a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-mini">Herramientas</a>
             <div data-role="main" class="ui-content">
                 <div data-role="collapsible-set">
                     <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
@@ -728,7 +702,7 @@
                  data-dojo-type="dijit/layout/ContentPane"
                  data-dojo-props="region:'center'"
                  style="position: absolute;height: 100%;width: 100%;">
-                <div style="position:absolute; right:25px; top:70px; z-Index:999;">
+                <div style="position:absolute; right:25px; top:20px; z-Index:999;">
                     <div data-dojo-type="dijit/TitlePane"
                          data-dojo-props="title:'Mapa Base', closable:true, open:false">
                         <div data-dojo-type="dijit/layout/ContentPane" style="width:150px; height:680px; overflow:auto;background-color: #f9f9f9;">
@@ -740,8 +714,8 @@
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>
                 <div id="search"></div>
-                <div id="info2" style="position:absolute; right:10px; top:10px; color:#000; z-index:50;">
-                    <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow">Herramientas</a>
+                <div id="info2" style="position:absolute; left:10px; top:10px; color:#000; z-index:50;">
+                    <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Herramientas</a>
                 </div>
             </div>
             <div id="procesando" class="container" style="position:absolute; right:50%; top:50%; z-Index:999;display: none;">
