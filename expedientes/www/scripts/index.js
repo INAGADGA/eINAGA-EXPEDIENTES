@@ -14,10 +14,10 @@
         
         // TODO: Cordova se ha cargado. Haga aquí las inicializaciones que necesiten Cordova.
         var parentElement = document.getElementById('deviceready');
-        var enlaceParticipacion = document.getElementById('enlaceParticipacion_Publica');
-        var enlaceResolucion = document.getElementById('enlaceResolucionesPublicas');
+        var enlaceParticipacion = document.getElementById('contenedor');
+        //var enlaceResolucion = document.getElementById('enlaceResolucionesPublicas');
         enlaceParticipacion.setAttribute('style', 'display:block;');
-        enlaceResolucion.setAttribute('style', 'display:block;');
+        //enlaceResolucion.setAttribute('style', 'display:block;');
     };
 
     function onPause() {

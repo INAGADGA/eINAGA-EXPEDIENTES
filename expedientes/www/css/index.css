@@ -47,6 +47,7 @@ body {
     border: 1px solid midnightblue;
     background-color: #E4E4E4;
     padding: 12px;
+    display:none;
 }
 .app {
     position: absolute;
@@ -62,13 +63,11 @@ body {
     width: 80%;
     margin: 0 auto;
     border: 1px solid midnightblue;
-    /*display:none;*/
 }
 #enlaceResolucionesPublicas {
     width: 80%;
     margin: 5px auto;
     border: 1px solid midnightblue;
-    /*display: none;*/
 }
 #pageone {
     height: 100%;
