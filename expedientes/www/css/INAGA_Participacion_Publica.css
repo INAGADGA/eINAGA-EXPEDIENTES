@@ -3,6 +3,7 @@
 }
 
 #myPanel {
+    background: #000;
     background-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -11,43 +12,32 @@ body {
 }
 
 .ui-page-theme-a .ui-bar-inherit {
-    text-shadow: 0 0px
-}
-
-.ui-header .ui-title {
-    height: 10%;
+    text-shadow: 0 0
 }
 
 .ui-content {
     height: 100%;
-    padding-top: 0px;
-    padding-right: 0px;
-    padding-bottom: 0px;
-    padding-left: 0px;
-}
-
-.ui-footer {
-    height: 2%;
+    padding: 0;    
 }
 
 #HomeButton {
     position: absolute;
     top: 130px;
     left: 20px;
-    z-index: 50;
+    z-index: 30;
 }
 
 #LocateButton {
     position: absolute;
     top: 175px;
     left: 20px;
-    z-index: 50;
+    z-index: 30;
 }
 
 #search {
     display: block;
     position: absolute;
-    z-index: 2;
+    z-index: 30;
     top: 60px;
     left: 74px;
 }
@@ -75,50 +65,6 @@ body {
 button {
     margin: 2px;
     cursor: pointer;
-}
-
-#point {
-    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Center-Direction-icon.png' );
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    float: left;
-    font-size: 10px;
-    margin-right: 30px
-}
-
-#polyline {
-    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polyline-icon.png' );
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    float: left;
-    font-size: 10px;
-}
-
-#polygon {
-    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polygon-icon.png' );
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    font-size: 10px;
-}
-
-#freehandpolyline {
-    background-image: url('https://icons.iconarchive.com/icons/franksouza183/fs/48/Actions-draw-freehand-icon.png' );
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    float: left;
-    font-size: 10px;
-}
-
-#freehandpolygon {
-    background-image: url('https://icons.iconarchive.com/icons/custom-icon-design/pretty-office-9/48/elipse-icon.png');
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    font-size: 10px;
 }
 
 .esriLegendLayerLabel, .esriLegendLayer {

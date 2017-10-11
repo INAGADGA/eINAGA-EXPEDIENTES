@@ -11,40 +11,32 @@ body {
 }
 
 .ui-page-theme-a .ui-bar-inherit {
-    text-shadow: 0 0px
-}
-
-.ui-header .ui-title {
-    height: 10%;
+    text-shadow: 0 0
 }
 
 .ui-content {
-    height: 88%;
-    padding: 0px;
-}
-
-.ui-footer {
-    height: 2%;
+    height: 100%;
+    padding: 0;
 }
 
 #HomeButton {
     position: absolute;
     top: 170px;
     left: 20px;
-    z-index: 50;
+    z-index: 30;
 }
 
 #LocateButton {
     position: absolute;
     top: 205px;
     left: 20px;
-    z-index: 50;
+    z-index: 30;
 }
 
 #search {
     display: block;
     position: absolute;
-    z-index: 2;
+    z-index: 30;
     top: 100px;
     left: 74px;
 }
@@ -74,49 +66,6 @@ button {
     cursor: pointer;
 }
 
-#point {
-    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Center-Direction-icon.png' );
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    float: left;
-    font-size: 10px;
-    margin-right: 30px
-}
-
-#polyline {
-    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polyline-icon.png' );
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    float: left;
-    font-size: 10px;
-}
-
-#polygon {
-    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polygon-icon.png' );
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    font-size: 10px;
-}
-
-#freehandpolyline {
-    background-image: url('https://icons.iconarchive.com/icons/franksouza183/fs/48/Actions-draw-freehand-icon.png' );
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    float: left;
-    font-size: 10px;
-}
-
-#freehandpolygon {
-    background-image: url('https://icons.iconarchive.com/icons/custom-icon-design/pretty-office-9/48/elipse-icon.png');
-    background-size: 48px 48px;
-    height: 48px;
-    width: 48px;
-    font-size: 10px;
-}
 
 .esriLegendLayerLabel, .esriLegendLayer {
     font-family: 'Arial';

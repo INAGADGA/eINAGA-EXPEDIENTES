@@ -248,8 +248,12 @@
                     if (evt.toolName == "location") {
                         projectToEtrs89(evt.geometry);
                     }
+                    $("[data-role=panel]").panel("open");
                 });
-                measurement.on("tool-change", function (evt) { map.setInfoWindowOnClick(false); dom.byId("etrs").innerHTML = "" });
+                measurement.on("tool-change", function (evt) {
+                    map.setInfoWindowOnClick(false); dom.byId("etrs").innerHTML = "";
+                    $("[data-role=panel]").panel("close");
+                });
 
 
 
@@ -423,7 +427,7 @@
 </head>
 <body>
     <div data-role="page" id="pageone">
-        <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="false" data-swipe-close="false">
+        <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="true" data-swipe-close="false" style="z-Index:30;">
 
             <a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-mini">Herramientas</a>
             <div data-role="main" class="ui-content">
@@ -437,7 +441,7 @@
                             Medición</h3>
                             <div id="measurementDiv"></div>
                             <div id="etrs" style="font-size: 12px;text-align: left;vertical-align: middle;"></div>
-                            <button type="button" id="clearGraphicsM" type="button" style="width: 150px;height: 40px;font-size: 10px;text-align: center;vertical-align: middle;position:relative;">Borra medición</button>
+                            <button type="button" id="clearGraphicsM" style="width: 150px;height: 40px;font-size: 10px;text-align: center;vertical-align: middle;position:relative;">Borra medición</button>
                     </div>
                     <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
                         <h3>Opacidad</h3>
@@ -448,14 +452,14 @@
                         </div>
                     </div>
                 </div>
-                </br>
-                </br>
-                <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px;width=300px">Cláusula Legal</a>
+                <p/>
+                <p/>
+                <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px;width:300px">Cláusula Legal</a>
                 <div data-role="popup" id="popupBasic">
                     <p>
                         <b>Cláusula legal:</b>
                     <p>El contenido de las capas que se ofrecen a través del visor es meramente informativo y carece de efectos vinculantes para la Administración. En cualquier caso, la información ofrecida no podrá ser alegada en procesos contradictorios con la Administración.</p>
-                    </p>
+                    <p/>
                 </div>
 
             </div>
@@ -468,7 +472,7 @@
                  data-dojo-type="dijit/layout/ContentPane"
                  data-dojo-props="region:'center'"
                  style="position: absolute;height: 100%;width: 100%;">
-                <div style="position:absolute; right:25px; top:20px; z-Index:999;">
+                <div style="position:absolute; right:25px; top:20px; z-Index:30;">
                     <div data-dojo-type="dijit/TitlePane"
                          data-dojo-props="title:'Mapa Base', closable:true, open:false">
                         <div data-dojo-type="dijit/layout/ContentPane" style="width:150px; height:680px; overflow:auto;background-color: #f9f9f9;">
@@ -480,7 +484,7 @@
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>
                 <div id="search"></div>
-                <div id="info2" style="position:absolute; left:10px; top:10px; color:#000; z-index:50;">
+                <div id="info2" style="position:absolute; left:10px; top:10px; color:#000; z-index:30;">
                     <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Herramientas</a>
                 </div>
             </div>
