@@ -1,61 +1,38 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
-    <!--
-        Personalice la directiva de seguridad de contenido en la etiqueta meta como sea necesario. Agregue "unsafe-inline" a default-src para permitir JavaScript insertado.
-        Para obtener más detalles, consulte http://go.microsoft.com/fwlink/?LinkID=617521
-    -->
-        <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
-        
+    <head>       
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset="UTF-8" name="viewport" />        
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <title>expedientes</title>
         <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-        <script src="http://code.jquery.com/jquery-1.8.0.js "></script>
+        <script src="https://code.jquery.com/jquery-1.8.0.js "></script>
         <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     </head>
     <body>
         <div data-role="page" id="pageone">
-
             <div data-role="header" class="Cabecera">
                 <div class="logo1"></div>                   
-                <div class="logo2"><img src="./images/gobierno-de-aragon.png" /></div>
+                <div class="logo2"><img src="images/gobierno-de-aragon.png" /></div>
             </div>
-
-
             <div data-role="main" class="ui-content">
-                
-                <!--<div class="logoInaga"></div>-->
-                <div id="deviceready" class="blink">
-                    <!--<p class="event listening">Iniciando la aplicación</p>
-                    <p class="event received">Bienvenido</p>-->
-                    
-                </div>                       
-                <a id="enlaceParticipacion_Publica" href="/INAGA_Participacion_Publica.html" target="_system" class="ui-btn ui-corner-all">Particiapación Pública</a>
-                <a id="enlaceResolucionesPublicas" href="/INAGA_Resolucion_Publica.html" target="_system" class="ui-btn ui-corner-all">Resoluciones Públicas</a>
-                <!--<button id="enlaceParticipacion_Publica" class="ui-btn">Particiapación Pública</button>
-                <button id="enlaceResolucionesPublicas" class="ui-btn">Resoluciones Públicas</button>-->                
+                <div id="deviceready" class="blink"></div>     
+                <h1 id="nombreApp">eINAGA-EXPEDIENTES</h1>
+                <p/>
+                <div id="contenedor">
+                    <a id="enlaceParticipacion_Publica" href="INAGA_Participacion_Publica.html" target="_system" class="ui-btn ui-corner-all">Particiapación Pública</a>
+                    <a id="enlaceResolucionesPublicas" href="INAGA_Resolucion_Publica.html" target="_system" class="ui-btn ui-corner-all">Resoluciones Públicas</a>
+                </div>   
+                <p/>
+                <h5>Más información en: <a href="www.aragon.es/inaga">www.aragon.es/inaga</a> y en</h5>
+                <h5><a href="informatica.inaga@aragon.es">informatica.inaga@aragon.es</a></h5>
             </div>
         </div> 
-               
-
-                <!--<div class="app">
-            <header class="top">
-                <img src="../images/banda.png"/>
-            </header>
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Conectando con el dispositivo</p>
-                <p class="event received">El dispositivo está preparado cambio 1</p>
-                </br><a id="enlaceParticipacion_Publica" href="/INAGA_Participacion_Publica.html" target="" style="font-size: 12px;">Participación Publica</a>
-                </br><a id="enlaceResolucionesPublicas" href="/INAGA_Resolucion_Publica.html" target="_blank" style="font-size: 12px;">Resoluciones Públicas</a>
-            </div>
-        </div>-->
-                <script type="text/javascript" src="cordova.js"></script>
-                <script type="text/javascript" src="scripts/platformOverrides.js"></script>
-                <script type="text/javascript" src="scripts/index.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+        <script type="text/javascript" src="scripts/index.js"></script>
 </body>
 </html>

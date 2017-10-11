@@ -1,0 +1,226 @@
+﻿#pageone {
+    height: 100%;
+}
+
+#myPanel {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+body {
+    font-family: arial;
+}
+
+.ui-page-theme-a .ui-bar-inherit {
+    text-shadow: 0 0px
+}
+
+.ui-header .ui-title {
+    height: 10%;
+}
+
+.ui-content {
+    height: 88%;
+    padding: 0px;
+}
+
+.ui-footer {
+    height: 2%;
+}
+
+#HomeButton {
+    position: absolute;
+    top: 170px;
+    left: 20px;
+    z-index: 50;
+}
+
+#LocateButton {
+    position: absolute;
+    top: 205px;
+    left: 20px;
+    z-index: 50;
+}
+
+#search {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: 100px;
+    left: 74px;
+}
+
+.esriSimpleSliderTL {
+    top: 100px;
+    left: 20px;
+}
+
+.dijitTitlePane {
+    display: block;
+    overflow: hidden;
+    background-color: #C0C0C0;
+    color: #000000;
+    font-weight: bold;
+    font-size: 80%;
+}
+
+.details {
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+
+button {
+    margin: 2px;
+    cursor: pointer;
+}
+
+#point {
+    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Center-Direction-icon.png' );
+    background-size: 48px 48px;
+    height: 48px;
+    width: 48px;
+    float: left;
+    font-size: 10px;
+    margin-right: 30px
+}
+
+#polyline {
+    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polyline-icon.png' );
+    background-size: 48px 48px;
+    height: 48px;
+    width: 48px;
+    float: left;
+    font-size: 10px;
+}
+
+#polygon {
+    background-image: url('https://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polygon-icon.png' );
+    background-size: 48px 48px;
+    height: 48px;
+    width: 48px;
+    font-size: 10px;
+}
+
+#freehandpolyline {
+    background-image: url('https://icons.iconarchive.com/icons/franksouza183/fs/48/Actions-draw-freehand-icon.png' );
+    background-size: 48px 48px;
+    height: 48px;
+    width: 48px;
+    float: left;
+    font-size: 10px;
+}
+
+#freehandpolygon {
+    background-image: url('https://icons.iconarchive.com/icons/custom-icon-design/pretty-office-9/48/elipse-icon.png');
+    background-size: 48px 48px;
+    height: 48px;
+    width: 48px;
+    font-size: 10px;
+}
+
+.esriLegendLayerLabel, .esriLegendLayer {
+    font-family: 'Arial';
+    font-size: 12px;
+    color: black;
+}
+
+.esriLegendService img {
+    width: 30px;
+}
+
+.esriLegendServiceLabel {
+    display: none;
+}
+
+/* Second Loadin Circle */
+
+.circle {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(0,183,229,0.9);
+    opacity: .9;
+    border-right: 5px solid rgba(0,0,0,0);
+    border-left: 5px solid rgba(0,0,0,0);
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    -moz-animation: spinPulse 1s infinite ease-in-out;
+    -webkit-animation: spinPulse 1s infinite linear;
+}
+
+.circle1 {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(0,183,229,0.9);
+    opacity: .9;
+    border-left: 5px solid rgba(0,0,0,0);
+    border-right: 5px solid rgba(0,0,0,0);
+    border-radius: 30px;
+    box-shadow: 0 0 15px #2187e7;
+    width: 10px;
+    height: 10px;
+    margin: 0 auto;
+    position: relative;
+    top: -30px;
+    -moz-animation: spinoffPulse 1s infinite linear;
+    -webkit-animation: spinoffPulse 1s infinite linear;
+}
+
+@-moz-keyframes spinPulse {
+    0% {
+        -moz-transform: rotate(160deg);
+        opacity: 0;
+        box-shadow: 0 0 1px #2187e7;
+    }
+
+    50% {
+        -moz-transform: rotate(145deg);
+        opacity: 1;
+    }
+
+    100% {
+        -moz-transform: rotate(-320deg);
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes spinoffPulse {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spinPulse {
+    0% {
+        -webkit-transform: rotate(160deg);
+        opacity: 0;
+        box-shadow: 0 0 1px #2187e7;
+    }
+
+    50% {
+        -webkit-transform: rotate(145deg);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: rotate(-320deg);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes spinoffPulse {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.ui-select .ui-btn select {
+    font-size: 1em;
+}

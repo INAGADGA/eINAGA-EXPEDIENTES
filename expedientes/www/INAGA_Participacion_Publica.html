@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+Ôªø<!DOCTYPE html>
 <html>
-<head>    
-    <title>Visor ParticipaciÛn P˙blica</title>
-    <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset=UTF-8" name="viewport"/>
+<head>
+    <title>Visor Participaci√≥n</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset="UTF-8" name="viewport" />
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <script>
         $(document).bind('mobileinit', function () {
@@ -17,6 +18,7 @@
     <link rel="stylesheet" href="https://js.arcgis.com/3.20/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
     <script src="https://js.arcgis.com/3.22compact/init.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/INAGA_Participacion_Publica.css">
     <script>
 
         var map, tb, url, coordx, coordy, poligonoConsulta;
@@ -77,29 +79,29 @@
 
                 // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
                 var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
-                var tituloVisor = "<center><font color='white'>LocalizaciÛn de expedientes INAGA</br>en plazo de participaciÛn p˙blica</font></center>"
-                //var urlDocumentacion = "http://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
-                //dom.byId("documentacion").href = urlDocumentacion;                
+                var tituloVisor = "<center><font color='white'>LocalizaciÛÆ†§e expedientes INAGA</br>en plazo de participaciÛÆ†∞Ú¢¨©ca</font></center>"
+                //var urlDocumentacion = "https://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
+                //dom.byId("documentacion").href = urlDocumentacion;
                 var numCapaInf = 9;
                 var searchFields = ["SOLICITANTE", "NUMEXP"];
                 var displayField = "SOLICITANTE";
                 var exactMatch = false;
-                var name = "InformaciÛn P˙blica (Solicitante,Expediente)";
+                var name = "Informaci√≥n (Solicitante,Expediente)";
                 var infoTemplate = new InfoTemplate("");
-                infoTemplate.setTitle("<b>Tipo PublicaciÛn: </b> ${TIPO_PUBLICACION}");
-                infoTemplate.setContent(getTextContent);                
+                infoTemplate.setTitle("${TIPO_PUBLICACION}");
+                infoTemplate.setContent(getTextContent);
                 function getTextContent(graphic) {
                     var urlvisor = graphic.attributes.URL_VISOR;
-                    var texto = "</br><b> N∫ Expediente: </b> " + graphic.attributes.NUMEXP +
-                        "</br><b> DescripciÛn: </b> " + graphic.attributes.DENOMINACION +
+                    var texto = "</br><b> N¬∫ Expediente: </b> " + graphic.attributes.NUMEXP +
+                        "</br><b> Descripci√≥n</b> " + graphic.attributes.DENOMINACION +
                         "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
                         "</br>" +
-                        "</br><b> Tipo PublicaciÛn: </b> " + graphic.attributes.TIPO_PUBLICACION +
+                        "</br><b> Tipo Publicaci√≥n</b> " + graphic.attributes.TIPO_PUBLICACION +
                         "</br><b> Fecha Inicio: </b> " + new Date(parseInt(graphic.attributes.FINI)).toLocaleDateString() +
                         "</br><b> Fecha Fin: </b> " + new Date(parseInt(graphic.attributes.FFIN)).toLocaleDateString() +
                         "</br>" +
-                        "</br><b> PrecisiÛn: </b> " + graphic.attributes.DORIGEN + "<br>" +
-                        "</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>DocumentaciÛn en " + graphic.attributes.TIPO_PUBLICACION; + "</a>"
+                        "</br><b> Precisi√≥n</b> " + graphic.attributes.DORIGEN + "<br>" +
+                        "</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>Documentaci√≥n " + graphic.attributes.TIPO_PUBLICACION; + "</a>"
                     return texto;
                 }
 
@@ -125,7 +127,7 @@
                 var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
                 var sls = new SimpleLineSymbol("solid", new Color("#444444"), 3);
                 var sfs = new SimpleFillSymbol("solid", sls, new Color([68, 68, 68, 0.25]));
-                gsvc = new GeometryService("http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+                gsvc = new GeometryService("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
                 esriConfig.defaults.geometryService = gsvc;
                 esriConfig.defaults.io.alwaysUseProxy = false;
                 // incicializar mapa -------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -135,7 +137,7 @@
                 });
                 map.disableKeyboardNavigation();
                 map.addLayer(new esri.layers.GraphicsLayer({ "id": "Geodesic" }));
-                map.infoWindow.resize(200, 200);
+                map.infoWindow.resize(240, 200);
 
                 // widgets -------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 // widget geolocate
@@ -223,8 +225,8 @@
                 });
 
                 map.on("update-end", function () {
-                    projectEnveToEtrs89();
-                    dameCoord4326();
+                    //projectEnveToEtrs89();
+                    //dameCoord4326();
                     map.setMapCursor("default");
                     domStyle.set(dom.byId("procesando"), "display", "none");
                 });
@@ -309,7 +311,6 @@
                     var newurl = "";
                     gsvc.project(params, function (projectedPoints) {
                         pt = projectedPoints[0];
-                        dom.byId("label3d").href = "http://www.aragon.es/estaticos/GobiernoAragon/Organismos/InstitutoAragonesGestionAmbiental/StaticFiles/cartografia/INAGA_3d.html?x=" + pt.x.toFixed(5) + "&y=" + (pt.y.toFixed(5) - 0.03);
                     });
                 }
                 function projectEnveToEtrs89() {
@@ -325,10 +326,6 @@
                         ymin = pt.ymin.toFixed(0);
                         xmax = pt.xmax.toFixed(0);
                         ymax = pt.ymax.toFixed(0);
-                        dom.byId("sitar").href = "http://idearagon.aragon.es/visor/index.html?BOX=" + xmin + ":" + ymin + ":" + xmax + ":" + ymax;
-                        dom.byId("enlaceCapturaCoordenadas").href = "http://www.aragon.es/estaticos/GobiernoAragon/Organismos/InstitutoAragonesGestionAmbiental/StaticFiles/cartografia/INAGA_CapturaCoordenadas.html?zoomEnvelope=" + xmin + ":" + ymin + ":" + xmax + ":" + ymax;
-                        dom.byId("enlaceParticipacion_Publica").href = "http://www.aragon.es/estaticos/GobiernoAragon/Organismos/InstitutoAragonesGestionAmbiental/StaticFiles/cartografia/INAGA_Participacion_Publica.html?zoomEnvelope=" + xmin + ":" + ymin + ":" + xmax + ":" + ymax;
-                        dom.byId("enlaceResolucionesPublicas").href = "http://www.aragon.es/estaticos/GobiernoAragon/Organismos/InstitutoAragonesGestionAmbiental/StaticFiles/cartografia/INAGA_Resolucion_Publica.html?zoomEnvelope=" + xmin + ":" + ymin + ":" + xmax + ":" + ymax;
                     });
                 }
                 function showLoading() {
@@ -358,7 +355,7 @@
                         searchFields: searchFields, //["SOLICITANTE","NUMEXP"],
                         displayField: displayField, //"SOLICITANTE",
                         exactMatch: exactMatch, //false,
-                        name: name, //"ResoluciÛn P˙blica (Solicitante,Expediente)",
+                        name: name, //"ResoluciÛÆ†êÚ¢¨©ca (Solicitante,Expediente)",
                         outFields: ["*"],
                         placeholder: " ",
                         maxResults: 6,
@@ -373,7 +370,7 @@
                         exactMatch: true,
                         name: "Parcelas Catastrales",
                         outFields: ["*"],
-                        placeholder: "14 primeros dÌgitos de REFPAR",
+                        placeholder: "14 primeros dÓ®©tos de REFPAR",
                         maxResults: 6,
                         maxSuggestions: 6,
                         enableSuggestions: true,
@@ -424,229 +421,6 @@
             });
     </script>
 </head>
-<style>
-    #pageone {
-        height: 100%;        
-    }
-    #myPanel {
-        background-color:rgba(255, 255, 255, 0.5);
-    }
-    body {
-        font-family: arial;
-    }
-
-    .ui-page-theme-a .ui-bar-inherit {
-        text-shadow: 0 0px
-    }
-
-    .ui-header .ui-title {
-        height: 10%;
-    }
-
-    .ui-content {
-        height: 100%;
-        padding-top: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-    }
-
-    .ui-footer {
-        height: 2%;
-    }
-
-    #HomeButton {
-        position: absolute;
-        top: 130px;
-        left: 20px;
-        z-index: 50;
-    }
-
-    #LocateButton {
-        position: absolute;
-        top: 175px;
-        left: 20px;
-        z-index: 50;
-    }
-
-    #search {
-        display: block;
-        position: absolute;
-        z-index: 2;
-        top: 60px;
-        left: 74px;
-    }
-    .esriSimpleSliderTL {
-        top: 60px;
-        left: 20px;
-    }
-    .dijitTitlePane {
-        display: block;
-        overflow: hidden;
-        background-color: #C0C0C0;
-        color: #000000;
-        font-weight: bold;
-        font-size: 80%;
-    }
-
-    .details {
-        font-size: 14px;
-        font-weight: 600;
-        padding-bottom: 20px;
-    }
-
-    button {
-        margin: 2px;
-        cursor: pointer;
-    }
-
-    #point {
-        background-image: url('http://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Center-Direction-icon.png' );
-        background-size: 48px 48px;
-        height: 48px;
-        width: 48px;
-        float: left;
-        font-size: 10px;
-        margin-right: 30px
-    }
-
-    #polyline {
-        background-image: url('http://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polyline-icon.png' );
-        background-size: 48px 48px;
-        height: 48px;
-        width: 48px;
-        float: left;
-        font-size: 10px;
-    }
-
-    #polygon {
-        background-image: url('http://icons.iconarchive.com/icons/icons8/ios7/48/Maps-Polygon-icon.png' );
-        background-size: 48px 48px;
-        height: 48px;
-        width: 48px;
-        font-size: 10px;
-    }
-
-    #freehandpolyline {
-        background-image: url('http://icons.iconarchive.com/icons/franksouza183/fs/48/Actions-draw-freehand-icon.png' );
-        background-size: 48px 48px;
-        height: 48px;
-        width: 48px;
-        float: left;
-        font-size: 10px;
-    }
-
-    #freehandpolygon {
-        background-image: url('http://icons.iconarchive.com/icons/custom-icon-design/pretty-office-9/48/elipse-icon.png');
-        background-size: 48px 48px;
-        height: 48px;
-        width: 48px;
-        font-size: 10px;
-    }
-
-    .esriLegendLayerLabel, .esriLegendLayer {
-        font-family: 'Arial';
-        font-size: 12px;
-        color: black;
-    }
-
-    .esriLegendService img {
-        width: 30px;
-    }
-
-    .esriLegendServiceLabel {
-        display: none;
-    }
-
-    /* Second Loadin Circle */
-
-    .circle {
-        background-color: rgba(0,0,0,0);
-        border: 5px solid rgba(0,183,229,0.9);
-        opacity: .9;
-        border-right: 5px solid rgba(0,0,0,0);
-        border-left: 5px solid rgba(0,0,0,0);
-        border-radius: 30px;
-        width: 30px;
-        height: 30px;
-        margin: 0 auto;
-        -moz-animation: spinPulse 1s infinite ease-in-out;
-        -webkit-animation: spinPulse 1s infinite linear;
-    }
-
-    .circle1 {
-        background-color: rgba(0,0,0,0);
-        border: 5px solid rgba(0,183,229,0.9);
-        opacity: .9;
-        border-left: 5px solid rgba(0,0,0,0);
-        border-right: 5px solid rgba(0,0,0,0);
-        border-radius: 30px;
-        box-shadow: 0 0 15px #2187e7;
-        width: 10px;
-        height: 10px;
-        margin: 0 auto;
-        position: relative;
-        top: -30px;
-        -moz-animation: spinoffPulse 1s infinite linear;
-        -webkit-animation: spinoffPulse 1s infinite linear;
-    }
-
-    @-moz-keyframes spinPulse {
-        0% {
-            -moz-transform: rotate(160deg);
-            opacity: 0;
-            box-shadow: 0 0 1px #2187e7;
-        }
-
-        50% {
-            -moz-transform: rotate(145deg);
-            opacity: 1;
-        }
-
-        100% {
-            -moz-transform: rotate(-320deg);
-            opacity: 0;
-        }
-    }
-
-    @-moz-keyframes spinoffPulse {
-        0% {
-            -moz-transform: rotate(0deg);
-        }
-
-        100% {
-            -moz-transform: rotate(360deg);
-        }
-    }
-
-    @-webkit-keyframes spinPulse {
-        0% {
-            -webkit-transform: rotate(160deg);
-            opacity: 0;
-            box-shadow: 0 0 1px #2187e7;
-        }
-
-        50% {
-            -webkit-transform: rotate(145deg);
-            opacity: 1;
-        }
-
-        100% {
-            -webkit-transform: rotate(-320deg);
-            opacity: 0;
-        }
-    }
-
-    @-webkit-keyframes spinoffPulse {
-        0% {
-            -webkit-transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-        }
-    }
-</style>
 <body>
     <div data-role="page" id="pageone">
         <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="false" data-swipe-close="false">
@@ -659,10 +433,11 @@
                         <div id="legendDiv"></div>
                     </div>
                     <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                        <h3>MediciÛn</h3>
-                        <div id="measurementDiv"></div>
-                        <div id="etrs" style="font-size: 12px;text-align: left;vertical-align: middle;"></div>
-                        <button type="button" id="clearGraphicsM" type="button" style="width: 150px;height: 40px;font-size: 10px;text-align: center;vertical-align: middle;position:relative;">Borra mediciÛn</button>
+                        <h3>
+                            Medici√≥n</h3>
+                            <div id="measurementDiv"></div>
+                            <div id="etrs" style="font-size: 12px;text-align: left;vertical-align: middle;"></div>
+                            <button type="button" id="clearGraphicsM" type="button" style="width: 150px;height: 40px;font-size: 10px;text-align: center;vertical-align: middle;position:relative;">Borra medici√≥n</button>
                     </div>
                     <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
                         <h3>Opacidad</h3>
@@ -672,23 +447,14 @@
                             </form>
                         </div>
                     </div>
-                    <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                        <h3>SIG Expedientes INAGA</h3>
-                        <a href="" id="sitar" target="_blank" style="font-size: 12px;">Ver en IDE AragÛn</a>
-                        </br><a id="enlaceCapturaCoordenadas" href="" target="_blank" style="font-size: 12px;">Captura Coordenadas</a>
-                        </br><a id="label3d" href="" target="_blank" style="font-size:12px">Visor INAGA 3D</a>
-                        </br><a id="enlaceParticipacion_Publica" href="" target="_blank" style="font-size: 12px;">Participacion Publica</a>
-                        </br><a id="enlaceResolucionesPublicas" href="" target="_blank" style="font-size: 12px;">Resoluciones P˙blicas</a>
-                        <!--</br><a href="" id="documentacion" target="_blank" style="font-size: 12px;">DocumentaciÛn</a>-->
-                    </div>
                 </div>
                 </br>
                 </br>
-                <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px;width=300px">Cl·usula Legal</a>
+                <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px;width=300px">Cl√°usula Legal</a>
                 <div data-role="popup" id="popupBasic">
                     <p>
-                        <b>Cl·usula legal:</b>
-                        </br>El contenido de las capas que se ofrecen a travÈs del visor es meramente informativo y carece de efectos vinculantes para la AdministraciÛn. En cualquier caso, la informaciÛn ofrecida no podr· ser alegada en procesos contradictorios con la AdministraciÛn P˙blica.
+                        <b>Cl√°usula legal:</b>
+                    <p>El contenido de las capas que se ofrecen a trav√©s del visor es meramente informativo y carece de efectos vinculantes para la Administraci√≥n. En cualquier caso, la informaci√≥n ofrecida no podr√° ser alegada en procesos contradictorios con la Administraci√≥n.</p>
                     </p>
                 </div>
 

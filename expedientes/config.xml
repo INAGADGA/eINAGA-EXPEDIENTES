@@ -5,7 +5,7 @@
   <author href="http://cordova.io" email="dev@cordova.apache.org">INAGA</author>
   <vs:template-name>BlankJS</vs:template-name>
   <vs:toolsetVersion>6.3.1</vs:toolsetVersion>
-  <engine name="android" spec="5.2.1" />
+  <engine name="android" spec="" />
   <engine name="ios" spec="4.2.0" />
   <engine name="windows" spec="4.4.2" />
   <content src="index.html" />
@@ -108,7 +108,7 @@
   <vs:platformSpecificValues>
     <vs:platformSpecificWidget platformName="windows" id="es.inaga.expedientes" version="1.0.0.0" />
   </vs:platformSpecificValues>
-  <preference name="android-maxSdkVersion" value="23" />
-  <preference name="ShowTitle" value="True" />
+  <preference name="android-maxSdkVersion" value="25" />
+  <preference name="ShowTitle" value="False" />
   <preference name="android-minSdkVersion" value="14" />
 </widget>

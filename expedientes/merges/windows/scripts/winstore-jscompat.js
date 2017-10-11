@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. Todos los derechos reservados.
 // Concedido bajo licencia Apache, versión 2.0. 
-// Vea http://www.apache.org/licenses/LICENSE-2.0.html.
+// Vea https://www.apache.org/licenses/LICENSE-2.0.html.
 // Correcciones de compatibilidad (shim) de contenido dinámico de JavaScript para aplicaciones de la Tienda Windows
 (function () {
 
