@@ -18,13 +18,13 @@
         //var enlaceResolucion = document.getElementById('enlaceResolucionesPublicas');
         enlaceParticipacion.setAttribute('style', 'display:block;');
         //enlaceResolucion.setAttribute('style', 'display:block;');
-    };
+    }
 
     function onPause() {
         // TODO: esta aplicación se ha suspendido. Guarde el estado de la aplicación aquí.
-    };
+    }
 
     function onResume() {
         // TODO: esta aplicación se ha reactivado. Restaure el estado de la aplicación aquí.
-    };
+    }
 } )();

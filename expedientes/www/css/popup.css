@@ -1,0 +1,72 @@
+﻿
+.esriMobileNavigationBar {
+    background-image: -webkit-gradient( linear,left bottom,left top, color-stop(0.25, rgb(27,82,14)), color-stop(0.82, rgb(19,191,22)) )
+}
+
+.esriPopupMobile .titlePane {
+    background: rgba(27, 82, 14, 1.0)
+}
+
+.esriPopupMobile .sizer {
+    width: 275px;
+}
+
+.esriMobileInfoView {
+    position: absolute;
+    top: 42px;
+    width: 250px;
+    height: 80%;
+    background: #fff;
+    display: none;
+    z-index: 42;
+    opacity: 0.6;
+    overflow: hidden
+}
+
+    .esriMobileInfoView .esriMobilePopupInfoView {
+        display: none;
+        position: absolute;
+        top: 42px;
+        overflow: hidden;
+        width: 250px;
+        height: 200px;
+        background: #fff;
+        z-index: 42;
+        padding-bottom: 30px;
+        padding-left: 2px;
+    }
+
+
+.esriMobileNavigationBar .esriMobileNavigationItem.center {
+    display: block;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 0.6em 32px 0.8em 32px;
+    outline: 0 none !important;
+    overflow: hidden;
+    padding: 0;
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 250px;
+    height: 200px
+}
+
+.esriMobileNavigationBar {
+    overflow: hidden;
+    /*position: absolute;*/
+    z-index: 41;
+    top: 0px;
+    background-color: #639BBC;
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.25, rgb(10,77,106)), color-stop(0.82, rgb(99,155,188)) );
+    background-image: -moz-linear-gradient( center bottom, rgb(10,77,106) 25%, rgb(99,155,188) 82% );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#639BBC', endColorstr='#0A4D6A');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#639BBC', endColorstr='#0A4D6A')";
+    width: 250px;
+    height: 42px;
+    margin: 0 auto;
+    clear: both;
+    font-family: Helvetica,Arial,sans-serif;
+    display: block
+}
