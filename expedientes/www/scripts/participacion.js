@@ -507,6 +507,8 @@ map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
         $("#radio-0").click(function () {
             $("#radio-1").prop("checked", false);
             $("#radio-1").checkboxradio("refresh");
+            $("#radio-2").prop("checked", false);
+            $("#radio-2").checkboxradio("refresh");
             $(this).prop("checked", true);
             $(this).checkboxradio("refresh");
             layerCat.visible = true;
@@ -516,10 +518,23 @@ map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
         $("#radio-1").click(function () {
             $("#radio-0").prop("checked", false);
             $("#radio-0").checkboxradio("refresh");
+            $("#radio-2").prop("checked", false);
+            $("#radio-2").checkboxradio("refresh");
             $(this).prop("checked", true);
             $(this).checkboxradio("refresh");
             layerCat.visible = false;
             wmsSigpac.visible = true;
+            map.setExtent(map.extent);
+        });
+        $("#radio-2").click(function () {
+            $("#radio-0").prop("checked", false);
+            $("#radio-0").checkboxradio("refresh");
+            $("#radio-1").prop("checked", false);
+            $("#radio-1").checkboxradio("refresh");
+            $(this).prop("checked", true);
+            $(this).checkboxradio("refresh");
+            layerCat.visible = false;
+            wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
 

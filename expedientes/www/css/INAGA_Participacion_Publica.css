@@ -5,6 +5,10 @@ user agent stylesheet #myPanel {
     background-color: rgba(255, 255, 255, 0.5);
     background: #000;
 }
+
+#myPanel {
+    background-color: rgba(255, 255, 255, 0.5);
+}
 body {
     font-family: arial;
 }
