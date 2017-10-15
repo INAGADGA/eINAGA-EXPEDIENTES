@@ -19,7 +19,7 @@
     background: #fff;
     display: none;
     z-index: 42;
-    opacity: 0.6;
+    opacity: 0.8;
     overflow: hidden
 }
 
@@ -57,7 +57,7 @@
     overflow: hidden;
     /*position: absolute;*/
     z-index: 41;
-    top: 0px;
+    top: 0;
     background-color: #639BBC;
     background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.25, rgb(10,77,106)), color-stop(0.82, rgb(99,155,188)) );
     background-image: -moz-linear-gradient( center bottom, rgb(10,77,106) 25%, rgb(99,155,188) 82% );
