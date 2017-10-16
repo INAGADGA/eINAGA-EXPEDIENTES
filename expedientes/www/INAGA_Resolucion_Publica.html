@@ -1,15 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="es-es">
 <head>
+    <title>Visor Resoluciones</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset="UTF-8" name="viewport" />
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>Visor Resoluciones</title>
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-        
     <script>
         $(document).bind('mobileinit', function () {
             $.mobile.changePage.defaults.changeHash = false;
@@ -23,420 +19,9 @@
     <link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
     <script src="https://js.arcgis.com/3.22compact/init.js"></script>
-
-    
-
+    <script type="text/javascript" src="scripts/resolucion.js"></script>
     <link rel="stylesheet" type="text/css" href="css/INAGA_Resolucion_Publica.css">
-        <script>
-
-            var map, tb, url, coordx, coordy, poligonoConsulta;
-            require([
-                "dojo/dom",
-                "dojo/dom-style",
-                "dojo/_base/array",
-                "dojo/parser",
-                "dojo/query",
-                "dojo/on",
-
-                "esri/Color",
-                "esri/config",
-                "esri/map",
-                "esri/graphic",
-                "esri/units",
-                "esri/InfoTemplate",
-
-                "esri/geometry/Circle",
-                "esri/geometry/normalizeUtils",
-                "esri/geometry/webMercatorUtils",
-                "esri/tasks/GeometryService",
-                "esri/tasks/BufferParameters",
-                "esri/tasks/query",
-
-                "esri/toolbars/draw",
-
-                "esri/symbols/SimpleMarkerSymbol",
-                "esri/symbols/SimpleLineSymbol",
-                "esri/symbols/SimpleFillSymbol",
-
-                "esri/dijit/Popup",
-                "esri/dijit/PopupTemplate",
-                "esri/dijit/Measurement",
-                "esri/dijit/OverviewMap",
-                "esri/dijit/BasemapGallery",
-                "esri/dijit/Scalebar",
-                "esri/dijit/Search",
-                "esri/dijit/HomeButton",
-                "esri/dijit/Legend",
-                "esri/dijit/LocateButton",
-
-                "esri/layers/FeatureLayer",
-                "esri/layers/ArcGISDynamicMapServiceLayer",
-
-                "dijit/layout/BorderContainer",
-                "dijit/layout/ContentPane",
-                "dijit/form/Button",
-                "dojo/domReady!",
-                "esri/layers/ArcGISDynamicMapServiceLayer",
-                "dijit/layout/AccordionContainer"
-
-            ],
-                function (dom, domStyle, array, parser, query, on, Color, esriConfig, Map, Graphic, Units, InfoTemplate, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
-                    Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer) {
-                    parser.parse();
-
-                    valores = getGET();
-
-                    // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
-                    var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
-                    var tituloVisor = "<center><font color='white'>Localizaci󮠤e resoluciones p򢬩cas de expedientes INAGA</font></center>"
-                    var numCapaInf = 1;
-                    var searchFields = ["SOLICITANTE", "NUMEXP"];
-                    var displayField = "SOLICITANTE";
-                    var exactMatch = false;
-                    var name = "Resolución (Solicitante,Expediente)";
-                    var infoTemplate = new InfoTemplate("");
-                    infoTemplate.setTitle("${TIPO_PUBLICACION}");
-                    infoTemplate.setContent(getTextContent);
-                    function getTextContent(graphic) {
-                        var urlvisor = graphic.attributes.URL_VISOR;
-                        var texto =
-                            "<b>" + graphic.attributes.IDTIPOLOGIA + graphic.attributes.CSUBTIPOLOGIA + ":</b> " + graphic.attributes.DSUBTIPOLOGIA +
-                            "</br>" +
-                            "</br><b> Expediente: </b> " + graphic.attributes.NUMEXP +
-                            "</br><b> Asunto: </b> " + graphic.attributes.DENOMINACION +
-                            "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
-                            "</br><b> Resolución</b> " + graphic.attributes.DTIPO_RESOLUCION +
-                            "</br>" +
-                            "</br><b> Municipio: </b> " + graphic.attributes.MUNICIPIO +
-                            "</br><b> Precisión</b> " + graphic.attributes.DORIGEN + "</br>" +
-                            "</br><a href=" + graphic.attributes.URL_ENLACE + " target=_blank>Documento Resolución del Expediente</a>";
-                        return texto;
-                    }
-
-                    var dynamicMSLayer = new esri.layers.ArcGISDynamicMapServiceLayer(rutaServicio, {
-                        id: "Participacion",
-                        //opacity: 0.75,
-                        outFields: ["*"]
-                    });
-                    dynamicMSLayer.setImageFormat("png32", true);
-                    dynamicMSLayer.setInfoTemplates({
-                        1: { infoTemplate: infoTemplate },
-                        2: { infoTemplate: infoTemplate },
-                        3: { infoTemplate: infoTemplate }
-                    });
-                    dynamicMSLayer.setVisibleLayers([0, 1, 2, 3]);
-                    //  otras variables -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    var d = new Date();
-                    var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
-                    var sls = new SimpleLineSymbol("solid", new Color("#444444"), 3);
-                    var sfs = new SimpleFillSymbol("solid", sls, new Color([68, 68, 68, 0.25]));
-                    gsvc = new GeometryService("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
-                    esriConfig.defaults.geometryService = gsvc;
-                    esriConfig.defaults.io.alwaysUseProxy = false;
-                    // incicializar mapa -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    map = new Map("map", {
-                        basemap: "hybrid",
-                        extent: new esri.geometry.Extent(-2.4, 39.6, 0.7, 43.3)
-                    });
-                    map.disableKeyboardNavigation();
-                    map.addLayer(new esri.layers.GraphicsLayer({ "id": "Geodesic" }));
-                    map.infoWindow.resize(250, 200);
-                    map.infoWindow.startup();
-                    
-                    if (valores != undefined) {
-                        var coordenadasZoom = valores["zoomEnvelope"].split(":");
-                        zoomExtension(coordenadasZoom[0], coordenadasZoom[1], coordenadasZoom[2], coordenadasZoom[3]);
-                    }
-                    // widgets -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    // widget geolocate
-                    geoLocate = new LocateButton({ map: map }, "LocateButton");
-                    geoLocate.startup();
-                    // widget scalebar
-                    var scalebar = new Scalebar({ map: map, scalebarUnit: "metric" });
-                    // widget medicion
-                    var measurement = new Measurement({
-                        map: map,
-                        defaultAreaUnit: Units.HECTARES,
-                        defaultLengthUnit: Units.KILOMETERS
-                    }, dom.byId("measurementDiv")
-                    );
-                    measurement.startup();
-                    // widget overview
-                    var overviewMapDijit = new OverviewMap({
-                        map: map,
-                        attachTo: "bottom-right",
-                        expandFactor: 3,
-                        height: 200,
-                        width: 200,
-                        color: " #D84E13",
-                        visible: false,
-                        opacity: .40
-                    });
-                    overviewMapDijit.startup();
-                    // widget basemap
-                    var basemapGallery = new BasemapGallery({
-                        showArcGISBasemaps: true,
-                        map: map
-                    }, "basemapGallery"
-                    );
-                    basemapGallery.startup();
-                    basemapGallery.on("error", function (msg) {
-                    });
-                    // widget home
-                    var home = new HomeButton({
-                        map: map
-                    }, "HomeButton");
-                    home.startup();
-
-
-                    // Capas necesarias -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    var fcInf = new FeatureLayer(rutaServicio + "/" + numCapaInf);
-                    var fcMunis = new FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");
-                    var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer", {
-                        id: "xLimites",
-                        outFields: ["*"]
-                    });
-                    dynamicMSLayerBasico.setVisibleLayers([1, 2, 3]);
-                    dynamicMSLayerBasico.setImageFormat("png32", true);
-                    //Eventos -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    $(document).on('change', '#slider-100', function () {
-                        dynamicMSLayer.setOpacity($("#slider-100").val() / 100);
-                    });
-
-                    //click handler for the draw tool buttons
-                    query(".tool").on("click", function (evt) {
-                        if (tb) {
-                            tb.activate(evt.target.id);
-                            map.setInfoWindowOnClick(false);
-                        }
-                    });
-                    map.on("update-end", function () { map.setMapCursor("default"); });
-                    map.on("update-start", function () { map.setMapCursor("wait"); });
-                    //add the legend
-                    map.on("layers-add-result", function (evt) {
-                        var layerInfo = array.map(evt.layers, function (layer, index) {
-                            return { layer: layer.layer, title: layer.layer.name };
-                        });
-                        if (layerInfo.length > 0) {
-                            var legendDijit = new Legend({
-                                map: map,
-                                layerInfos: layerInfo
-                            }, "legendDiv");
-                            legendDijit.startup();
-                        }
-                    });
-
-                    map.on("update-end", function () {
-                        //projectEnveToEtrs89();
-                        //dameCoord4326();
-                        map.setMapCursor("default");
-                        domStyle.set(dom.byId("procesando"), "display", "none");
-                    });
-                    map.on("update-start", function () {
-                        map.setMapCursor("wait");
-                        domStyle.set(dom.byId("procesando"), "display", "inline-block");
-                    });
-
-                    on(dom.byId("clearGraphicsM"), "click", function () {
-                        if (map) {
-                            measurement.clearResult();
-                            measurement.setTool("area", false);
-                            measurement.setTool("distance", false);
-                            measurement.setTool("location", false);
-                            map.setInfoWindowOnClick(true);
-                        }
-                    });
-
-                    measurement.on("measure-end", function (evt) {
-                        if (evt.toolName == "location") {
-                            projectToEtrs89(evt.geometry);
-                        }
-                        $("[data-role=panel]").panel("open");
-                    });
-                    measurement.on("tool-change", function (evt) {
-                        map.setInfoWindowOnClick(false); dom.byId("etrs").innerHTML = "";
-                        $("[data-role=panel]").panel("close");
-                    });
-
-                    $("#select-choice-1").bind("change", function (event, ui) {
-                        var dropd = $("#select-choice-1");
-                        sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val();
-                        if (dropd.find('option:selected').val() == '00') { sql = ""; }
-                        var layerDefinitions = [];
-                        layerDefinitions.push(sql);
-                        layerDefinitions.push(sql);
-                        layerDefinitions.push(sql);
-                        layerDefinitions.push(sql);
-                        layerDefinitions.push(sql);
-                        dynamicMSLayer.setLayerDefinitions(layerDefinitions);
-                    });
-
-                    // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    function getGET() {
-                        // capturamos la url
-                        var loc = document.location.href;
-                        // si existe el interrogante
-                        if (loc.indexOf('?') > 0) {
-                            // cogemos la parte de la url que hay despues del interrogante
-                            var getString = loc.split('?')[1];
-                            // obtenemos un array con cada clave=valor
-                            var GET = getString.split('&');
-                            var get = {};
-                            // recorremos todo el array de valores
-                            for (var i = 0, l = GET.length; i < l; i++) {
-                                var pos = GET[i].indexOf('=');
-                                var longitud = GET[i].length;
-                                var mikey = GET[i].substring(0, pos);
-                                var miVal = GET[i].substring(pos + 1, longitud);
-                                var tmp = GET[i].split('=');
-                                get[mikey] = unescape(decodeURI(miVal));
-                            }
-                            return get;
-                        }
-                    }
-
-                    function zoomExtension(minx, miny, maxx, maxy) {
-                        var _extent = new esri.geometry.Extent(minx, miny, maxx, maxy, new esri.SpatialReference({ wkid: 25830 }))
-                        var outSR = new esri.SpatialReference(3857);
-                        var params = new esri.tasks.ProjectParameters();
-                        params.geometries = [_extent];
-                        params.outSR = outSR;
-                        gsvc.project(params, function (projectedPoints) {
-                            pt = projectedPoints[0];
-                            map.setExtent(projectedPoints[0], true);
-                        });
-                    }
-
-                    function projectToEtrs89(geometry) {
-                        var outSR = new esri.SpatialReference(25830);
-                        var params = new esri.tasks.ProjectParameters();
-                        params.geometries = [geometry]; //[pt.normalize()];
-                        params.outSR = outSR;
-                        var pt;
-                        gsvc.project(params, function (projectedPoints) {
-                            pt = projectedPoints[0];
-                            coordx = pt.x.toFixed(0);
-                            coordy = pt.y.toFixed(0);
-                        });
-                    }
-                    function projectEnveToEtrs89() {
-                        var outSR = new esri.SpatialReference(25830);
-                        var params = new esri.tasks.ProjectParameters();
-                        params.geometries = [map.extent]; //[pt.normalize()];
-                        params.outSR = outSR;
-                        var pt;
-                        gsvc.project(params, function (projectedPoints) {
-                            pt = projectedPoints[0];
-                            xmin = pt.xmin.toFixed(0);
-                            ymin = pt.ymin.toFixed(0);
-                            xmax = pt.xmax.toFixed(0);
-                            ymax = pt.ymax.toFixed(0);
-                        });
-                    }
-                    function dameCoord4326() {
-                        var outSR = new esri.SpatialReference(4326);
-                        var params = new esri.tasks.ProjectParameters();
-                        params.geometries = [map.extent.getCenter()]; //[pt.normalize()];
-                        params.outSR = outSR;
-                        var pt;
-                        var newurl = "";
-                        gsvc.project(params, function (projectedPoints) {
-                            pt = projectedPoints[0];
-                        });
-                    }
-
-                    function showLoading() {
-                        domStyle.set(dom.byId("loading"), "display", "inline-block");
-                    }
-                    function hideLoading() {
-                        domStyle.set(dom.byId("loading"), "display", "none");
-                    }
-                    function OpenInNewTab(url) {
-                        var win = window.open(url);
-                        win.focus();
-                    }
-
-                    // busquedas -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    var s = new Search({
-                        enableButtonMode: true,
-                        enableLabel: false,
-                        enableInfoWindow: true,
-                        showInfoWindowOnSelect: true,
-                        enableSuggestions: true,
-                        enableSuggestionsMenu: true,
-                        map: map
-                    }, "search");
-                    var sources = [
-                        {
-                            featureLayer: fcInf,
-                            searchFields: searchFields, //["SOLICITANTE","NUMEXP"],
-                            displayField: displayField, //"SOLICITANTE",
-                            exactMatch: false,
-                            name: name, //"Resolución  (Solicitante,Expediente)",
-                            outFields: ["*"],
-                            placeholder: " ",
-                            maxResults: 6,
-                            maxSuggestions: 6,
-                            enableSuggestions: true,
-                            minCharacters: 0
-                            //,infoTemplate: infoTemplate
-                        }, {
-                            featureLayer: fcMunis,
-                            searchFields: ["D_MUNI_INE"],
-                            displayField: "D_MUNI_INE",
-                            exactMatch: false,
-                            name: "Municipios",
-                            outFields: ["*"],
-                            placeholder: " ",
-                            maxResults: 6,
-                            maxSuggestions: 6,
-                            enableSuggestions: true,
-                            minCharacters: 0
-                        }, {
-                            featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
-                            searchFields: ["REFPAR"],
-                            displayField: "REFPAR",
-                            exactMatch: true,
-                            name: "Parcelas Catastrales",
-                            outFields: ["*"],
-                            placeholder: " ",
-                            maxResults: 6,
-                            maxSuggestions: 6,
-                            enableSuggestions: true,
-                            minCharacters: 0
-                        }, {
-                            featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/7"),
-                            searchFields: ["REFPAR"],
-                            displayField: "REFPAR",
-                            exactMatch: true,
-                            name: "Parcelas Sigpac",
-                            outFields: ["*"],
-                            placeholder: " ",
-                            maxResults: 6,
-                            maxSuggestions: 6,
-                            enableSuggestions: true,
-                            minCharacters: 0
-                        }, {
-                            locator: new esri.tasks.Locator("//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
-                            singleLineFieldName: "SingleLine",
-                            name: "Geocoding Service",
-                            localSearchOptions: {
-                                minScale: 300000,
-                                distance: 50000
-                            },
-                            placeholder: "Search Geocoder",
-                            maxResults: 3,
-                            maxSuggestions: 6,
-                            enableSuggestions: false,
-                            minCharacters: 0
-                        }]
-                    s.set("sources", sources);
-                    s.startup();
-                    // carga capas -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    map.addLayers([dynamicMSLayerBasico, dynamicMSLayer]);
-
-                });
-        </script>
+    <link rel="stylesheet" type="text/css" href="css/popup.css">
 </head>
 <body>
     <div data-role="page" id="pageone">
@@ -464,6 +49,17 @@
                             </form>
                         </div>
                     </div>
+                    <hr />
+                    <fieldset data-role="controlgroup" data-mini="true">
+                        <legend>Capas Catastrales:</legend>
+                        <input type="radio" name="radio-0" id="radio-0" value="C" />
+                        <label for="radio-0">Catastro</label>
+                        <input type="radio" name="radio-1" id="radio-1" value="S" />
+                        <label for="radio-1">Sigpac</label>
+                        <input type="radio" name="radio-2" id="radio-2" value="Q" checked />
+                        <label for="radio-2">Quitar capas</label>
+                    </fieldset>
+                    <hr />
                 </div>
                 <p /><hr /><p />
                 <p />
@@ -482,14 +78,20 @@
                  data-dojo-type="dijit/layout/ContentPane"
                  data-dojo-props="region:'center'"
                  style="position: absolute;height: 100%;width: 100%;">
-                <div style="position:absolute; right:25px; top:20px; z-Index:30;">
+                <!--<div style="position:absolute; right:25px; top:20px; z-Index:30;">
                     <div data-dojo-type="dijit/TitlePane"
                          data-dojo-props="title:'Mapa Base', closable:true, open:false">
-                        <div data-dojo-type="dijit/layout/ContentPane" style="width:150px; height:680px; overflow:auto;background-color: #f9f9f9;">
-                            <div id="basemapGallery"></div>
+                        <div data-dojo-type="dijit/layout/ContentPane" style="width:150px; height:680px; overflow:auto;background-color: #ffffff;">
+                            <div id="basemapGallery2"></div>
                         </div>
                     </div>
-                </div>
+                </div>-->
+                
+                <a id="mapaBase" href="#popupNested" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-grid ui-btn-icon-left ui-btn-b ui-mini" data-transition="pop">Mapa Base</a>
+                <div data-role="popup" id="popupNested" data-theme="none" data-mini="true">
+                    <div id="basemapGallery" style="background-color: #ffffff;opacity:0.4"></div>
+                </div><!-- /popup -->
+
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>
                 <div id="search"></div>

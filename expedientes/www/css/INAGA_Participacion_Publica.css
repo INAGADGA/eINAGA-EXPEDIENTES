@@ -44,6 +44,13 @@ body {
     left: 74px;
 }
 
+#mapaBase {
+    position:absolute; 
+    right:25px; 
+    top:10px; 
+    z-Index:30
+}
+
 .esriSimpleSliderTL {
     top: 60px;
     left: 20px;

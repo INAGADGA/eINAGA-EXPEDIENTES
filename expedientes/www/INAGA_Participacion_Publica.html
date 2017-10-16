@@ -86,14 +86,19 @@
                  data-dojo-type="dijit/layout/ContentPane"
                  data-dojo-props="region:'center'"
                  style="position: absolute;height: 100%;width: 100%;">
-                <div style="position:absolute; right:5px; top:20px; z-Index:30;">
+                <!--<div style="position:absolute; right:5px; top:20px; z-Index:30;">
                     <div data-dojo-type="dijit/TitlePane"
                          data-dojo-props="title:'Mapa Base', closable:true, open:false">
                         <div data-dojo-type="dijit/layout/ContentPane" style="width:250px; height:500px; overflow:auto;background-color: #f9f9f9;">
                             <div id="basemapGallery"></div>
                         </div>
                     </div>
-                </div>
+                </div>-->
+
+                <a id="mapaBase" href="#popupNested" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-grid ui-btn-icon-left ui-btn-b ui-mini" data-transition="pop">Mapa Base</a>
+                <div data-role="popup" id="popupNested" data-theme="none" data-mini="true">
+                    <div id="basemapGallery" style="background-color: #ffffff;opacity:0.4"></div>
+                </div><!-- /popup -->
 
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>

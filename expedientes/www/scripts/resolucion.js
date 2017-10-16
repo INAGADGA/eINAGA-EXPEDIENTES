@@ -1,4 +1,4 @@
-﻿var map, tb, url, coordx, coordy, poligonoConsulta,activeSource;
+﻿var map, tb, url, coordx, coordy, poligonoConsulta;
 require([
     "dojo/dom",
     "dojo/dom-style",
@@ -61,54 +61,47 @@ require([
         parser.parse();
 
         var popup = new PopupMobile(null, domConstruct.create("div"));
-
         valores = getGET();
 
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
-        var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
-        var tituloVisor = "<center><font color='white'>Localización expedientes INAGA</br>en plazo de participación pública</font></center>";
-        //var urlDocumentacion = "https://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
-        //dom.byId("documentacion").href = urlDocumentacion;
-        var numCapaInf = 9;
+        var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
+        var tituloVisor = "<center><font color='white'>Localizaci󮠤e resoluciones p򢬩cas de expedientes INAGA</font></center>"
+        var numCapaInf = 1;
         var searchFields = ["SOLICITANTE", "NUMEXP"];
         var displayField = "SOLICITANTE";
         var exactMatch = false;
-        var name = "Información (Solicitante,Expediente)";
+        var name = "Resolución (Solicitante,Expediente)";
         var infoTemplate = new InfoTemplate("");
         infoTemplate.setTitle("Exp: " + "${NUMEXP}");
         infoTemplate.setContent(getTextContent);
         function getTextContent(graphic) {
             var urlvisor = graphic.attributes.URL_VISOR;
-            var texto = "</br><b> Nº Expediente: </b> " + graphic.attributes.NUMEXP +
-                "</br><b> Descripción</b> " + graphic.attributes.DENOMINACION +
+            var texto =
+                "<b>" + graphic.attributes.IDTIPOLOGIA + graphic.attributes.CSUBTIPOLOGIA + ":</b> " + graphic.attributes.DSUBTIPOLOGIA +
+                "</br>" +
+                "</br><b> Expediente: </b> " + graphic.attributes.NUMEXP +
+                "</br><b> Asunto: </b> " + graphic.attributes.DENOMINACION +
                 "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
+                "</br><b> Resolución</b> " + graphic.attributes.DTIPO_RESOLUCION +
                 "</br>" +
-                "</br><b> Tipo Publicación</b> " + graphic.attributes.TIPO_PUBLICACION +
-                "</br><b> Fecha Inicio: </b> " + new Date(parseInt(graphic.attributes.FINI)).toLocaleDateString() +
-                "</br><b> Fecha Fin: </b> " + new Date(parseInt(graphic.attributes.FFIN)).toLocaleDateString() +
-                "</br>" +
-                "</br><b> Precisión</b> " + graphic.attributes.DORIGEN + "<br>" +
-                "</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>Documentación " + graphic.attributes.TIPO_PUBLICACION; + "</a>";
+                "</br><b> Municipio: </b> " + graphic.attributes.MUNICIPIO +
+                "</br><b> Precisión</b> " + graphic.attributes.DORIGEN + "</br>" +
+                "</br><a href=" + graphic.attributes.URL_ENLACE + " target=_blank>Documento Resolución del Expediente</a>";
             return texto;
         }
 
         var dynamicMSLayer = new esri.layers.ArcGISDynamicMapServiceLayer(rutaServicio, {
             id: "Participacion",
-            //opacity: 0.5,
+            //opacity: 0.75,
             outFields: ["*"]
         });
+        dynamicMSLayer.setImageFormat("png32", true);
         dynamicMSLayer.setInfoTemplates({
-            0: { infoTemplate: infoTemplate },
             1: { infoTemplate: infoTemplate },
             2: { infoTemplate: infoTemplate },
-            3: { infoTemplate: infoTemplate },
-            4: { infoTemplate: infoTemplate },
-            5: { infoTemplate: infoTemplate },
-            6: { infoTemplate: infoTemplate },
-            7: { infoTemplate: infoTemplate }
+            3: { infoTemplate: infoTemplate }
         });
-        dynamicMSLayer.setVisibleLayers([0, 1, 2, 3, 4, 5, 6, 7, 8]);
-        dynamicMSLayer.setImageFormat("png32", true);
+        dynamicMSLayer.setVisibleLayers([0, 1, 2, 3]);
         //  otras variables -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         var d = new Date();
         var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
@@ -119,14 +112,19 @@ require([
         esriConfig.defaults.io.alwaysUseProxy = false;
         // incicializar mapa -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         map = new Map("map", {
-            basemap: "gray",
+            basemap: "hybrid",
             extent: new esri.geometry.Extent(-2.4, 39.6, 0.7, 43.3),
             infoWindow: popup
         });
         map.disableKeyboardNavigation();
         map.addLayer(new esri.layers.GraphicsLayer({ "id": "Geodesic" }));
         map.infoWindow.resize(240, 200);
+        //map.infoWindow.startup();
 
+        if (valores != undefined) {
+            var coordenadasZoom = valores["zoomEnvelope"].split(":");
+            zoomExtension(coordenadasZoom[0], coordenadasZoom[1], coordenadasZoom[2], coordenadasZoom[3]);
+        }
         // widgets -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // widget geolocate
         geoLocate = new LocateButton({ map: map }, "LocateButton");
@@ -161,7 +159,6 @@ require([
         );
         basemapGallery.startup();
         basemapGallery.on("error", function (msg) {
-            //console.log("basemap gallery error:  ", msg);
         });
         // widget home
         var home = new HomeButton({
@@ -169,23 +166,18 @@ require([
         }, "HomeButton");
         home.startup();
 
+
         // Capas necesarias -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         var fcInf = new FeatureLayer(rutaServicio + "/" + numCapaInf);
         var fcMunis = new FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");
         var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer", {
-
             id: "xLimites",
             outFields: ["*"]
         });
         dynamicMSLayerBasico.setVisibleLayers([1, 2, 3]);
-
-        if (valores !== undefined) {
-            var coordenadasZoom = valores["zoomEnvelope"].split(":");
-            zoomExtension(coordenadasZoom[0], coordenadasZoom[1], coordenadasZoom[2], coordenadasZoom[3]);
-        }
+        dynamicMSLayerBasico.setImageFormat("png32", true);
         //Eventos -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         $(document).on('change', '#slider-100', function () {
-            console.log($("#slider-100").val());
             dynamicMSLayer.setOpacity($("#slider-100").val() / 100);
         });
 
@@ -209,7 +201,6 @@ require([
                     layerInfos: layerInfo
                 }, "legendDiv");
                 legendDijit.startup();
-                console.debug("legend actualizada");
             }
         });
 
@@ -218,6 +209,7 @@ require([
             //dameCoord4326();
             map.setMapCursor("default");
             domStyle.set(dom.byId("procesando"), "display", "none");
+            
         });
         map.on("update-start", function () {
             map.setMapCursor("wait");
@@ -234,18 +226,30 @@ require([
                 map.setInfoWindowOnClick(true);
             }
         });
+
         measurement.on("measure-end", function (evt) {
-            if (evt.toolName === "location") {
+            if (evt.toolName == "location") {
                 projectToEtrs89(evt.geometry);
             }
             $("[data-role=panel]").panel("open");
         });
         measurement.on("tool-change", function (evt) {
             map.setInfoWindowOnClick(false); dom.byId("etrs").innerHTML = "";
-            $("[data-role=panel]").panel("close");
+            $("[data-role=panel]").panel("close");            
         });
 
-
+        $("#select-choice-1").bind("change", function (event, ui) {
+            var dropd = $("#select-choice-1");
+            sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val();
+            if (dropd.find('option:selected').val() == '00') { sql = ""; }
+            var layerDefinitions = [];
+            layerDefinitions.push(sql);
+            layerDefinitions.push(sql);
+            layerDefinitions.push(sql);
+            layerDefinitions.push(sql);
+            layerDefinitions.push(sql);
+            dynamicMSLayer.setLayerDefinitions(layerDefinitions);
+        });
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         function getGET() {
@@ -272,7 +276,7 @@ require([
         }
 
         function zoomExtension(minx, miny, maxx, maxy) {
-            var _extent = new esri.geometry.Extent(minx, miny, maxx, maxy, new esri.SpatialReference({ wkid: 25830 }));
+            var _extent = new esri.geometry.Extent(minx, miny, maxx, maxy, new esri.SpatialReference({ wkid: 25830 }))
             var outSR = new esri.SpatialReference(3857);
             var params = new esri.tasks.ProjectParameters();
             params.geometries = [_extent];
@@ -293,7 +297,20 @@ require([
                 pt = projectedPoints[0];
                 coordx = pt.x.toFixed(0);
                 coordy = pt.y.toFixed(0);
-                dom.byId("etrs").innerHTML = "<hr /><b>Coordenada en ETRS89 30N</br><table style='width:100%'><tr><th>X</th><th>Y</th></tr><tr><td>" + pt.x.toFixed(0) + "</td><td>" + pt.y.toFixed(0) + "</td></tr></table><hr />";
+            });
+        }
+        function projectEnveToEtrs89() {
+            var outSR = new esri.SpatialReference(25830);
+            var params = new esri.tasks.ProjectParameters();
+            params.geometries = [map.extent]; //[pt.normalize()];
+            params.outSR = outSR;
+            var pt;
+            gsvc.project(params, function (projectedPoints) {
+                pt = projectedPoints[0];
+                xmin = pt.xmin.toFixed(0);
+                ymin = pt.ymin.toFixed(0);
+                xmax = pt.xmax.toFixed(0);
+                ymax = pt.ymax.toFixed(0);
             });
         }
         function dameCoord4326() {
@@ -307,21 +324,7 @@ require([
                 pt = projectedPoints[0];
             });
         }
-        function projectEnveToEtrs89() {
-            var outSR = new esri.SpatialReference(25830);
-            var params = new esri.tasks.ProjectParameters();
-            params.geometries = [map.extent]; //[pt.normalize()];
-            params.outSR = outSR;
-            var pt;
-            gsvc.project(params, function (projectedPoints) {
-                pt = projectedPoints[0];
-                console.log(pt);
-                xmin = pt.xmin.toFixed(0);
-                ymin = pt.ymin.toFixed(0);
-                xmax = pt.xmax.toFixed(0);
-                ymax = pt.ymax.toFixed(0);
-            });
-        }
+
         function showLoading() {
             domStyle.set(dom.byId("loading"), "display", "inline-block");
         }
@@ -348,7 +351,7 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layer1]
         };
-        var layerCat = new WMSLayer('http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
+        var layerCat = new WMSLayer('https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['Catastro']
 
@@ -372,7 +375,7 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layerSigpacPar, layerSigpacRec]
         };
-        var wmsSigpac = new WMSLayer('http://wms.magrama.es/wms/wms.aspx?', {
+        var wmsSigpac = new WMSLayer('https://wms.magrama.es/wms/wms.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['PARCELA', 'RECINTO']
 
@@ -382,132 +385,118 @@ require([
         wmsSigpac.version = "1.1.1";
         wmsSigpac.spatialReferences[0] = 3857;
 
-        var templateExpediente = "</br><b> Nº Expediente: </b> " + "${NUMEXP}" +
-            "</br><b> Descripción</b> " + "${DENOMINACION}" +
-            "</br><b> Solicitante: </b> " + "${SOLICITANTE}" +
-            "</br>" +
-            "</br><b> Tipo Publicación</b> " + "${TIPO_PUBLICACION}" +
-            "</br>" +
-            "</br><a href= " + "${URL_ENLACE}" + " target=_blank>Documentación " + "${TIPO_PUBLICACION}" + "</a>";
-
         var templateCatastro = "<p>Referencia:${REFPAR}</p><p>Municipio:${CODMUN}</p><p>Agregado:${MUNAGR}</p><p>Polígono:${MASA}</p><p>Parcela:${PARCELA}</p>";
         var templateSigpac = "<p>Referencia:${REFPAR}</p><p>Provincia:${PROVINCIA}</p><p>Municipio:${MUNICIPIO}</p><p>Agregado:${AGREGADO}</p><p>Polígono:${POLIGONO}</p><p>Parcela:${PARCELA}</p>";
         var templateMunicipios = "<p>Código:${C_MUNI_INE}</p><p>Municipio:${D_MUNI_INE}</p><p>Provincia:${PROVINCIA}</p><p>Comarca:${D_COMARCA}</p>";
 
-var s = new Search({
-    enableButtonMode: true,
-    enableLabel: false,
-    enableInfoWindow: true,
-    showInfoWindowOnSelect: true,
-    enableSuggestions: true,
-    enableSuggestionsMenu: true,
-    map: map
-}, "search");
-                var sources = [
-                    {
-                        featureLayer: fcInf,
-                        searchFields: searchFields, //["SOLICITANTE","NUMEXP"],
-                        displayField: displayField, //"SOLICITANTE",
-                        exactMatch: exactMatch, //false,
-                        name: name, //"Resolucion pública (Solicitante,Expediente)",
-                        outFields: ["*"],
-                        placeholder: "Nombre o Nº expediente",
-                        maxResults: 6,
-                        maxSuggestions: 6,
-                        enableSuggestions: true,
-                        infoTemplate: infoTemplate, //new InfoTemplate("${NUMEXP}", infoTemplate),
-                        //infoTemplate: new InfoTemplate("${NUMEXP}", templateExpediente),
-                        minCharacters: 0
-                        //,infoTemplate: infoTemplate
-                    }, {
-                        featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
-                        searchFields: ["REFPAR"],
-                        displayField: "REFPAR",
-                        labelSymbol: new TextSymbol("${REFPAR}"),
-                        enableLabel:true,
-                        exactMatch: true,
-                        name: "Parcelas Catastrales",
-                        outFields: ["*"],
-                        placeholder: "14 primeros dígitos Referencia Catastral ",
-                        maxResults: 6,
-                        maxSuggestions: 6,
-                        enableSuggestions: true,
-                        infoTemplate: new InfoTemplate("${REFPAR}",templateCatastro),
-                        minCharacters: 0
-                    }, {
-                        featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/7"),
-                        searchFields: ["REFPAR"],
-                        displayField: "REFPAR",
-                        labelSymbol: new TextSymbol("${REFPAR}"),
-                        enableLabel: true,
-                        exactMatch: true,
-                        name: "Parcelas Sigpac",
-                        outFields: ["*"],
-                        placeholder: "Referencia SIGPAC",
-                        maxResults: 6,
-                        maxSuggestions: 6,
-                        enableSuggestions: true,
-                        infoTemplate: new InfoTemplate("${REFPAR}", templateSigpac),
-                        minCharacters: 0
-                    }, {
-                        featureLayer: fcMunis,
-                        searchFields: ["D_MUNI_INE"],
-                        displayField: "D_MUNI_INE",
-                        exactMatch: false,
-                        name: "Municipios",
-                        outFields: ["*"],
-                        placeholder: "Nombre de Municipio",
-                        maxResults: 6,
-                        maxSuggestions: 6,
-                        enableSuggestions: true,
-                        infoTemplate: new InfoTemplate("${D_MUNI_INE}", templateMunicipios),
-                        minCharacters: 0
-                    }, {
-                        locator: new esri.tasks.Locator("//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
-                        singleLineFieldName: "SingleLine",
-                        name: "Geocoding Service",
-                        localSearchOptions: {
-                            minScale: 300000,
-                            distance: 50000
-                        },
-                        placeholder: "Geocoder ESRI",
-                        maxResults: 3,
-                        maxSuggestions: 6,
-                        enableSuggestions: false,
-                        minCharacters: 0
-                    }];
-s.set("sources", sources);
-s.startup();
+        var s = new Search({
+            enableButtonMode: true,
+            enableLabel: false,
+            enableInfoWindow: true,
+            showInfoWindowOnSelect: true,
+            enableSuggestions: true,
+            enableSuggestionsMenu: true,
+            map: map
+        }, "search");
+        var sources = [
+            {
+                featureLayer: fcInf,
+                searchFields: searchFields, //["SOLICITANTE","NUMEXP"],
+                displayField: displayField, //"SOLICITANTE",
+                exactMatch: false,
+                name: name, //"Resolución  (Solicitante,Expediente)",
+                outFields: ["*"],
+                placeholder: " ",
+                maxResults: 6,
+                maxSuggestions: 6,
+                enableSuggestions: true,
+                infoTemplate: infoTemplate, 
+                minCharacters: 0
+            }, {
+                featureLayer: fcMunis,
+                searchFields: ["D_MUNI_INE"],
+                displayField: "D_MUNI_INE",
+                exactMatch: false,
+                name: "Municipios",
+                outFields: ["*"],
+                placeholder: " ",
+                maxResults: 6,
+                maxSuggestions: 6,
+                enableSuggestions: true,
+                infoTemplate: new InfoTemplate("${D_MUNI_INE}", templateMunicipios),
+                minCharacters: 0
+            }, {
+                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
+                searchFields: ["REFPAR"],
+                displayField: "REFPAR",
+                exactMatch: true,
+                name: "Parcelas Catastrales",
+                outFields: ["*"],
+                placeholder: " ",
+                maxResults: 6,
+                maxSuggestions: 6,
+                enableSuggestions: true,
+                infoTemplate: new InfoTemplate("${REFPAR}", templateCatastro),
+                minCharacters: 0
+            }, {
+                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/7"),
+                searchFields: ["REFPAR"],
+                displayField: "REFPAR",
+                exactMatch: true,
+                name: "Parcelas Sigpac",
+                outFields: ["*"],
+                placeholder: " ",
+                maxResults: 6,
+                maxSuggestions: 6,
+                enableSuggestions: true,
+                infoTemplate: new InfoTemplate("${REFPAR}", templateSigpac),
+                minCharacters: 0
+            }, {
+                locator: new esri.tasks.Locator("//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
+                singleLineFieldName: "SingleLine",
+                name: "Geocoding Service",
+                localSearchOptions: {
+                    minScale: 300000,
+                    distance: 50000
+                },
+                placeholder: "Search Geocoder",
+                maxResults: 3,
+                maxSuggestions: 6,
+                enableSuggestions: false,
+                minCharacters: 0
+            }]
+        s.set("sources", sources);
+        s.startup();
 
-// cambiar la visibilidad de las búsquedas
-          
-on(s, 'search-results', function (e) {
-  
-    if (e.errors === null) {
-       
-        if (e.activeSourceIndex=== 1) {
+        // cambiar la visibilidad de las búsquedas
+
+        on(s, 'search-results', function (e) {
+
+            if (e.errors === null) {
+
+                if (e.activeSourceIndex === 1) {
+                    wmsSigpac.visible = false;
+                    layerCat.visible = true;
+                } else if (e.activeSourceIndex === 2) {
+                    wmsSigpac.visible = true;
+                    layerCat.visible = false;
+                } else {
+                    wmsSigpac.visible = false;
+
+                }
+                map.setExtent(map.extent);
+            }
+
+        });
+        on(s, 'clear-search', function (e) {
+            dynamicMSLayerBasico.setVisibleLayers([0, 1, 2, 3]);
             wmsSigpac.visible = false;
             layerCat.visible = true;
-        } else if (e.activeSourceIndex === 2){
-            wmsSigpac.visible = true;
-            layerCat.visible = false;
-        } else {
-            wmsSigpac.visible = false;
-           
-        }
-        map.setExtent(map.extent);
-    }
-
-});
-on(s, 'clear-search', function (e) {
-    dynamicMSLayerBasico.setVisibleLayers([0, 1, 2, 3]);
-    wmsSigpac.visible = false;
-    layerCat.visible = true;
-});
+        });
 
 
-// carga capas -y eventos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
+        // carga capas -y eventos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
         $("#radio-0").click(function () {
             $("#radio-1").prop("checked", false);
             $("#radio-1").checkboxradio("refresh");

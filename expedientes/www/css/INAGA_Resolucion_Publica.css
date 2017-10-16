@@ -45,6 +45,18 @@ body {
     top: 100px;
     left: 20px;
 }
+.esriBasemapGalleryLabelContainer {
+    font-weight: 900;
+    text-shadow: 0 0 3px #ffffff, 0 0 5px #ffffff;
+}
+
+#mapaBase {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-Index: 30
+}
+
 
 .dijitTitlePane {
     display: block;
