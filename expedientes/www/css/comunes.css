@@ -1,0 +1,216 @@
+﻿#pageone {
+    height: 100%;
+}
+
+#myPanel {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+body {
+    font-family: arial;
+}
+
+.ui-page-theme-a .ui-bar-inherit {
+    text-shadow: 0 0
+}
+
+.ui-content {
+    height: 100%;
+    padding: 0;
+}
+
+#herramientas {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #000;
+    z-index: 40
+}
+
+#search {
+    display: block;
+    position: absolute;
+    z-index: 40;
+    top: 60px;
+    left: 18px;
+}
+
+#HomeButton {
+    position: absolute;
+    top: 105px;
+    left: 20px;
+    z-index: 30;
+}
+
+#LocateButton {
+    position: absolute;
+    top: 145px;
+    left: 20px;
+    z-index: 30;
+}
+
+#mapaBase {
+    position: absolute;
+    left: 10px;
+    bottom: 50px;
+    z-Index: 30
+}
+
+.esriSimpleSliderTL {
+    display: none;
+}
+
+
+
+.ui-field-contain, .ui-mobile fieldset.ui-field-contain {
+    padding: 0;
+}
+
+.dijitTitlePane {
+    display: block;
+    overflow: hidden;
+    background-color: #C0C0C0;
+    color: #000000;
+    font-weight: bold;
+    font-size: 80%;
+}
+
+.details {
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+
+button {
+    margin: 2px;
+    cursor: pointer;
+}
+
+/*--------------------------------------------------leyenda------------------------------------------*/
+
+.esriLegendLayerLabel, .esriLegendLayer {
+    font-family: 'Arial';
+    font-size: 12px;
+    color: black;
+}
+
+.esriLegendService img {
+    width: 30px;
+}
+
+.esriLegendServiceLabel {
+    display: none;
+}
+
+/*--------------------------------------------------Loading------------------------------------------*/
+/* Second Loadin Circle */
+.circle {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(0,183,229,0.9);
+    opacity: .9;
+    border-right: 5px solid rgba(0,0,0,0);
+    border-left: 5px solid rgba(0,0,0,0);
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    -moz-animation: spinPulse 1s infinite ease-in-out;
+    -webkit-animation: spinPulse 1s infinite linear;
+}
+
+.circle1 {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(0,183,229,0.9);
+    opacity: .9;
+    border-left: 5px solid rgba(0,0,0,0);
+    border-right: 5px solid rgba(0,0,0,0);
+    border-radius: 30px;
+    box-shadow: 0 0 15px #2187e7;
+    width: 10px;
+    height: 10px;
+    margin: 0 auto;
+    position: relative;
+    top: -30px;
+    -moz-animation: spinoffPulse 1s infinite linear;
+    -webkit-animation: spinoffPulse 1s infinite linear;
+}
+
+@-moz-keyframes spinPulse {
+    0% {
+        -moz-transform: rotate(160deg);
+        opacity: 0;
+        box-shadow: 0 0 1px #2187e7;
+    }
+
+    50% {
+        -moz-transform: rotate(145deg);
+        opacity: 1;
+    }
+
+    100% {
+        -moz-transform: rotate(-320deg);
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes spinoffPulse {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spinPulse {
+    0% {
+        -webkit-transform: rotate(160deg);
+        opacity: 0;
+        box-shadow: 0 0 1px #2187e7;
+    }
+
+    50% {
+        -webkit-transform: rotate(145deg);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: rotate(-320deg);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes spinoffPulse {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.ui-select .ui-btn select {
+    font-size: 1em;
+}
+
+/*--------------------------------------------------basemapgallery------------------------------------------*/
+
+.esriBasemapGalleryThumbnail {
+    height: 47px;
+    width: 80px;
+}
+
+.esriBasemapGalleryLabelContainer {
+    font-size: .8em;
+    font-weight: 600;
+    text-shadow: 0 0 3px #ffffff, 0 0 5px #ffffff;
+}
+
+.esriBasemapGallery {
+    /*background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(0,183,229,0.9);*/
+    height: 50%;
+    opacity: .9;
+}

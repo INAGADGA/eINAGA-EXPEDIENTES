@@ -22,46 +22,55 @@
     <script type="text/javascript" src="scripts/resolucion.js"></script>
     <link rel="stylesheet" type="text/css" href="css/INAGA_Resolucion_Publica.css">
     <link rel="stylesheet" type="text/css" href="css/popup.css">
+    <link rel="stylesheet" type="text/css" href="css/comunes.css">
 </head>
 <body>
     <div data-role="page" id="pageone">
         <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="true" data-swipe-close="false" style="z-Index:30;">
-
-            <a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-mini">Herramientas</a>
             <div data-role="main" class="ui-content">
                 <div data-role="collapsible-set">
-                    <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                        <h3>Leyenda</h3>
-                        <div id="legendDiv"></div>
-                    </div>
-                    <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                        <h3>
-                            Medición</h3>
+                    
+                        <h5>Selección</h5>
+                        <div id="selector" data-role="fieldcontain" class="ui-mini">
+                            <select name="select-choice-0" id="select-choice-1" data-theme="b">
+                                <option value="00">Tipología</option>
+                                <option value="01">T01.- Evaluación Impacto Ambiental (EIA)</option>
+                                <option value="02">T02.- Autorización Ambiental Integrada (IPPC)</option>
+                                <option value="71">T71.- Declaración Ambiental Estratégica</option>
+                            </select>
+                        </div>
+                    
+                        <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                            <h3>Leyenda</h3>
+                            <div id="legendDiv"></div>
+                        </div>
+                        <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                            <h3>Medición y Coordenadas</h3>
                             <div id="measurementDiv"></div>
                             <div id="etrs" style="font-size: 12px;text-align: left;vertical-align: middle;"></div>
                             <button type="button" id="clearGraphicsM" style="width: 150px;height: 40px;font-size: 10px;text-align: center;vertical-align: middle;position:relative;">Borra medición</button>
-                    </div>
-                    <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                        <h3>Opacidad</h3>
-                        <div id="opacidadDiv">
-                            <form>
-                                <input type="range" name="slider-10" id="slider-100" min="0" max="100" step=".1" value="100">
-                            </form>
                         </div>
+                        <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                            <h3>Opacidad</h3>
+                            <div id="opacidadDiv">
+                                <form>
+                                    <input type="range" name="slider-10" id="slider-100" min="0" max="100" step=".1" value="100">
+                                </form>
+                            </div>
+                        </div>
+                        <hr />
+                        <fieldset data-role="controlgroup" data-mini="true">
+                            <legend>Capas Catastrales:</legend>
+                            <input type="radio" name="radio-0" id="radio-0" value="C" />
+                            <label for="radio-0">Catastro</label>
+                            <input type="radio" name="radio-1" id="radio-1" value="S" />
+                            <label for="radio-1">Sigpac</label>
+                            <input type="radio" name="radio-2" id="radio-2" value="Q" checked />
+                            <label for="radio-2">Quitar capas</label>
+                        </fieldset>
+                        <hr />
                     </div>
-                    <hr />
-                    <fieldset data-role="controlgroup" data-mini="true">
-                        <legend>Capas Catastrales:</legend>
-                        <input type="radio" name="radio-0" id="radio-0" value="C" />
-                        <label for="radio-0">Catastro</label>
-                        <input type="radio" name="radio-1" id="radio-1" value="S" />
-                        <label for="radio-1">Sigpac</label>
-                        <input type="radio" name="radio-2" id="radio-2" value="Q" checked />
-                        <label for="radio-2">Quitar capas</label>
-                    </fieldset>
-                    <hr />
-                </div>
-                <p /><hr /><p />
+                <p /><p />
                 <p />
                 <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px">Cláusula Legal</a>
                 <div data-role="popup" id="popupBasic">
@@ -77,35 +86,18 @@
             <div id="map"
                  data-dojo-type="dijit/layout/ContentPane"
                  data-dojo-props="region:'center'"
-                 style="position: absolute;height: 100%;width: 100%;">
-                <!--<div style="position:absolute; right:25px; top:20px; z-Index:30;">
-                    <div data-dojo-type="dijit/TitlePane"
-                         data-dojo-props="title:'Mapa Base', closable:true, open:false">
-                        <div data-dojo-type="dijit/layout/ContentPane" style="width:150px; height:680px; overflow:auto;background-color: #ffffff;">
-                            <div id="basemapGallery2"></div>
-                        </div>
-                    </div>
-                </div>-->
-                
+                 style="position: absolute;height: 100%;width: 100%;">                
                 <a id="mapaBase" href="#popupNested" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-grid ui-btn-icon-left ui-btn-b ui-mini" data-transition="pop">Mapa Base</a>
                 <div data-role="popup" id="popupNested" data-theme="none" data-mini="true">
                     <div id="basemapGallery" style="background-color: #ffffff;opacity:0.4"></div>
                 </div><!-- /popup -->
-
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>
                 <div id="search"></div>
-                <div id="info2" style="position:absolute; left:10px; top:50px; color:#000; z-index:40;">
+                <div id="herramientas">
                     <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Herramientas</a>
                 </div>
-                <div data-role="fieldcontain" class="ui-mini" style="position:absolute; left:10px; top:0px;z-index:40;">
-                    <select name="select-choice-0" id="select-choice-1" data-theme="b">
-                        <option value="00">Seleccionar Tipoloía</option>
-                        <option value="01">T01.- Evaluación Impacto Ambiental (EIA)</option>
-                        <option value="02">T02.- Autorización Ambiental Integrada (IPPC)</option>
-                        <option value="71">T71.- Declaración Ambiental Estratégica</option>
-                    </select>
-                </div>
+                
             </div>
             <div id="procesando" class="container" style="position:absolute; right:50%; top:50%; z-Index:999;display: none;">
                 <div class="content">

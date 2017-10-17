@@ -22,14 +22,12 @@
     <script type="text/javascript" src="scripts/participacion.js"></script>
     <link rel="stylesheet" type="text/css" href="css/INAGA_Participacion_Publica.css">
     <link rel="stylesheet" type="text/css" href="css/popup.css">
-
+    <link rel="stylesheet" type="text/css" href="css/comunes.css">
    
 </head>
 <body>
     <div data-role="page" id="pageone">
         <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="true" data-swipe-close="false" style="z-Index:30;">
-
-            <a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-mini">Herramientas</a>
             <div data-role="main" class="ui-content">
                 <div data-role="collapsible-set">
                     <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
@@ -37,8 +35,7 @@
                         <div id="legendDiv"></div>
                     </div>
                     <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
-                        <h3>
-                            Medición</h3>
+                        <h3>Medición y Coordenadas</h3>
                             <div id="measurementDiv"></div>
                             <div id="etrs" style="font-size: 12px;text-align: left;vertical-align: middle;"></div>
                             <button type="button" id="clearGraphicsM" style="width: 150px;height: 40px;font-size: 10px;text-align: center;vertical-align: middle;position:relative;">Borra medición</button>
@@ -50,9 +47,6 @@
                                 <input type="range" name="slider-10" id="slider-100" min="0" max="100" step=".1" value="100">
                             </form>
                         </div>
-                       
-                       
-
                     </div>
                     <hr />
                     <fieldset data-role="controlgroup" data-mini="true">
@@ -103,10 +97,10 @@
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>
                 <div id="search"></div>
-                <div id="info2" style="position:absolute; left:10px; top:10px; color:#000; z-index:30;">
-                    <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Herramientas</a>
+                <div id="herramientas">
+                        <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Herramientas</a>
+                    </div>
                 </div>
-            </div>
             <div id="procesando" class="container" style="position:absolute; right:50%; top:50%; z-Index:999;display: none;">
                 <div class="content">
                     <div class="circle"></div>
@@ -114,8 +108,6 @@
                 </div>
             </div>
         </div>
-
-
 
     </div>
 

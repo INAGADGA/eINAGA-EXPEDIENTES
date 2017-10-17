@@ -67,7 +67,7 @@ require([
         var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
         var tituloVisor = "<center><font color='white'>Localizaci󮠤e resoluciones p򢬩cas de expedientes INAGA</font></center>"
         var numCapaInf = 1;
-        var searchFields = ["SOLICITANTE", "NUMEXP"];
+        var searchFields = ["SOLICITANTE", "NUMEXP", "FFIN_REAL"];
         var displayField = "SOLICITANTE";
         var exactMatch = false;
         var name = "Resolución (Solicitante,Expediente)";
@@ -82,10 +82,11 @@ require([
                 "</br><b> Expediente: </b> " + graphic.attributes.NUMEXP +
                 "</br><b> Asunto: </b> " + graphic.attributes.DENOMINACION +
                 "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
-                "</br><b> Resolución</b> " + graphic.attributes.DTIPO_RESOLUCION +
+                "</br><b> Resolución: </b> " + graphic.attributes.DTIPO_RESOLUCION +
+                "</br><b> Fecha Resolución: </b> " + new Date(parseInt(graphic.attributes.FFIN_REAL)).toLocaleDateString() +
                 "</br>" +
                 "</br><b> Municipio: </b> " + graphic.attributes.MUNICIPIO +
-                "</br><b> Precisión</b> " + graphic.attributes.DORIGEN + "</br>" +
+                "</br><b> Precisión: </b> " + graphic.attributes.DORIGEN + "</br>" +
                 "</br><a href=" + graphic.attributes.URL_ENLACE + " target=_blank>Documento Resolución del Expediente</a>";
             return texto;
         }
@@ -112,10 +113,12 @@ require([
         esriConfig.defaults.io.alwaysUseProxy = false;
         // incicializar mapa -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         map = new Map("map", {
-            basemap: "hybrid",
+            basemap: "gray",
             extent: new esri.geometry.Extent(-2.4, 39.6, 0.7, 43.3),
-            infoWindow: popup
+            infoWindow: popup,
+            isZoomSlider: false
         });
+        
         map.disableKeyboardNavigation();
         map.addLayer(new esri.layers.GraphicsLayer({ "id": "Geodesic" }));
         map.infoWindow.resize(240, 200);
@@ -249,6 +252,7 @@ require([
             layerDefinitions.push(sql);
             layerDefinitions.push(sql);
             dynamicMSLayer.setLayerDefinitions(layerDefinitions);
+            dropd.find('option:selected').innerHTML = "T1";
         });
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -351,7 +355,7 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layer1]
         };
-        var layerCat = new WMSLayer('https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
+        var layerCat = new WMSLayer('http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['Catastro']
 
@@ -375,7 +379,7 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layerSigpacPar, layerSigpacRec]
         };
-        var wmsSigpac = new WMSLayer('https://wms.magrama.es/wms/wms.aspx?', {
+        var wmsSigpac = new WMSLayer('http://wms.magrama.es/wms/wms.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['PARCELA', 'RECINTO']
 
@@ -530,5 +534,5 @@ require([
             wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
-
+        
     });
