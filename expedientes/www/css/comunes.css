@@ -214,3 +214,26 @@ button {
     height: 50%;
     opacity: .9;
 }
+
+/*--------------------------------------------------dialogs------------------------------------------*/
+#lbl-title {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    position: relative;
+    background-color: rgba(190, 190, 190, 0.98);
+    color: #333;
+    font-size: 16px;
+    padding: 7px 10px;
+    height: 24px;
+    text-transform: none;
+    font-family: 'Helvetica Neue', 'Roboto', 'Segoe UI', 'sans-serif';
+    line-height: 24px;
+    margin: -10px;
+}
+#lbl-message {
+    color: #333;
+    text-transform: none;
+    font-size: 14px;
+    margin: 20px 0 0 0;
+    font-family: 'Helvetica Neue', 'Roboto', 'Segoe UI', 'sans-serif';
+}

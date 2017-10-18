@@ -65,7 +65,7 @@ require([
 
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
         var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
-        var tituloVisor = "<center><font color='white'>Localización resoluciones públicas de expedientes INAGA</font></center>"
+        var tituloVisor = "<center><font color='white'>Localización resoluciones públicas de expedientes INAGA</font></center>";
         var numCapaInf = 1;
         var searchFields = ["SOLICITANTE", "NUMEXP", "FFIN_REAL"];
         var displayField = "SOLICITANTE";
@@ -107,8 +107,8 @@ require([
         });
         dynamicMSLayer.setVisibleLayers([0, 1, 2, 3]);
         //  otras variables -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        var d = new Date();
-        var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+         d = new Date();
+         fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
         var sls = new SimpleLineSymbol("solid", new Color("#444444"), 3);
         var sfs = new SimpleFillSymbol("solid", sls, new Color([68, 68, 68, 0.25]));
         gsvc = new GeometryService("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
@@ -128,7 +128,7 @@ require([
         map.infoWindow.resize(240, 200);
         //map.infoWindow.startup();
 
-        if (valores != undefined) {
+        if (valores !== undefined) {
             var coordenadasZoom = valores["zoomEnvelope"].split(":");
             zoomExtension(coordenadasZoom[0], coordenadasZoom[1], coordenadasZoom[2], coordenadasZoom[3]);
         }
@@ -189,13 +189,24 @@ require([
         });
 
         on(dom.byId("buscar"), "click", function () {
+            var fechaOkIni;
+            var fechaOkFin;
+            var fechasOk = true;
+            var fini;
+            var ffin;
+
             var dropd = $("#select-choice-1");
             sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val() + " and ";
-            if (dropd.find('option:selected').val() == '00') { sql = ""; }
+            if (dropd.find('option:selected').val() === '00') { sql = ""; }
             var datepi = $("#fechaini");
             var midatestringIni = $("#fechaini").val();
             var midatestringFin = $("#fechafin").val();
-            if (midatestringIni != undefined & midatestringIni != "" & midatestringFin != undefined & midatestringFin != "") {                
+            fechaOkIni = validaFecha(midatestringIni);
+            fechaOkFin = validaFecha(midatestringFin);
+            fini = stringToDate(midatestringIni, 'yyyy-mm-dd', '-');
+            ffin = stringToDate(midatestringFin, 'yyyy-mm-dd', '-');
+            if (ffin < fini) { fechasOk = false;}
+            if (midatestringIni !== undefined & midatestringIni !=="" & midatestringFin !==undefined & midatestringFin !== "" & fechaOkFin & fechaOkIni & fechasOk) {                
                 sql += "(FFIN_REAL >= date '" + midatestringIni + "' AND FFIN_REAL <= date '" + midatestringFin + "')";
                 var layerDefinitions = [];
                 layerDefinitions.push(sql);
@@ -206,7 +217,10 @@ require([
                 dynamicMSLayer.setLayerDefinitions(layerDefinitions);
             }
             else {
-                alert("Debe seleccionar la fecha de inicio y fín"); 
+               
+                $("#pop").popup("open"); 
+                setTimeout(function () { $("#pop").popup("close"); }, 5000);
+               // alert("Debe seleccionar la fecha de inicio y fín"); 
             }
         });        
 
@@ -257,7 +271,7 @@ require([
         });
 
         measurement.on("measure-end", function (evt) {
-            if (evt.toolName == "location") {
+            if (evt.toolName === "location") {
                 projectToEtrs89(evt.geometry);
             }
             $("[data-role=panel]").panel("open");
@@ -281,6 +295,60 @@ require([
         //});
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        function stringToDate(_date, _format, _delimiter) {
+           
+            var formatLowerCase = _format.toLowerCase();
+            var formatItems = formatLowerCase.split(_delimiter);
+            var dateItems = _date.split(_delimiter);
+            var monthIndex = formatItems.indexOf("mm");
+            var dayIndex = formatItems.indexOf("dd");
+            var yearIndex = formatItems.indexOf("yyyy");
+            var month = parseInt(dateItems[monthIndex]);
+            month -= 1;
+            var formatedDate = new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
+            return formatedDate;
+        }
+
+        function parseDate(fecha) {
+
+            var inter = fecha.split("-");
+            return inter[2] + "/" + inter[1] + "/" + inter[0];
+        }
+        function validaFecha(fecha) {
+            fecha = parseDate(fecha);
+            var datePat = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
+            var fechaCompleta = fecha.match(datePat);
+            if (fechaCompleta === null) {
+                return false;
+            }
+
+            dia = fechaCompleta[1];
+            mes = fechaCompleta[3];
+            anio = fechaCompleta[5];
+
+            if (dia < 1 || dia > 31) {
+
+                return false;
+            }
+            if (mes < 1 || mes > 12) {
+
+                return false;
+            }
+            if ((mes ===4 || mes === 6 || mes === 9 || mes === 11) && dia === 31) {
+
+                return false;
+            }
+            if (mes ===2) { // bisiesto
+                var bisiesto = (anio % 4 === 0 && (anio % 100 !== 0 || anio % 400 === 0));
+                if (dia > 29 || (dia ===29 && !bisiesto)) {
+
+                    return false;
+                }
+            }
+            return true;
+
+        }
+       
         function getGET() {
             // capturamos la url
             var loc = document.location.href;
@@ -305,7 +373,7 @@ require([
         }
 
         function zoomExtension(minx, miny, maxx, maxy) {
-            var _extent = new esri.geometry.Extent(minx, miny, maxx, maxy, new esri.SpatialReference({ wkid: 25830 }))
+            var _extent = new esri.geometry.Extent(minx, miny, maxx, maxy, new esri.SpatialReference({ wkid: 25830 }));
             var outSR = new esri.SpatialReference(3857);
             var params = new esri.tasks.ProjectParameters();
             params.geometries = [_extent];
@@ -439,7 +507,7 @@ require([
                 maxResults: 6,
                 maxSuggestions: 6,
                 enableSuggestions: true,
-                infoTemplate: infoTemplate, 
+                infoTemplate: infoTemplate,
                 minCharacters: 0
             }, {
                 featureLayer: fcMunis,
@@ -493,7 +561,7 @@ require([
                 maxSuggestions: 6,
                 enableSuggestions: false,
                 minCharacters: 0
-            }]
+            }];
         s.set("sources", sources);
         s.startup();
 
