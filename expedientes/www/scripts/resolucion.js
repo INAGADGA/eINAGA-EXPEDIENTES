@@ -560,7 +560,7 @@ require([
         });
 
         $fecha = $('#fechaini');
-
+         
         if ($fecha[0].type != "date") {
             $.datepicker.regional['es'] = {
                 closeText: 'Cerrar',
