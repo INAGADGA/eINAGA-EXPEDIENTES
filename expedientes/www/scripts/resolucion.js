@@ -119,7 +119,8 @@ require([
             basemap: "gray",
             extent: new esri.geometry.Extent(-2.4, 39.6, 0.7, 43.3),
             infoWindow: popup,
-            isZoomSlider: false
+            isZoomSlider: false,
+            maxZoom: 19
         });
         
         map.disableKeyboardNavigation();
@@ -558,30 +559,4 @@ require([
             wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
-
-        $fecha = $('#fechaini');
-         
-        if ($fecha[0].type != "date") {
-            $.datepicker.regional['es'] = {
-                closeText: 'Cerrar',
-                //prevText: ' nextText: 'Sig>',
-                currentText: 'Hoy',
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Mi&eacute;rcoles', 'Jueves', 'Viernes', 'S&aacute;bado'],
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mier;', 'Juv', 'Vie', 'Sab'],
-                dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-                weekHeader: 'Sm',
-                dateFormat: 'dd/mm/yy',
-                firstDay: 1,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: ''
-            };
-            $.datepicker.setDefaults($.datepicker.regional["es"]);
-            $fecha.datepicker();
-        }
-
     });

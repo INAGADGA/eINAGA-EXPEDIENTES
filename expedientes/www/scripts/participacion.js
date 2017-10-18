@@ -121,7 +121,8 @@ require([
         map = new Map("map", {
             basemap: "gray",
             extent: new esri.geometry.Extent(-2.4, 39.6, 0.7, 43.3),
-            infoWindow: popup
+            infoWindow: popup,
+            maxZoom: 19
         });
         map.disableKeyboardNavigation();
         map.addLayer(new esri.layers.GraphicsLayer({ "id": "Geodesic" }));
