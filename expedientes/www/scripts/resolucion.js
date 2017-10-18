@@ -65,11 +65,14 @@ require([
 
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
         var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
-        var tituloVisor = "<center><font color='white'>Localizaci󮠤e resoluciones p򢬩cas de expedientes INAGA</font></center>"
+        var tituloVisor = "<center><font color='white'>Localización resoluciones públicas de expedientes INAGA</font></center>"
         var numCapaInf = 1;
         var searchFields = ["SOLICITANTE", "NUMEXP", "FFIN_REAL"];
         var displayField = "SOLICITANTE";
         var exactMatch = false;
+        var d = new Date();
+        var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+        dom.byId("fechafin").value = fecha;
         var name = "Resolución (Solicitante,Expediente)";
         var infoTemplate = new InfoTemplate("");
         infoTemplate.setTitle("Exp: " + "${NUMEXP}");
@@ -184,6 +187,28 @@ require([
             dynamicMSLayer.setOpacity($("#slider-100").val() / 100);
         });
 
+        on(dom.byId("buscar"), "click", function () {
+            var dropd = $("#select-choice-1");
+            sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val() + " and ";
+            if (dropd.find('option:selected').val() == '00') { sql = ""; }
+            var datepi = $("#fechaini");
+            var midatestringIni = $("#fechaini").val();
+            var midatestringFin = $("#fechafin").val();
+            if (midatestringIni != undefined & midatestringIni != "" & midatestringFin != undefined & midatestringFin != "") {                
+                sql += "(FFIN_REAL >= date '" + midatestringIni + "' AND FFIN_REAL <= date '" + midatestringFin + "')";
+                var layerDefinitions = [];
+                layerDefinitions.push(sql);
+                layerDefinitions.push(sql);
+                layerDefinitions.push(sql);
+                layerDefinitions.push(sql);
+                layerDefinitions.push(sql);
+                dynamicMSLayer.setLayerDefinitions(layerDefinitions);
+            }
+            else {
+                alert("Debe seleccionar la fecha de inicio y fín"); 
+            }
+        });        
+
         //click handler for the draw tool buttons
         query(".tool").on("click", function (evt) {
             if (tb) {
@@ -241,19 +266,18 @@ require([
             $("[data-role=panel]").panel("close");            
         });
 
-        $("#select-choice-1").bind("change", function (event, ui) {
-            var dropd = $("#select-choice-1");
-            sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val();
-            if (dropd.find('option:selected').val() == '00') { sql = ""; }
-            var layerDefinitions = [];
-            layerDefinitions.push(sql);
-            layerDefinitions.push(sql);
-            layerDefinitions.push(sql);
-            layerDefinitions.push(sql);
-            layerDefinitions.push(sql);
-            dynamicMSLayer.setLayerDefinitions(layerDefinitions);
-            dropd.find('option:selected').innerHTML = "T1";
-        });
+        //$("#select-choice-1").bind("change", function (event, ui) {
+        //    var dropd = $("#select-choice-1");
+        //    sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val();
+        //    if (dropd.find('option:selected').val() == '00') { sql = ""; }
+        //    var layerDefinitions = [];
+        //    layerDefinitions.push(sql);
+        //    layerDefinitions.push(sql);
+        //    layerDefinitions.push(sql);
+        //    layerDefinitions.push(sql);
+        //    layerDefinitions.push(sql);
+        //    dynamicMSLayer.setLayerDefinitions(layerDefinitions);
+        //});
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         function getGET() {
@@ -534,5 +558,30 @@ require([
             wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
-        
+
+        $fecha = $('#fechaini');
+
+        if ($fecha[0].type != "date") {
+            $.datepicker.regional['es'] = {
+                closeText: 'Cerrar',
+                //prevText: ' nextText: 'Sig>',
+                currentText: 'Hoy',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Mi&eacute;rcoles', 'Jueves', 'Viernes', 'S&aacute;bado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mier;', 'Juv', 'Vie', 'Sab'],
+                dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                weekHeader: 'Sm',
+                dateFormat: 'dd/mm/yy',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional["es"]);
+            $fecha.datepicker();
+        }
+
     });
