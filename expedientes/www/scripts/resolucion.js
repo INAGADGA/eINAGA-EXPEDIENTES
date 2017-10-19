@@ -65,7 +65,8 @@ require([
 
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
         var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
-        var tituloVisor = "<center><font color='white'>Localización resoluciones públicas de expedientes INAGA</font></center>";
+        var tituloVisor = "<center><font color='white'>Resoluciones Públicas</font></center>";
+        dom.byId("tituloVisor").innerHTML = tituloVisor;
         var numCapaInf = 1;
         var searchFields = ["SOLICITANTE", "NUMEXP", "FFIN_REAL"];
         var displayField = "SOLICITANTE";
@@ -80,11 +81,11 @@ require([
         function getTextContent(graphic) {
             var urlvisor = graphic.attributes.URL_VISOR;
             var texto =
-                "<b>" + graphic.attributes.IDTIPOLOGIA + graphic.attributes.CSUBTIPOLOGIA + ":</b> " + graphic.attributes.DSUBTIPOLOGIA +
-                "</br>" +
+                "</br><b>" + graphic.attributes.IDTIPOLOGIA + graphic.attributes.CSUBTIPOLOGIA + ": " + graphic.attributes.DSUBTIPOLOGIA + "</b></br>" +
                 "</br><b> Expediente: </b> " + graphic.attributes.NUMEXP +
                 "</br><b> Asunto: </b> " + graphic.attributes.DENOMINACION +
                 "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
+                "</br>" +
                 "</br><b> Resolución: </b> " + graphic.attributes.DTIPO_RESOLUCION +
                 "</br><b> Fecha Resolución: </b> " + new Date(parseInt(graphic.attributes.FFIN_REAL)).toLocaleDateString() +
                 "</br>" +
@@ -137,7 +138,7 @@ require([
         geoLocate = new LocateButton({ map: map }, "LocateButton");
         geoLocate.startup();
         // widget scalebar
-        var scalebar = new Scalebar({ map: map, scalebarUnit: "metric" });
+        var scalebar = new Scalebar({ map: map, attachTo: "bottom-center", scalebarUnit: "metric" });
         // widget medicion
         var measurement = new Measurement({
             map: map,
@@ -280,19 +281,6 @@ require([
             map.setInfoWindowOnClick(false); dom.byId("etrs").innerHTML = "";
             $("[data-role=panel]").panel("close");            
         });
-
-        //$("#select-choice-1").bind("change", function (event, ui) {
-        //    var dropd = $("#select-choice-1");
-        //    sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val();
-        //    if (dropd.find('option:selected').val() == '00') { sql = ""; }
-        //    var layerDefinitions = [];
-        //    layerDefinitions.push(sql);
-        //    layerDefinitions.push(sql);
-        //    layerDefinitions.push(sql);
-        //    layerDefinitions.push(sql);
-        //    layerDefinitions.push(sql);
-        //    dynamicMSLayer.setLayerDefinitions(layerDefinitions);
-        //});
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         function stringToDate(_date, _format, _delimiter) {

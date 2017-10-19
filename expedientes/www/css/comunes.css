@@ -34,6 +34,22 @@ body {
     top: 60px;
     left: 18px;
 }
+#tituloVisor {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 30;
+    font-size: .8em;
+    font-weight: 600;
+    text-shadow: 0 0 3px #000, 0 0 5px #000;
+    /*background-color: rgba(22, 22, 22, 0.54);*/
+    color: #000 !important;
+    font-weight: 700;
+    font-size: 0.8em;
+    /*border: 1px solid #000;    
+    border-radius: 5px;*/
+    /*padding:7px;*/
+}
 
 #HomeButton {
     position: absolute;
@@ -52,7 +68,7 @@ body {
 #mapaBase {
     position: absolute;
     left: 10px;
-    bottom: 50px;
+    bottom: 10px;
     z-Index: 30
 }
 
@@ -215,25 +231,3 @@ button {
     opacity: .9;
 }
 
-/*--------------------------------------------------dialogs------------------------------------------*/
-#lbl-title {
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    position: relative;
-    background-color: rgba(190, 190, 190, 0.98);
-    color: #333;
-    font-size: 16px;
-    padding: 7px 10px;
-    height: 24px;
-    text-transform: none;
-    font-family: 'Helvetica Neue', 'Roboto', 'Segoe UI', 'sans-serif';
-    line-height: 24px;
-    margin: -10px;
-}
-#lbl-message {
-    color: #333;
-    text-transform: none;
-    font-size: 14px;
-    margin: 20px 0 0 0;
-    font-family: 'Helvetica Neue', 'Roboto', 'Segoe UI', 'sans-serif';
-}

@@ -66,9 +66,9 @@ require([
 
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
         var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
-        var tituloVisor = "<center><font color='white'>Localización expedientes INAGA</br>en plazo de participación pública</font></center>";
+        var tituloVisor = "<center><font color='white'>Participación Pública</font></center>";
         //var urlDocumentacion = "https://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
-        //dom.byId("documentacion").href = urlDocumentacion;
+        dom.byId("tituloVisor").innerHTML = tituloVisor;
         var numCapaInf = 9;
         var searchFields = ["SOLICITANTE", "NUMEXP"];
         var displayField = "SOLICITANTE";
@@ -79,11 +79,12 @@ require([
         infoTemplate.setContent(getTextContent);
         function getTextContent(graphic) {
             var urlvisor = graphic.attributes.URL_VISOR;
-            var texto = "</br><b> Nº Expediente: </b> " + graphic.attributes.NUMEXP +
+            var texto =
+                "</br><b>" + graphic.attributes.TIPO_PUBLICACION + "</b></br>" +
+                "</br><b> Nº Expediente: </b> " + graphic.attributes.NUMEXP +
                 "</br><b> Descripción</b> " + graphic.attributes.DENOMINACION +
                 "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
-                "</br>" +
-                "</br><b> Tipo Publicación</b> " + graphic.attributes.TIPO_PUBLICACION +
+                "</br>" +                
                 "</br><b> Fecha Inicio: </b> " + new Date(parseInt(graphic.attributes.FINI)).toLocaleDateString() +
                 "</br><b> Fecha Fin: </b> " + new Date(parseInt(graphic.attributes.FFIN)).toLocaleDateString() +
                 "</br>" +
@@ -133,7 +134,7 @@ require([
         geoLocate = new LocateButton({ map: map }, "LocateButton");
         geoLocate.startup();
         // widget scalebar
-        var scalebar = new Scalebar({ map: map, scalebarUnit: "metric" });
+        var scalebar = new Scalebar({ map: map, attachTo: "bottom-center", scalebarUnit: "metric" });
         // widget medicion
         var measurement = new Measurement({
             map: map,

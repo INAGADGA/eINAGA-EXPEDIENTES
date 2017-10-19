@@ -5,7 +5,15 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset="UTF-8" name="viewport" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+
+
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
     <script>
         $(document).bind('mobileinit', function () {
             $.mobile.changePage.defaults.changeHash = false;
@@ -14,8 +22,7 @@
         });
     </script>
 
-    <script src="https://code.jquery.com/jquery-1.8.0.min.js"></script>
-    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
     <link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
     <script src="https://js.arcgis.com/3.22compact/init.js"></script>
@@ -27,7 +34,7 @@
 </head>
 <body>
     <div data-role="page" id="pageone">
-        <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="true" data-swipe-close="false" style="z-Index:30;">
+        <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="true" data-swipe-close="false" style="z-Index:60;">
             <div data-role="main" class="ui-content">
                 <div data-role="collapsible-set">
                     <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
@@ -61,14 +68,7 @@
                     <hr />
             </div>
                 <p/>
-                <p/>
-                <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px;width:300px">Cláusula Legal</a>
-                <div data-role="popup" id="popupBasic">
-                    <p>
-                        <b>Cláusula legal:</b>
-                    <p>El contenido de las capas que se ofrecen a través del visor es meramente informativo y carece de efectos vinculantes para la Administración. En cualquier caso, la información ofrecida no podrá ser alegada en procesos contradictorios con la Administración.</p>
-                    <p/>
-                </div>
+                
 
             </div>
 
@@ -93,7 +93,7 @@
                 <div data-role="popup" id="popupNested" data-theme="none" data-mini="true">
                     <div id="basemapGallery" style="background-color: #ffffff;opacity:0.4"></div>
                 </div><!-- /popup -->
-
+                <div id="tituloVisor"></div>
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>
                 <div id="search"></div>

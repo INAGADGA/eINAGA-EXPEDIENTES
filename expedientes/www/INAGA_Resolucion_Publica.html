@@ -35,7 +35,7 @@
 </head>
 <body>
     <div data-role="page" id="pageone">
-        <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="true" data-swipe-close="false" style="z-Index:30;">
+        <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="true" data-swipe-close="false" style="z-Index:60;">
             <div data-role="main" class="ui-content">
                 <div data-role="collapsible-set">
                     <div class="ui-body ui-body-a ui-corner-all" style="background-color: rgb(230,230,230);">
@@ -86,17 +86,7 @@
                         <input type="radio" name="radio-2" id="radio-2" value="Q" checked />
                         <label for="radio-2">Quitar capas</label>
                     </fieldset>
-                    <hr />
-                </div>
-                <p /><p />
-                <p />
-                <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px">Cláusula Legal</a>
-                <div data-role="popup" id="popupBasic">
-                    <p>
-                        <b>Cláusula legal:</b>
-                    <p>El contenido de las capas que se ofrecen a través del visor es meramente informativo y carece de efectos vinculantes para la Administración. En cualquier caso, la información ofrecida no podrá ser alegada en procesos contradictorios con la Administración.</p>
-                    <p />
-                </div>
+                </div>              
             </div>
         </div>
 
@@ -109,6 +99,7 @@
                 <div data-role="popup" id="popupNested" data-theme="none" data-mini="true">
                     <div id="basemapGallery" style="background-color: #ffffff;opacity:0.4"></div>
                 </div><!-- /popup -->
+                <div id="tituloVisor"></div>
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>
                 <div id="search"></div>
