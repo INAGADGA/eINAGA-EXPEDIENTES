@@ -1,8 +1,9 @@
-﻿var map, tb, url, coordx, coordy, poligonoConsulta,activeSource;
+﻿var map, tb, url, coordx, coordy, poligonoConsulta,activeSource,graphico;
 require([
     "dojo/dom",
     "dojo/dom-style",
     "dojo/_base/array",
+    "dojo/_base/connect",
     "dojo/parser",
     "dojo/query",
     "dojo/on",
@@ -56,7 +57,7 @@ require([
     "dijit/layout/AccordionContainer"
 
 ],
-    function (dom, domStyle, array, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+    function (dom, domStyle, array,connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
         TextSymbol, Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo, WMTSLayerInfo, WMTSLayer) {
         parser.parse();
 
@@ -74,6 +75,18 @@ require([
         var displayField = "SOLICITANTE";
         var exactMatch = false;
         var name = "Información (Solicitante,Expediente)";
+        fTemplate = function locate() {
+
+            if (graphico !== undefined) {
+                var extension = graphico.geometry.getExtent();
+                if (!extension) {
+                    map.centerAndZoom(popup.getSelectedFeature().geometry, 15);
+                } else {
+                    var pointCenter = graphico.geometry.getExtent().getCenter();
+                    map.centerAndZoom(pointCenter, 15);
+                }
+            }
+        };
         var infoTemplate = new InfoTemplate("");
         infoTemplate.setTitle("Exp: " + "${NUMEXP}");
         infoTemplate.setContent(getTextContent);
@@ -89,7 +102,10 @@ require([
                 "</br><b> Fecha Fin: </b> " + new Date(parseInt(graphic.attributes.FFIN)).toLocaleDateString() +
                 "</br>" +
                 "</br><b> Precisión</b> " + graphic.attributes.DORIGEN + "<br>" +
-                "</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>Documentación " + graphic.attributes.TIPO_PUBLICACION; + "</a>";
+                "</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>Documentación " + graphic.attributes.TIPO_PUBLICACION + "</a> <hr />" +
+                ' < div id= "divlocalizar" >  ' +
+                '< input type= "button" value= "         "  id= "locate"  title= "Centrar Mapa" alt= "Centrar Mapa" class = "localizacion" onclick= "  fTemplate(); " /> ' + '</div > ';
+
             return texto;
         }
 
@@ -197,6 +213,13 @@ require([
                 tb.activate(evt.target.id);
                 map.setInfoWindowOnClick(false);
             }
+        });
+        popup.on("selection-change", function () {
+
+            graphico = popup.getSelectedFeature();
+
+            console.log(graphico);
+
         });
         map.on("update-end", function () { map.setMapCursor("default"); });
         map.on("update-start", function () { map.setMapCursor("wait"); });

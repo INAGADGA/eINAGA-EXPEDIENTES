@@ -39,8 +39,6 @@ body {
     top: 10px;
     right: 10px;
     z-index: 30;
-    font-size: .8em;
-    font-weight: 600;
     text-shadow: 0 0 3px #000, 0 0 5px #000;
     /*background-color: rgba(22, 22, 22, 0.54);*/
     color: #000 !important;
@@ -231,3 +229,20 @@ button {
     opacity: .9;
 }
 
+/*--------------------------------------------------acercar a------------------------------------------*/
+
+#divlocalizar {
+    margin: auto;
+    width: 50%
+}
+    
+.localizacion {
+    background-image: url("../images/ico_localizacion.png");
+    background-size: 16px 16px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -webkit-border-radius: 1em;
+    border-radius: 1em;
+    width: 75%
+}
+					

@@ -1,8 +1,9 @@
-﻿var map, tb, url, coordx, coordy, poligonoConsulta;
+﻿var map, tb, url, coordx, coordy, poligonoConsulta, graphico;
 require([
     "dojo/dom",
     "dojo/dom-style",
     "dojo/_base/array",
+    "dojo/_base/connect",
     "dojo/parser",
     "dojo/query",
     "dojo/on",
@@ -56,7 +57,7 @@ require([
     "dijit/layout/AccordionContainer"
 
 ],
-    function (dom, domStyle, array, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+    function (dom, domStyle, array, connect,parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
         TextSymbol, Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo, WMTSLayerInfo, WMTSLayer) {
         parser.parse();
 
@@ -75,6 +76,18 @@ require([
         var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
         dom.byId("fechafin").value = fecha;
         var name = "Resolución (Solicitante,Expediente)";
+        fTemplate = function locate() {
+          
+            if (graphico !== undefined) {
+                var extension = graphico.geometry.getExtent();
+                if (!extension) {
+                    map.centerAndZoom(popup.getSelectedFeature().geometry, 15);
+                } else {
+                    var pointCenter = graphico.geometry.getExtent().getCenter();
+                    map.centerAndZoom(pointCenter, 15);
+                }
+            }
+        };
         var infoTemplate = new InfoTemplate("");
         infoTemplate.setTitle("Exp: " + "${NUMEXP}");
         infoTemplate.setContent(getTextContent);
@@ -91,7 +104,9 @@ require([
                 "</br>" +
                 "</br><b> Municipio: </b> " + graphic.attributes.MUNICIPIO +
                 "</br><b> Precisión: </b> " + graphic.attributes.DORIGEN + "</br>" +
-                "</br><a href=" + graphic.attributes.URL_ENLACE + " target=_blank>Documento Resolución del Expediente</a>";
+                "</br><a href=" + graphic.attributes.URL_ENLACE + " target=_blank>Documento Resolución del Expediente</a>" + "  <hr />"+
+                '<div id="divlocalizar"> '+
+                '<input type="button" value="         "  id="locate"  title="Centrar Mapa" alt="Centrar Mapa" class = "localizacion" onclick="  fTemplate(); "/> ' + '</div>';
             return texto;
         }
 
@@ -216,6 +231,7 @@ require([
                 layerDefinitions.push(sql);
                 layerDefinitions.push(sql);
                 dynamicMSLayer.setLayerDefinitions(layerDefinitions);
+                $("[data-role=panel]").panel("close");   
             }
             else {
                
@@ -231,6 +247,14 @@ require([
                 tb.activate(evt.target.id);
                 map.setInfoWindowOnClick(false);
             }
+        });
+        
+        popup.on("selection-change", function () {
+           
+             graphico = popup.getSelectedFeature();
+              
+             console.log(graphico);
+           
         });
         map.on("update-end", function () { map.setMapCursor("default"); });
         map.on("update-start", function () { map.setMapCursor("wait"); });
@@ -283,6 +307,7 @@ require([
         });
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      
         function stringToDate(_date, _format, _delimiter) {
            
             var formatLowerCase = _format.toLowerCase();
@@ -576,12 +601,13 @@ require([
         on(s, 'clear-search', function (e) {
             dynamicMSLayerBasico.setVisibleLayers([0, 1, 2, 3]);
             wmsSigpac.visible = false;
-            layerCat.visible = true;
+            layerCat.visible = false;
         });
 
 
         // carga capas -y eventos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
         map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
+
         $("#radio-0").click(function () {
             $("#radio-1").prop("checked", false);
             $("#radio-1").checkboxradio("refresh");
@@ -593,6 +619,7 @@ require([
             wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
+
         $("#radio-1").click(function () {
             $("#radio-0").prop("checked", false);
             $("#radio-0").checkboxradio("refresh");
