@@ -103,8 +103,8 @@ require([
                 "</br>" +
                 "</br><b> Precisión</b> " + graphic.attributes.DORIGEN + "<br>" +
                 "</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>Documentación " + graphic.attributes.TIPO_PUBLICACION + "</a> <hr />" +
-                ' < div id= "divlocalizar" >  ' +
-                '< input type= "button" value= "         "  id= "locate"  title= "Centrar Mapa" alt= "Centrar Mapa" class = "localizacion" onclick= "  fTemplate(); " /> ' + '</div > ';
+                '<div id="divlocalizar"> ' +
+                '<input type= "button" value= "         "  id= "locate"  title= "Centrar Mapa" alt= "Centrar Mapa" class = "localizacion" onclick= "  fTemplate(); " /> ' + '</div > ';
 
             return texto;
         }
