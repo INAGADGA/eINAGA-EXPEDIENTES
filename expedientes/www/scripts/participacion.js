@@ -82,8 +82,7 @@ require([
                 if (!extension) {
                     map.centerAndZoom(popup.getSelectedFeature().geometry, 15);
                 } else {
-                    var pointCenter = graphico.geometry.getExtent().getCenter();
-                    map.centerAndZoom(pointCenter, 15);
+                    map.setExtent(graphico.geometry.getExtent(), true); 
                 }
             }
         };
@@ -104,7 +103,7 @@ require([
                 "</br><b> Precisión</b> " + graphic.attributes.DORIGEN + "<br>" +
                 "</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>Documentación " + graphic.attributes.TIPO_PUBLICACION + "</a> <hr />" +
                 '<div id="divlocalizar"> ' +
-                '<input type= "button" value= "         "  id= "locate"  title= "Centrar Mapa" alt= "Centrar Mapa" class = "localizacion" onclick= "  fTemplate(); " /> ' + '</div > ';
+                '<input type= "button" value= "Acercar"  id= "locate"  title= "Centrar Mapa" alt= "Centrar Mapa" class = "localizacion" onclick= "  fTemplate(); " /> ' + '</div > ';
 
             return texto;
         }
@@ -215,10 +214,7 @@ require([
             }
         });
         popup.on("selection-change", function () {
-
             graphico = popup.getSelectedFeature();
-
-            console.log(graphico);
 
         });
         map.on("update-end", function () { map.setMapCursor("default"); });

@@ -72,9 +72,6 @@ require([
         var searchFields = ["SOLICITANTE", "NUMEXP", "FFIN_REAL"];
         var displayField = "SOLICITANTE";
         var exactMatch = false;
-        var d = new Date();
-        var fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
-        dom.byId("fechafin").value = fecha;
         var name = "Resolución (Solicitante,Expediente)";
         fTemplate = function locate() {
           
@@ -83,8 +80,7 @@ require([
                 if (!extension) {
                     map.centerAndZoom(popup.getSelectedFeature().geometry, 15);
                 } else {
-                    var pointCenter = graphico.geometry.getExtent().getCenter();
-                    map.centerAndZoom(pointCenter, 15);
+                    map.setExtent(graphico.geometry.getExtent(), true); 
                 }
             }
         };
@@ -106,7 +102,7 @@ require([
                 "</br><b> Precisión: </b> " + graphic.attributes.DORIGEN + "</br>" +
                 "</br><a href=" + graphic.attributes.URL_ENLACE + " target=_blank>Documento Resolución del Expediente</a>" + "  <hr />"+
                 '<div id="divlocalizar"> '+
-                '<input type="button" value="         "  id="locate"  title="Centrar Mapa" alt="Centrar Mapa" class = "localizacion" onclick="  fTemplate(); "/> ' + '</div>';
+                '<input type="button" value="Acercar "  id="locate"  title="Centrar Mapa" alt="Centrar Mapa" class = "localizacion" onclick="  fTemplate(); "/> ' + '</div>';
             return texto;
         }
 
@@ -123,8 +119,6 @@ require([
         });
         dynamicMSLayer.setVisibleLayers([0, 1, 2, 3]);
         //  otras variables -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-         d = new Date();
-         fecha = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
         var sls = new SimpleLineSymbol("solid", new Color("#444444"), 3);
         var sfs = new SimpleFillSymbol("solid", sls, new Color([68, 68, 68, 0.25]));
         gsvc = new GeometryService("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer");
@@ -253,7 +247,7 @@ require([
            
              graphico = popup.getSelectedFeature();
               
-             console.log(graphico);
+             //console.log(graphico);
            
         });
         map.on("update-end", function () { map.setMapCursor("default"); });
@@ -328,7 +322,7 @@ require([
             return inter[2] + "/" + inter[1] + "/" + inter[0];
         }
         function validaFecha(fecha) {
-            fecha = parseDate(fecha);
+            var fecha = parseDate(fecha);
             var datePat = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
             var fechaCompleta = fecha.match(datePat);
             if (fechaCompleta === null) {
