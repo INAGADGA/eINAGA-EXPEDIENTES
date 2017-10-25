@@ -668,5 +668,5 @@ require([
             wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
-
+          
     });
