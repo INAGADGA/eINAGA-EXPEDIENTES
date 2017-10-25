@@ -57,30 +57,29 @@ require([
     "dijit/layout/AccordionContainer"
 
 ],
-    function (dom, domStyle, array, connect,parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+    function (dom, domStyle, array, connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
         TextSymbol, Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo, WMTSLayerInfo, WMTSLayer) {
         parser.parse();
 
         var popup = new PopupMobile(null, domConstruct.create("div"));
         valores = getGET();
-
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
         var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
         var tituloVisor = "<center><font color='white'>Resoluciones Públicas</font></center>";
-        dom.byId("tituloVisor").innerHTML = tituloVisor;
+        dom.byId("tituloVisor").innerHTML = tituloVisor;        
         var numCapaInf = 1;
         var searchFields = ["SOLICITANTE", "NUMEXP", "FFIN_REAL"];
         var displayField = "SOLICITANTE";
         var exactMatch = false;
         var name = "Resolución (Solicitante,Expediente)";
         fTemplate = function locate() {
-          
+
             if (graphico !== undefined) {
                 var extension = graphico.geometry.getExtent();
                 if (!extension) {
                     map.centerAndZoom(popup.getSelectedFeature().geometry, 15);
                 } else {
-                    map.setExtent(graphico.geometry.getExtent(), true); 
+                    map.setExtent(graphico.geometry.getExtent(), true);
                 }
             }
         };
@@ -100,8 +99,8 @@ require([
                 "</br>" +
                 "</br><b> Municipio: </b> " + graphic.attributes.MUNICIPIO +
                 "</br><b> Precisión: </b> " + graphic.attributes.DORIGEN + "</br>" +
-                "</br><a href=" + graphic.attributes.URL_ENLACE + " target=_blank>Documento Resolución del Expediente</a>" + "  <hr />"+
-                '<div id="divlocalizar"> '+
+                "</br><a href=" + graphic.attributes.URL_ENLACE + " target=_blank>Documento Resolución del Expediente</a>" + "  <hr />" +
+                '<div id="divlocalizar"> ' +
                 '<input type="button" value="Acercar "  id="locate"  title="Centrar Mapa" alt="Centrar Mapa" class = "localizacion" onclick="  fTemplate(); "/> ' + '</div>';
             return texto;
         }
@@ -132,7 +131,7 @@ require([
             isZoomSlider: false,
             maxZoom: 19
         });
-        
+
         map.disableKeyboardNavigation();
         map.addLayer(new esri.layers.GraphicsLayer({ "id": "Geodesic" }));
         map.infoWindow.resize(240, 200);
@@ -199,41 +198,8 @@ require([
         });
 
         on(dom.byId("buscar"), "click", function () {
-            var fechaOkIni;
-            var fechaOkFin;
-            var fechasOk = true;
-            var fini;
-            var ffin;
-
-            var dropd = $("#select-choice-1");
-            sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val() + " and ";
-            if (dropd.find('option:selected').val() === '00') { sql = ""; }
-            var datepi = $("#fechaini");
-            var midatestringIni = $("#fechaini").val();
-            var midatestringFin = $("#fechafin").val();
-            fechaOkIni = validaFecha(midatestringIni);
-            fechaOkFin = validaFecha(midatestringFin);
-            fini = stringToDate(midatestringIni, 'yyyy-mm-dd', '-');
-            ffin = stringToDate(midatestringFin, 'yyyy-mm-dd', '-');
-            if (ffin < fini) { fechasOk = false;}
-            if (midatestringIni !== undefined & midatestringIni !=="" & midatestringFin !==undefined & midatestringFin !== "" & fechaOkFin & fechaOkIni & fechasOk) {                
-                sql += "(FFIN_REAL >= date '" + midatestringIni + "' AND FFIN_REAL <= date '" + midatestringFin + "')";
-                var layerDefinitions = [];
-                layerDefinitions.push(sql);
-                layerDefinitions.push(sql);
-                layerDefinitions.push(sql);
-                layerDefinitions.push(sql);
-                layerDefinitions.push(sql);
-                dynamicMSLayer.setLayerDefinitions(layerDefinitions);
-                $("[data-role=panel]").panel("close");   
-            }
-            else {
-               
-                $("#pop").popup("open"); 
-                setTimeout(function () { $("#pop").popup("close"); }, 5000);
-               // alert("Debe seleccionar la fecha de inicio y fín"); 
-            }
-        });        
+            buscarExpedientes();
+        });
 
         //click handler for the draw tool buttons
         query(".tool").on("click", function (evt) {
@@ -242,13 +208,13 @@ require([
                 map.setInfoWindowOnClick(false);
             }
         });
-        
+
         popup.on("selection-change", function () {
-           
-             graphico = popup.getSelectedFeature();
-              
-             //console.log(graphico);
-           
+
+            graphico = popup.getSelectedFeature();
+
+            //console.log(graphico);
+
         });
         map.on("update-end", function () { map.setMapCursor("default"); });
         map.on("update-start", function () { map.setMapCursor("wait"); });
@@ -271,7 +237,7 @@ require([
             //dameCoord4326();
             map.setMapCursor("default");
             domStyle.set(dom.byId("procesando"), "display", "none");
-            
+
         });
         map.on("update-start", function () {
             map.setMapCursor("wait");
@@ -297,13 +263,49 @@ require([
         });
         measurement.on("tool-change", function (evt) {
             map.setInfoWindowOnClick(false); dom.byId("etrs").innerHTML = "";
-            $("[data-role=panel]").panel("close");            
+            $("[data-role=panel]").panel("close");
         });
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      
+        function buscarExpedientes(){
+            var fechaOkIni;
+            var fechaOkFin;
+            var fechasOk = true;
+            var fini;
+            var ffin;
+
+            var dropd = $("#select-choice-1");
+            sql = "IDTIPOLOGIA = " + dropd.find('option:selected').val() + " and ";
+            if (dropd.find('option:selected').val() === '00') { sql = ""; }
+            var datepi = $("#fechaini");
+            var midatestringIni = $("#fechaini").val();
+            var midatestringFin = $("#fechafin").val();
+            fechaOkIni = validaFecha(midatestringIni);
+            fechaOkFin = validaFecha(midatestringFin);
+            fini = stringToDate(midatestringIni, 'yyyy-mm-dd', '-');
+            ffin = stringToDate(midatestringFin, 'yyyy-mm-dd', '-');
+            if (ffin < fini) { fechasOk = false; }
+            if (midatestringIni !== undefined & midatestringIni !== "" & midatestringFin !== undefined & midatestringFin !== "" & fechaOkFin & fechaOkIni & fechasOk) {
+                sql += "(FFIN_REAL >= date '" + midatestringIni + "' AND FFIN_REAL <= date '" + midatestringFin + "')";
+                var layerDefinitions = [];
+                layerDefinitions.push(sql);
+                layerDefinitions.push(sql);
+                layerDefinitions.push(sql);
+                layerDefinitions.push(sql);
+                layerDefinitions.push(sql);
+                dynamicMSLayer.setLayerDefinitions(layerDefinitions);
+                $("[data-role=panel]").panel("close");
+            }
+            else {
+
+                $("#pop").popup("open");
+                setTimeout(function () { $("#pop").popup("close"); }, 5000);
+                // alert("Debe seleccionar la fecha de inicio y fín"); 
+            }
+
+        }
         function stringToDate(_date, _format, _delimiter) {
-           
+
             var formatLowerCase = _format.toLowerCase();
             var formatItems = formatLowerCase.split(_delimiter);
             var dateItems = _date.split(_delimiter);
@@ -316,11 +318,37 @@ require([
             return formatedDate;
         }
 
-        function parseDate(fecha) {
+        function setFechas() {
+            var d = new Date();
+            var fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+            var fechaN1 = d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getFullYear() - 1);	
+            dom.byId("fechaini").value = fechaN1;
+            dom.byId("fechafin").value = fechaHoy;
+            var fechaN1Split = fechaN1.split("/");
+            var fechaHoySplit = fechaHoy.split("/");
 
-            var inter = fecha.split("-");
-            return inter[2] + "/" + inter[1] + "/" + inter[0];
+            var midatestringIni = $("#fechaini").val();
+            if (midatestringIni == undefined || midatestringIni == "") {
+                dom.byId("fechaini").value = [fechaN1Split[2], fechaN1Split[1], fechaN1Split[0]].join("-");
+                dom.byId("fechafin").value = [fechaHoySplit[2], fechaHoySplit[1], fechaHoySplit[0]].join("-");
+            }
+        }            
+        
+        function parseDate(fecha) {
+            var inter;
+            var fechaFinal;
+            var indice = fecha.indexOf("/");
+            //alert(indice);
+            if (indice != -1) {
+                inter = fecha.split("/");
+                fechaFinal = inter[0] + "/" + inter[1] + "/" + inter[2];
+            } else {
+                inter = fecha.split("-");
+                fechaFinal = inter[2] + "/" + inter[1] + "/" + inter[0];
+            }
+            return fechaFinal;
         }
+
         function validaFecha(fecha) {
             var fecha = parseDate(fecha);
             var datePat = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
@@ -341,13 +369,13 @@ require([
 
                 return false;
             }
-            if ((mes ===4 || mes === 6 || mes === 9 || mes === 11) && dia === 31) {
+            if ((mes === 4 || mes === 6 || mes === 9 || mes === 11) && dia === 31) {
 
                 return false;
             }
-            if (mes ===2) { // bisiesto
+            if (mes === 2) { // bisiesto
                 var bisiesto = (anio % 4 === 0 && (anio % 100 !== 0 || anio % 400 === 0));
-                if (dia > 29 || (dia ===29 && !bisiesto)) {
+                if (dia > 29 || (dia === 29 && !bisiesto)) {
 
                     return false;
                 }
@@ -355,7 +383,7 @@ require([
             return true;
 
         }
-       
+
         function getGET() {
             // capturamos la url
             var loc = document.location.href;
@@ -600,6 +628,10 @@ require([
 
 
         // carga capas -y eventos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        // inicializar las fechas para realizar la búsqueda del último año
+        setFechas();
+        buscarExpedientes();
         map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
 
         $("#radio-0").click(function () {
@@ -636,4 +668,5 @@ require([
             wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
+
     });

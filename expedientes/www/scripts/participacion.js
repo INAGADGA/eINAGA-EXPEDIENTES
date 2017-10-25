@@ -57,7 +57,7 @@ require([
     "dijit/layout/AccordionContainer"
 
 ],
-    function (dom, domStyle, array,connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+    function (dom, domStyle, array, connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
         TextSymbol, Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo, WMTSLayerInfo, WMTSLayer) {
         parser.parse();
 
@@ -82,7 +82,7 @@ require([
                 if (!extension) {
                     map.centerAndZoom(popup.getSelectedFeature().geometry, 15);
                 } else {
-                    map.setExtent(graphico.geometry.getExtent(), true); 
+                    map.setExtent(graphico.geometry.getExtent(), true);
                 }
             }
         };
@@ -96,7 +96,7 @@ require([
                 "</br><b> Nº Expediente: </b> " + graphic.attributes.NUMEXP +
                 "</br><b> Descripción</b> " + graphic.attributes.DENOMINACION +
                 "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
-                "</br>" +                
+                "</br>" +
                 "</br><b> Fecha Inicio: </b> " + new Date(parseInt(graphic.attributes.FINI)).toLocaleDateString() +
                 "</br><b> Fecha Fin: </b> " + new Date(parseInt(graphic.attributes.FFIN)).toLocaleDateString() +
                 "</br>" +
@@ -415,120 +415,120 @@ require([
         var templateSigpac = "<p>Referencia:${REFPAR}</p><p>Provincia:${PROVINCIA}</p><p>Municipio:${MUNICIPIO}</p><p>Agregado:${AGREGADO}</p><p>Polígono:${POLIGONO}</p><p>Parcela:${PARCELA}</p>";
         var templateMunicipios = "<p>Código:${C_MUNI_INE}</p><p>Municipio:${D_MUNI_INE}</p><p>Provincia:${PROVINCIA}</p><p>Comarca:${D_COMARCA}</p>";
 
-var s = new Search({
-    enableButtonMode: true,
-    enableLabel: false,
-    enableInfoWindow: true,
-    showInfoWindowOnSelect: true,
-    enableSuggestions: true,
-    enableSuggestionsMenu: true,
-    map: map
-}, "search");
-                var sources = [
-                    {
-                        featureLayer: fcInf,
-                        searchFields: searchFields, //["SOLICITANTE","NUMEXP"],
-                        displayField: displayField, //"SOLICITANTE",
-                        exactMatch: exactMatch, //false,
-                        name: name, //"Resolucion pública (Solicitante,Expediente)",
-                        outFields: ["*"],
-                        placeholder: "Nombre o Nº expediente",
-                        maxResults: 6,
-                        maxSuggestions: 6,
-                        enableSuggestions: true,
-                        infoTemplate: infoTemplate, //new InfoTemplate("${NUMEXP}", infoTemplate),
-                        //infoTemplate: new InfoTemplate("${NUMEXP}", templateExpediente),
-                        minCharacters: 0
-                        //,infoTemplate: infoTemplate
-                    }, {
-                        featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
-                        searchFields: ["REFPAR"],
-                        displayField: "REFPAR",
-                        labelSymbol: new TextSymbol("${REFPAR}"),
-                        enableLabel:true,
-                        exactMatch: true,
-                        name: "Parcelas Catastrales",
-                        outFields: ["*"],
-                        placeholder: "14 primeros dígitos Referencia Catastral ",
-                        maxResults: 6,
-                        maxSuggestions: 6,
-                        enableSuggestions: true,
-                        infoTemplate: new InfoTemplate("${REFPAR}",templateCatastro),
-                        minCharacters: 0
-                    }, {
-                        featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/7"),
-                        searchFields: ["REFPAR"],
-                        displayField: "REFPAR",
-                        labelSymbol: new TextSymbol("${REFPAR}"),
-                        enableLabel: true,
-                        exactMatch: true,
-                        name: "Parcelas Sigpac",
-                        outFields: ["*"],
-                        placeholder: "Referencia SIGPAC",
-                        maxResults: 6,
-                        maxSuggestions: 6,
-                        enableSuggestions: true,
-                        infoTemplate: new InfoTemplate("${REFPAR}", templateSigpac),
-                        minCharacters: 0
-                    }, {
-                        featureLayer: fcMunis,
-                        searchFields: ["D_MUNI_INE"],
-                        displayField: "D_MUNI_INE",
-                        exactMatch: false,
-                        name: "Municipios",
-                        outFields: ["*"],
-                        placeholder: "Nombre de Municipio",
-                        maxResults: 6,
-                        maxSuggestions: 6,
-                        enableSuggestions: true,
-                        infoTemplate: new InfoTemplate("${D_MUNI_INE}", templateMunicipios),
-                        minCharacters: 0
-                    }, {
-                        locator: new esri.tasks.Locator("//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
-                        singleLineFieldName: "SingleLine",
-                        name: "Geocoding Service",
-                        localSearchOptions: {
-                            minScale: 300000,
-                            distance: 50000
-                        },
-                        placeholder: "Geocoder ESRI",
-                        maxResults: 3,
-                        maxSuggestions: 6,
-                        enableSuggestions: false,
-                        minCharacters: 0
-                    }];
-s.set("sources", sources);
-s.startup();
+        var s = new Search({
+            enableButtonMode: true,
+            enableLabel: false,
+            enableInfoWindow: true,
+            showInfoWindowOnSelect: true,
+            enableSuggestions: true,
+            enableSuggestionsMenu: true,
+            map: map
+        }, "search");
+        var sources = [
+            {
+                featureLayer: fcInf,
+                searchFields: searchFields, //["SOLICITANTE","NUMEXP"],
+                displayField: displayField, //"SOLICITANTE",
+                exactMatch: exactMatch, //false,
+                name: name, //"Resolucion pública (Solicitante,Expediente)",
+                outFields: ["*"],
+                placeholder: "Nombre o Nº expediente",
+                maxResults: 6,
+                maxSuggestions: 6,
+                enableSuggestions: true,
+                infoTemplate: infoTemplate, //new InfoTemplate("${NUMEXP}", infoTemplate),
+                //infoTemplate: new InfoTemplate("${NUMEXP}", templateExpediente),
+                minCharacters: 0
+                //,infoTemplate: infoTemplate
+            }, {
+                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
+                searchFields: ["REFPAR"],
+                displayField: "REFPAR",
+                labelSymbol: new TextSymbol("${REFPAR}"),
+                enableLabel: true,
+                exactMatch: true,
+                name: "Parcelas Catastrales",
+                outFields: ["*"],
+                placeholder: "14 primeros dígitos Referencia Catastral ",
+                maxResults: 6,
+                maxSuggestions: 6,
+                enableSuggestions: true,
+                infoTemplate: new InfoTemplate("${REFPAR}", templateCatastro),
+                minCharacters: 0
+            }, {
+                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/7"),
+                searchFields: ["REFPAR"],
+                displayField: "REFPAR",
+                labelSymbol: new TextSymbol("${REFPAR}"),
+                enableLabel: true,
+                exactMatch: true,
+                name: "Parcelas Sigpac",
+                outFields: ["*"],
+                placeholder: "Referencia SIGPAC",
+                maxResults: 6,
+                maxSuggestions: 6,
+                enableSuggestions: true,
+                infoTemplate: new InfoTemplate("${REFPAR}", templateSigpac),
+                minCharacters: 0
+            }, {
+                featureLayer: fcMunis,
+                searchFields: ["D_MUNI_INE"],
+                displayField: "D_MUNI_INE",
+                exactMatch: false,
+                name: "Municipios",
+                outFields: ["*"],
+                placeholder: "Nombre de Municipio",
+                maxResults: 6,
+                maxSuggestions: 6,
+                enableSuggestions: true,
+                infoTemplate: new InfoTemplate("${D_MUNI_INE}", templateMunicipios),
+                minCharacters: 0
+            }, {
+                locator: new esri.tasks.Locator("//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
+                singleLineFieldName: "SingleLine",
+                name: "Geocoding Service",
+                localSearchOptions: {
+                    minScale: 300000,
+                    distance: 50000
+                },
+                placeholder: "Geocoder ESRI",
+                maxResults: 3,
+                maxSuggestions: 6,
+                enableSuggestions: false,
+                minCharacters: 0
+            }];
+        s.set("sources", sources);
+        s.startup();
 
-// cambiar la visibilidad de las búsquedas
-          
-on(s, 'search-results', function (e) {
-  
-    if (e.errors === null) {
-       
-        if (e.activeSourceIndex=== 1) {
+        // cambiar la visibilidad de las búsquedas
+
+        on(s, 'search-results', function (e) {
+
+            if (e.errors === null) {
+
+                if (e.activeSourceIndex === 1) {
+                    wmsSigpac.visible = false;
+                    layerCat.visible = true;
+                } else if (e.activeSourceIndex === 2) {
+                    wmsSigpac.visible = true;
+                    layerCat.visible = false;
+                } else {
+                    wmsSigpac.visible = false;
+
+                }
+                map.setExtent(map.extent);
+            }
+
+        });
+        on(s, 'clear-search', function (e) {
+            dynamicMSLayerBasico.setVisibleLayers([0, 1, 2, 3]);
             wmsSigpac.visible = false;
             layerCat.visible = true;
-        } else if (e.activeSourceIndex === 2){
-            wmsSigpac.visible = true;
-            layerCat.visible = false;
-        } else {
-            wmsSigpac.visible = false;
-           
-        }
-        map.setExtent(map.extent);
-    }
-
-});
-on(s, 'clear-search', function (e) {
-    dynamicMSLayerBasico.setVisibleLayers([0, 1, 2, 3]);
-    wmsSigpac.visible = false;
-    layerCat.visible = true;
-});
+        });
 
 
-// carga capas -y eventos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
+        // carga capas -y eventos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
         $("#radio-0").click(function () {
             $("#radio-1").prop("checked", false);
             $("#radio-1").checkboxradio("refresh");
