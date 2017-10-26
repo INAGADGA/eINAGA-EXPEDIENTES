@@ -21,21 +21,30 @@ body {
         color-stop(0.51, #E4E4E4)
     );
     background-attachment:fixed;
-    font-size:12px;
+    font-size:1em;
     height:100%;
     margin:0;
     padding:0;
     /*text-transform:uppercase;*/
-    width:100%;
-	
+    width:75%;	
     background-color:#32383d;
     font-family: 'RobotoRegular', 'Droid Sans', 'Segoe UI', Segoe, 'San Francisco', 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
 }
 #deviceready {
     background: url("../images/logo_inaga.png") no-repeat;
     background-size: contain;
+    background-position: center;
     height: auto !important;
     min-height: 125px;
+    width: 70%;
+    margin: 0 auto;
+}
+#imgFeder {
+    background: url("../images/logo_feder.png") no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 10%;
+    min-height: 100px;
     width: 50%;
     margin: 0 auto;
 }
