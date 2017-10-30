@@ -75,13 +75,13 @@
     <icon src="res/icons/windows/StoreLogo.scale-240.png" width="120" height="120" />
     <icon src="res/icons/windows/Wide310x150Logo.scale-100.png" width="310" height="150" />
     <icon src="res/icons/windows/Wide310x150Logo.scale-240.png" width="744" height="360" />
-  </platform>  
+  </platform>
   <plugin name="cordova-plugin-geolocation" spec="~2.4.3" />
   <preference name="WindowsStoreDisplayName" value="eINAGA Expedientes" />
   <vs:platformSpecificValues>
     <vs:platformSpecificWidget platformName="windows" id="es.inaga.expedientes" version="1.0.0.0" />
   </vs:platformSpecificValues>
-  <preference name="android-maxSdkVersion" value="25" />
+  <preference name="android-maxSdkVersion" value="26" />
   <preference name="ShowTitle" value="False" />
-  <preference name="android-minSdkVersion" value="14" />
+  <preference name="android-minSdkVersion" value="16" />
 </widget>
