@@ -84,4 +84,5 @@
   <preference name="android-maxSdkVersion" value="26" />
   <preference name="ShowTitle" value="False" />
   <preference name="android-minSdkVersion" value="16" />
+  <preference name="BackupWebStorage" value="local" />
 </widget>

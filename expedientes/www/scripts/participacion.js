@@ -379,29 +379,29 @@ require([
         layerCat.version = "1.1.1";
         layerCat.spatialReferences[0] = 3857;
         layerCat.visible = false;
-        //sigpac
+        ////sigpac
 
-        var layerSigpacPar = new WMSLayerInfo({
-            name: 'PARCELA',
-            title: 'PARCELA'
-        });
-        var layerSigpacRec = new WMSLayerInfo({
-            name: 'RECINTO',
-            title: 'RECINTO'
-        });
-        resourceInfo = {
-            extent: customExtentAndSR,
-            layerInfos: [layerSigpacPar, layerSigpacRec]
-        };
-        var wmsSigpac = new WMSLayer('http://wms.magrama.es/wms/wms.aspx?', {
-            resourceInfo: resourceInfo,
-            visibleLayers: ['PARCELA', 'RECINTO']
+        //var layerSigpacPar = new WMSLayerInfo({
+        //    name: 'PARCELA',
+        //    title: 'PARCELA'
+        //});
+        //var layerSigpacRec = new WMSLayerInfo({
+        //    name: 'RECINTO',
+        //    title: 'RECINTO'
+        //});
+        //resourceInfo = {
+        //    extent: customExtentAndSR,
+        //    layerInfos: [layerSigpacPar, layerSigpacRec]
+        //};
+        //var wmsSigpac = new WMSLayer('http://wms.magrama.es/wms/wms.aspx?', {
+        //    resourceInfo: resourceInfo,
+        //    visibleLayers: ['PARCELA', 'RECINTO']
 
-        });
-        wmsSigpac.visible = false;
-        wmsSigpac.id = "SIGPAC";
-        wmsSigpac.version = "1.1.1";
-        wmsSigpac.spatialReferences[0] = 3857;
+        //});
+        //wmsSigpac.visible = false;
+        //wmsSigpac.id = "SIGPAC";
+        //wmsSigpac.version = "1.1.1";
+        //wmsSigpac.spatialReferences[0] = 3857;
 
         var templateExpediente = "</br><b> Nº Expediente: </b> " + "${NUMEXP}" +
             "</br><b> Descripción</b> " + "${DENOMINACION}" +
@@ -412,7 +412,7 @@ require([
             "</br><a href= " + "${URL_ENLACE}" + " target=_blank>Documentación " + "${TIPO_PUBLICACION}" + "</a>";
 
         var templateCatastro = "<p>Referencia:${REFPAR}</p><p>Municipio:${CODMUN}</p><p>Agregado:${MUNAGR}</p><p>Polígono:${MASA}</p><p>Parcela:${PARCELA}</p>";
-        var templateSigpac = "<p>Referencia:${REFPAR}</p><p>Provincia:${PROVINCIA}</p><p>Municipio:${MUNICIPIO}</p><p>Agregado:${AGREGADO}</p><p>Polígono:${POLIGONO}</p><p>Parcela:${PARCELA}</p>";
+        //var templateSigpac = "<p>Referencia:${REFPAR}</p><p>Provincia:${PROVINCIA}</p><p>Municipio:${MUNICIPIO}</p><p>Agregado:${AGREGADO}</p><p>Polígono:${POLIGONO}</p><p>Parcela:${PARCELA}</p>";
         var templateMunicipios = "<p>Código:${C_MUNI_INE}</p><p>Municipio:${D_MUNI_INE}</p><p>Provincia:${PROVINCIA}</p><p>Comarca:${D_COMARCA}</p>";
 
         var s = new Search({
@@ -455,22 +455,24 @@ require([
                 enableSuggestions: true,
                 infoTemplate: new InfoTemplate("${REFPAR}", templateCatastro),
                 minCharacters: 0
-            }, {
-                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/7"),
-                searchFields: ["REFPAR"],
-                displayField: "REFPAR",
-                labelSymbol: new TextSymbol("${REFPAR}"),
-                enableLabel: true,
-                exactMatch: true,
-                name: "Parcelas Sigpac",
-                outFields: ["*"],
-                placeholder: "Referencia SIGPAC",
-                maxResults: 6,
-                maxSuggestions: 6,
-                enableSuggestions: true,
-                infoTemplate: new InfoTemplate("${REFPAR}", templateSigpac),
-                minCharacters: 0
-            }, {
+            },
+            //{
+            //    featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/7"),
+            //    searchFields: ["REFPAR"],
+            //    displayField: "REFPAR",
+            //    labelSymbol: new TextSymbol("${REFPAR}"),
+            //    enableLabel: true,
+            //    exactMatch: true,
+            //    name: "Parcelas Sigpac",
+            //    outFields: ["*"],
+            //    placeholder: "Referencia SIGPAC",
+            //    maxResults: 6,
+            //    maxSuggestions: 6,
+            //    enableSuggestions: true,
+            //    infoTemplate: new InfoTemplate("${REFPAR}", templateSigpac),
+            //    minCharacters: 0
+            //},
+            {
                 featureLayer: fcMunis,
                 searchFields: ["D_MUNI_INE"],
                 displayField: "D_MUNI_INE",
@@ -507,13 +509,13 @@ require([
             if (e.errors === null) {
 
                 if (e.activeSourceIndex === 1) {
-                    wmsSigpac.visible = false;
+                    //wmsSigpac.visible = false;
                     layerCat.visible = true;
                 } else if (e.activeSourceIndex === 2) {
-                    wmsSigpac.visible = true;
+                    //wmsSigpac.visible = true;
                     layerCat.visible = false;
                 } else {
-                    wmsSigpac.visible = false;
+                    //wmsSigpac.visible = false;
 
                 }
                 map.setExtent(map.extent);
@@ -522,13 +524,13 @@ require([
         });
         on(s, 'clear-search', function (e) {
             dynamicMSLayerBasico.setVisibleLayers([0, 1, 2, 3]);
-            wmsSigpac.visible = false;
+            //wmsSigpac.visible = false;
             layerCat.visible = true;
         });
 
 
         // carga capas -y eventos ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat, wmsSigpac]);
+        map.addLayers([dynamicMSLayerBasico, dynamicMSLayer, layerCat]);
         $("#radio-0").click(function () {
             $("#radio-1").prop("checked", false);
             $("#radio-1").checkboxradio("refresh");
@@ -537,7 +539,7 @@ require([
             $(this).prop("checked", true);
             $(this).checkboxradio("refresh");
             layerCat.visible = true;
-            wmsSigpac.visible = false;
+            //wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
         $("#radio-1").click(function () {
@@ -548,7 +550,7 @@ require([
             $(this).prop("checked", true);
             $(this).checkboxradio("refresh");
             layerCat.visible = false;
-            wmsSigpac.visible = true;
+            //wmsSigpac.visible = true;
             map.setExtent(map.extent);
         });
         $("#radio-2").click(function () {
@@ -559,7 +561,7 @@ require([
             $(this).prop("checked", true);
             $(this).checkboxradio("refresh");
             layerCat.visible = false;
-            wmsSigpac.visible = false;
+            //wmsSigpac.visible = false;
             map.setExtent(map.extent);
         });
 
