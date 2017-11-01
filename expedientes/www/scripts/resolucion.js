@@ -320,8 +320,28 @@ require([
 
         function setFechas() {
             var d = new Date();
-            var fechaHoy = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
-            var fechaN1 = d.getDate() + "/" + (d.getMonth() + 1) + "/" + (d.getFullYear() - 1);	
+            var dia = d.getDate();
+            var mes = d.getMonth() + 1;
+            var diaIni = dia;
+
+            if (mes === 2) { // bisiesto
+                var bisiesto = (anio % 4 === 0 && (anio % 100 !== 0 || anio % 400 === 0));
+                if (dia > 29 || (dia === 29 && !bisiesto)) {
+
+                    diaIni = 28;
+                }
+            }
+            var diaString = dia.toString();
+            var mesString = mes.toString();
+            var diaIniString = diaIni.toString();
+
+            if (diaString.length < 2) { diaString = '0' + diaString; }
+            if (diaIniString.length < 2) { diaIniString = '0' + diaIniString; }
+            if (mesString.length < 2) { mesString = '0' + mesString; }
+
+            var fechaHoy = diaString + "/" + mesString + "/" + d.getFullYear();
+            var fechaN1 = diaIniString + "/" + mesString + "/" + (d.getFullYear() - 1);	
+
             dom.byId("fechaini").value = fechaN1;
             dom.byId("fechafin").value = fechaHoy;
             var fechaN1Split = fechaN1.split("/");
@@ -429,6 +449,7 @@ require([
                 pt = projectedPoints[0];
                 coordx = pt.x.toFixed(0);
                 coordy = pt.y.toFixed(0);
+                dom.byId("etrs").innerHTML = "<hr /><b>Coordenada en ETRS89 30N</br><table style='width:100%'><tr><th>X</th><th>Y</th></tr><tr><td>" + pt.x.toFixed(0) + "</td><td>" + pt.y.toFixed(0) + "</td></tr></table><hr />";
             });
         }
         function projectEnveToEtrs89() {
