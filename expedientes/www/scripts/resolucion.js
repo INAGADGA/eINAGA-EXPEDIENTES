@@ -87,6 +87,7 @@ require([
         infoTemplate.setTitle("Exp: " + "${NUMEXP}");
         infoTemplate.setContent(getTextContent);
         function getTextContent(graphic) {
+            var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
             var urlvisor = graphic.attributes.URL_VISOR;
             var texto =
                 "</br><b>" + graphic.attributes.IDTIPOLOGIA + graphic.attributes.CSUBTIPOLOGIA + ": " + graphic.attributes.DSUBTIPOLOGIA + "</b></br>" +
@@ -95,7 +96,7 @@ require([
                 "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
                 "</br>" +
                 "</br><b> Resolución: </b> " + graphic.attributes.DTIPO_RESOLUCION +
-                "</br><b> Fecha Resolución: </b> " + new Date(parseInt(graphic.attributes.FFIN_REAL)).toLocaleDateString() +
+                "</br><b> Fecha Resolución: </b> " + new Date(parseInt(graphic.attributes.FFIN_REAL)).toLocaleDateString("es-ES",options) +
                 "</br>" +
                 "</br><b> Municipio: </b> " + graphic.attributes.MUNICIPIO +
                 "</br><b> Precisión: </b> " + graphic.attributes.DORIGEN + "</br>" +
@@ -348,7 +349,7 @@ require([
             var fechaHoySplit = fechaHoy.split("/");
 
             var midatestringIni = $("#fechaini").val();
-            if (midatestringIni == undefined || midatestringIni == "") {
+            if (midatestringIni === undefined || midatestringIni === "") {
                 dom.byId("fechaini").value = [fechaN1Split[2], fechaN1Split[1], fechaN1Split[0]].join("-");
                 dom.byId("fechafin").value = [fechaHoySplit[2], fechaHoySplit[1], fechaHoySplit[0]].join("-");
             }
@@ -359,7 +360,7 @@ require([
             var fechaFinal;
             var indice = fecha.indexOf("/");
             //alert(indice);
-            if (indice != -1) {
+            if (indice !== -1) {
                 inter = fecha.split("/");
                 fechaFinal = inter[0] + "/" + inter[1] + "/" + inter[2];
             } else {
@@ -370,9 +371,9 @@ require([
         }
 
         function validaFecha(fecha) {
-            var fecha = parseDate(fecha);
+            var fecha1 = parseDate(fecha);
             var datePat = /^(\d{1,2})(\/|-)(\d{1,2})(\/|-)(\d{4})$/;
-            var fechaCompleta = fecha.match(datePat);
+            var fechaCompleta = fecha1.match(datePat);
             if (fechaCompleta === null) {
                 return false;
             }
