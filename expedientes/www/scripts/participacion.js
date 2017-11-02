@@ -84,21 +84,27 @@ require([
                 } else {
                     map.setExtent(graphico.geometry.getExtent(), true);
                 }
+                // cerrar ventana datos
+                $(".esriMobileInfoView").css("display", "none");
+                $(".esriMobileNavigationBar").css("display", "none");
             }
+            
         };
+        var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         var infoTemplate = new InfoTemplate("");
-        infoTemplate.setTitle("Exp: " + "${NUMEXP}");
+        infoTemplate.setTitle("Exp: " + "${NUMEXP:compare}");
         infoTemplate.setContent(getTextContent);
         function getTextContent(graphic) {
             var urlvisor = graphic.attributes.URL_VISOR;
             var texto =
                 "</br><b>" + graphic.attributes.TIPO_PUBLICACION + "</b></br>" +
-                "</br><b> Nº Expediente: </b> " + graphic.attributes.NUMEXP +
+                "</br><b> Expediente: </b> " + graphic.attributes.NUMEXP +
+                "</br><b> Número: </b> " + graphic.attributes.NUMEXP.substring(8, 12) + "/" + graphic.attributes.NUMEXP.substring(12, 17) +
                 "</br><b> Descripción</b> " + graphic.attributes.DENOMINACION +
                 "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
                 "</br>" +
-                "</br><b> Fecha Inicio: </b> " + new Date(parseInt(graphic.attributes.FINI)).toLocaleDateString() +
-                "</br><b> Fecha Fin: </b> " + new Date(parseInt(graphic.attributes.FFIN)).toLocaleDateString() +
+                "</br><b> Fecha Inicio: </b> " + new Date(parseInt(graphic.attributes.FINI)).toLocaleDateString("es-ES", options) +
+                "</br><b> Fecha Fin: </b> " + new Date(parseInt(graphic.attributes.FFIN)).toLocaleDateString("es-ES", options) +
                 "</br>" +
                 "</br><b> Precisión</b> " + graphic.attributes.DORIGEN + "<br>" +
                 "</br><a href= " + graphic.attributes.URL_ENLACE + " target=_blank>Documentación " + graphic.attributes.TIPO_PUBLICACION + "</a> <hr />" +
@@ -108,6 +114,12 @@ require([
             return texto;
         }
 
+        compare = function (value, key, data) {
+            var numexp = data.NUMEXP;
+            var ejercicio = numexp.substring(8, 12);
+            var exp = numexp.substring(12, 17);
+            return ejercicio + "/" + exp;
+        };
         var dynamicMSLayer = new esri.layers.ArcGISDynamicMapServiceLayer(rutaServicio, {
             id: "Participacion",
             //opacity: 0.5,

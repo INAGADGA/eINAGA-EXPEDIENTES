@@ -68,7 +68,7 @@ require([
         var tituloVisor = "<center><font color='white'>Resoluciones Públicas</font></center>";
         dom.byId("tituloVisor").innerHTML = tituloVisor;        
         var numCapaInf = 1;
-        var searchFields = ["SOLICITANTE", "NUMEXP", "FFIN_REAL"];
+        var searchFields = ["SOLICITANTE", "NUMEXP"];
         var displayField = "SOLICITANTE";
         var exactMatch = false;
         var name = "Resolución (Solicitante,Expediente)";
@@ -81,10 +81,14 @@ require([
                 } else {
                     map.setExtent(graphico.geometry.getExtent(), true);
                 }
+                // cerrar ventana datos
+                $(".esriMobileInfoView").css("display", "none");
+                $(".esriMobileNavigationBar").css("display", "none");
             }
+           
         };
         var infoTemplate = new InfoTemplate("");
-        infoTemplate.setTitle("Exp: " + "${NUMEXP}");
+        infoTemplate.setTitle("Exp: " + "${NUMEXP:compare}");
         infoTemplate.setContent(getTextContent);
         function getTextContent(graphic) {
             var options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -92,6 +96,7 @@ require([
             var texto =
                 "</br><b>" + graphic.attributes.IDTIPOLOGIA + graphic.attributes.CSUBTIPOLOGIA + ": " + graphic.attributes.DSUBTIPOLOGIA + "</b></br>" +
                 "</br><b> Expediente: </b> " + graphic.attributes.NUMEXP +
+                "</br><b> Número: </b> " + graphic.attributes.NUMEXP.substring(8, 12) + "/" + graphic.attributes.NUMEXP.substring(12, 17) +
                 "</br><b> Asunto: </b> " + graphic.attributes.DENOMINACION +
                 "</br><b> Solicitante: </b> " + graphic.attributes.SOLICITANTE +
                 "</br>" +
@@ -105,6 +110,13 @@ require([
                 '<input type="button" value="Acercar "  id="locate"  title="Centrar Mapa" alt="Centrar Mapa" class = "localizacion" onclick="  fTemplate(); "/> ' + '</div>';
             return texto;
         }
+
+        compare = function (value, key, data) {
+            var numexp = data.NUMEXP;
+            var ejercicio = numexp.substring(8, 12);
+            var exp = numexp.substring(12, 17);
+            return ejercicio + "/" + exp;
+        };
 
         var dynamicMSLayer = new esri.layers.ArcGISDynamicMapServiceLayer(rutaServicio, {
             id: "Participacion",
