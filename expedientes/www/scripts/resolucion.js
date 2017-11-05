@@ -36,6 +36,9 @@ require([
     "esri/dijit/Measurement",
     "esri/dijit/OverviewMap",
     "esri/dijit/BasemapGallery",
+    'esri/dijit/Basemap',
+    'esri/dijit/BasemapLayer',
+
     "esri/dijit/Scalebar",
     "esri/dijit/Search",
     "esri/dijit/HomeButton",
@@ -48,6 +51,7 @@ require([
     "esri/layers/WMSLayerInfo",
     "esri/layers/WMTSLayerInfo",
     "esri/layers/WMTSLayer",
+    "esri/layers/WebTiledLayer",
 
 
     "dijit/layout/BorderContainer",
@@ -58,7 +62,7 @@ require([
 
 ],
     function (dom, domStyle, array, connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
-        TextSymbol, Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo, WMTSLayerInfo, WMTSLayer) {
+        TextSymbol, Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Basemap, BasemapLayer, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo, WMTSLayerInfo, WMTSLayer,WebTiledLayer) {
         parser.parse();
 
         var popup = new PopupMobile(null, domConstruct.create("div"));
@@ -179,15 +183,110 @@ require([
             visible: false,
             opacity: .40
         });
+
         overviewMapDijit.startup();
+        // definimos los mapas base
+
+        var oceano = new BasemapLayer({ url: 'https://server.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' });
+        var oceanoEtiqueta = new BasemapLayer({ url: 'https://server.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' });
+        // topo item for gallery
+        var oceanoBasemap = new Basemap({
+            layers: [oceano, oceanoEtiqueta],
+            id: 'oceanos',
+            title: 'Océanos',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/f9498c1f95714efabb626125cb2bb04a/info/thumbnail/tempoceans.jpg'
+        });
+        // terreno etiquetas
+
+        var terreno = new BasemapLayer({ url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer' });
+        var terrenoEtiqueta = new BasemapLayer({ url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Reference_Overlay/MapServer' });
+        // topo item for gallery
+        var terrenoBasemap = new Basemap({
+            layers: [terreno, terrenoEtiqueta],
+            id: 'terreno',
+            title: 'Terreno Etiquetas',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/532c8cc75f414ddebc5d665ba00015ca/info/thumbnail/terrain_labels.jpg'
+        });
+
+        //topo map
+        var topoLayer = new BasemapLayer({ url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer' });
+        // topo item for gallery
+        var topoBasemap = new Basemap({
+            layers: [topoLayer],
+            id: 'topo',
+            title: 'Topográfico',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/6e03e8c26aad4b9c92a87c1063ddb0e3/info/thumbnail/topo_map_2.jpg'
+        });
+
+        //dark grey
+        var dkGreyLayer = new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer' });
+        var dkGreyLabelsLayer = new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Transportation/MapServer' });
+        var dkGreyBasemap = new Basemap({
+            layers: [dkGreyLayer, dkGreyLabelsLayer],
+            id: 'dkGrey',
+            title: 'Lona Gris Oscuro',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/a284a9b99b3446a3910d4144a50990f6/info/thumbnail/ago_downloaded.jpg'
+        });
+
+        //light grey
+        var ltGreyLayer = new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer' });
+        var ltGreyLabelsLayer = new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Reference/MapServer' });
+        var ltGreyBasemap = new Basemap({
+            layers: [ltGreyLayer, ltGreyLabelsLayer],
+            id: 'ltGrey',
+            title: 'Lona Gris Claro',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/8b3d38c0819547faa83f7b7aca80bd76/info/thumbnail/light_canvas.jpg'
+        });
+        // imagenes
+        var imagenes = new BasemapLayer({ url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer' });
+        var etiquetas = new BasemapLayer({ url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer' });
+        var imagenBasemap = new Basemap({
+            layers: [imagenes, etiquetas],
+            id: 'images',
+            title: 'Imágenes con etiquetas',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/3027a41ed46d4a9b915590d14fecafc0/info/thumbnail/imagery_labels.jpg'
+        });
+        // clarity
+        var clarity = new BasemapLayer({ url: 'https://clarity.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/MapServer' });
+        var clarityBasemap = new Basemap({
+            layers: [clarity, etiquetas],
+            id: 'clarity',
+            title: 'clarity word',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/da10cf4ba254469caf8016cd66369157/info/thumbnail/imagery_clarity_sm.jpg'
+        });
+
+        // NACIONAL GEOGRAPIC
+
+        var natGeo = new BasemapLayer({ url: 'https://server.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer' });
+        var natGeoBasemap = new Basemap({
+            layers: [natGeo],
+            id: 'natgeo',
+            title: 'Nacional Geographic',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/7ec6f7c55cf6478596435f2d501834fa/info/thumbnail/natgeo.jpg'
+        });
+
+        // open street map
+     
+        var street1 = new BasemapLayer({
+            type: "WebTiledLayer", url: "https://tile.openstreetmap.org/${level}/${col}/${row}.png"  });
+
+        var streetBasemap = new Basemap({
+            layers: [street1],
+            id: 'street',
+            title: 'Open Street Map',
+            thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/d415dff75dd042258ceda46f7252ad70/info/thumbnail/temposm.jpg'
+        });
+
         // widget basemap
         var basemapGallery = new BasemapGallery({
-            showArcGISBasemaps: true,
-            map: map
-        }, "basemapGallery"
-        );
+            showArcGISBasemaps: false,
+            map: map,
+            basemaps: [topoBasemap, dkGreyBasemap, ltGreyBasemap, imagenBasemap, clarityBasemap, natGeoBasemap, streetBasemap, terrenoBasemap, oceanoBasemap]
+        }, 'basemapGallery');
+
         basemapGallery.startup();
         basemapGallery.on("error", function (msg) {
+           // console.log(msg);
         });
         // widget home
         var home = new HomeButton({

@@ -1,61 +1,65 @@
 ﻿<!DOCTYPE html>
-<html>
-    <head>       
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-        <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset="UTF-8" name="viewport" />        
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>expedientes</title>
-        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-        <script src="https://code.jquery.com/jquery-1.12.4.min.js"
-                integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-                crossorigin="anonymous"></script>
+<html lang="es-es">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-eval' 'unsafe-inline';
+                  script-src 'self' https://code.jquery.com 'unsafe-eval' 'unsafe-inline' data: gap: https://ssl.gstatic.com 'unsafe-eval';
+                  img-src 'self'   https://code.jquery.com 'unsafe-eval' 'unsafe-inline' blob: data: ; 
+                  style-src 'self'   https://code.jquery.com 'unsafe-inline'; media-src *">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset="UTF-8" name="viewport" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <title>expedientes</title>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
 
-        <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    </head>
-    <body>
-        <div data-role="page" id="pageone">
-            <div data-role="header" class="Cabecera">
-                <div class="logo1"></div>
-                <div class="logo2"><img src="images/gobierno-de-aragon.png" /></div>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+    <div data-role="page" id="pageone">
+        <div data-role="header" class="Cabecera">
+            <div class="logo1"></div>
+            <div class="logo2"><img src="images/gobierno-de-aragon.png" /></div>
+        </div>
+        <div data-role="main" class="ui-content">
+            <div id="deviceready" class="blink"></div>
+
+            <h1 id="nombreApp">eINAGA-EXPEDIENTES</h1>
+
+            <div id="contenedor">
+                <a id="enlaceParticipacion_Publica" href="INAGA_Participacion_Publica.html" target="_system" class="ui-btn ui-corner-all">Participación Pública</a>
+                <a id="enlaceResolucionesPublicas" href="INAGA_Resolucion_Publica.html" target="_system" class="ui-btn ui-corner-all">Resoluciones Públicas</a>
             </div>
-            <div data-role="main" class="ui-content">
-                <div id="deviceready" class="blink"></div>
+            <p />
+            <h5>
+                Más información en: <a href="https://www.aragon.es/inaga" target="">www.aragon.es/inaga</a> y en
+                <a href="mailto:inaga@aragon.es?cc=informatica.inaga@aragon.es&subject=eINAGA-EXPEDIENTES" target="">inaga@aragon.es</a>
+            </h5>
+            <p />
+            <p />
 
-                <h1 id="nombreApp">eINAGA-EXPEDIENTES</h1>
-
-                <div id="contenedor">
-                    <a id="enlaceParticipacion_Publica" href="INAGA_Participacion_Publica.html" target="_system" class="ui-btn ui-corner-all">Participación Pública</a>
-                    <a id="enlaceResolucionesPublicas" href="INAGA_Resolucion_Publica.html" target="_system" class="ui-btn ui-corner-all">Resoluciones Públicas</a>
-                </div>
+            <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px;">Cláusula Legal</a>
+            <div data-role="popup" id="popupBasic">
+                <p>
+                    <b>Cláusula legal:</b>
+                <p>
+                    El contenido de las capas que se ofrecen a través del visor es meramente informativo y carece de efectos vinculantes para la Administración. En cualquier caso, la información ofrecida no podrá ser alegada en procesos contradictorios con la Administración.
+                    Más detalles en
+                    <a href="https://www.aragon.es/EnlacesPie/Aviso_Legal" target="_system"> ver enlace</a>
+                </p>
                 <p />
-                <h5>
-                    Más información en: <a href="http://www.aragon.es/inaga" target="">www.aragon.es/inaga</a> y en
-                    <a href="mailto:inaga@aragon.es?cc=informatica.inaga@aragon.es&subject=eINAGA-EXPEDIENTES" target="">inaga@aragon.es</a>
-                </h5>
-                <p />
-                <p />
-
-                <a href="#popupBasic" data-rel="popup" data-position-to="window" class="ui-btn ui-icon-info ui-btn-icon-left" data-transition="slideup" style="font-size: 11px;">Cláusula Legal</a>
-                <div data-role="popup" id="popupBasic">
-                    <p>
-                        <b>Cláusula legal:</b>
-                    <p>
-                        El contenido de las capas que se ofrecen a través del visor es meramente informativo y carece de efectos vinculantes para la Administración. En cualquier caso, la información ofrecida no podrá ser alegada en procesos contradictorios con la Administración.
-                        Más detalles en
-                        <a href="http://www.aragon.es/EnlacesPie/Aviso_Legal" target="_system"> ver enlace</a>
-                    </p>
-                    <p />
-                </div>
-                <hr />
-                <div id="imgFeder"></div>
-                <h5 id="txtFeder">FONDO EUROPEO DE DESARROLLO REGIONAL "Construyendo Europa desde Aragón"</h5>
             </div>
-        </div> 
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="scripts/platformOverrides.js"></script>
-        <script type="text/javascript" src="scripts/index.js"></script>
+            <hr />
+            <div id="imgFeder"></div>
+            <h5 id="txtFeder">FONDO EUROPEO DE DESARROLLO REGIONAL "Construyendo Europa desde Aragón"</h5>
+        </div>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
 </body>
 </html>
