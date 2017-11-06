@@ -3,9 +3,9 @@
 <head>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-eval' 'unsafe-inline';
                      script-src 'self' https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://clarity.maptiles.arcgis.com https://tile.openstreetmap.org 'unsafe-eval' 'unsafe-inline' data: gap: https://ssl.gstatic.com 'unsafe-eval';
-                     style-src 'self'   https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://dojotoolkit.org 'unsafe-inline'; 
+                     style-src 'self'   https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://dojotoolkit.org 'unsafe-inline';
                      connect-src 'self'  https://dojotoolkit.org https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' 'self' ws:;
-                     img-src 'self'   https://code.jquery.com  https://js.arcgis.com https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' blob: data: ; media-src *; 
+                     img-src 'self'   https://code.jquery.com  https://js.arcgis.com https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es  https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' blob: data: ; media-src *;
                      frame-src www.openstreetmap.org;
                      font-src  'self' https://js.arcgis.com https://code.jquery.com data:">
     <title>Visor Resoluciones</title>
@@ -37,7 +37,6 @@
     <link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
     <script src="https://js.arcgis.com/3.22compact/init.js"></script>
     <script type="text/javascript" src="scripts/resolucion.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/INAGA_Resolucion_Publica.css">
     <link rel="stylesheet" type="text/css" href="css/popup.css">
     <link rel="stylesheet" type="text/css" href="css/comunes.css">
    
@@ -92,11 +91,11 @@
                         <input type="radio" name="radio-0" id="radio-0" value="C" />
                         <label for="radio-0">Catastro</label>
                         <!--<input type="radio" name="radio-1" id="radio-1" value="S" />
-                        <label for="radio-1">Sigpac</label>-->
+                    <label for="radio-1">Sigpac</label>-->
                         <input type="radio" name="radio-2" id="radio-2" value="Q" checked />
                         <label for="radio-2">Quitar capas</label>
                     </fieldset>
-                </div>              
+                </div>
             </div>
         </div>
 
@@ -116,7 +115,6 @@
                 <div id="herramientas">
                     <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Herramientas</a>
                 </div>
-
             </div>
             <div id="procesando" class="container" style="position:absolute; right:50%; top:50%; z-Index:999;display: none;">
                 <div class="content">
@@ -124,9 +122,7 @@
                     <div class="circle1"></div>
                 </div>
             </div>
-            <div data-role="popup" id="pop" data-position-to="window" data-transition="turn"><p id="textoalerta">Por favor, introduzca fechas de inico y fin válidas para la consulta.</p></div>
         </div>
     </div>
-   
 </body>
 </html>

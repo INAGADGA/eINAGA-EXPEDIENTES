@@ -17,22 +17,14 @@ require([
     "esri/InfoTemplate",
     "esri/dijit/PopupMobile",
 
-    "esri/geometry/Circle",
-    "esri/geometry/normalizeUtils",
-    "esri/geometry/webMercatorUtils",
+
     "esri/tasks/GeometryService",
-    "esri/tasks/BufferParameters",
     "esri/tasks/query",
 
-    "esri/toolbars/draw",
-
-    "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol",
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/TextSymbol",
 
-    "esri/dijit/Popup",
-    "esri/dijit/PopupTemplate",
     "esri/dijit/Measurement",
     "esri/dijit/OverviewMap",
     "esri/dijit/BasemapGallery",
@@ -48,21 +40,11 @@ require([
     "esri/layers/FeatureLayer",
     "esri/layers/ArcGISDynamicMapServiceLayer",
     "esri/layers/WMSLayer",
-    "esri/layers/WMSLayerInfo",
-    "esri/layers/WMTSLayerInfo",
-    "esri/layers/WMTSLayer",
-    "esri/layers/WebTiledLayer",
-
-
-    "dijit/layout/BorderContainer",
-    "dijit/layout/ContentPane",
-    "dijit/form/Button",
-    "dojo/domReady!",
-    "dijit/layout/AccordionContainer"
+    "esri/layers/WMSLayerInfo"
 
 ],
-    function (dom, domStyle, array, connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, Circle, normalizeUtils, webMercatorUtils, GeometryService, BufferParameters, Query, Draw, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
-        TextSymbol, Popup, PopupTemplate, Measurement, OverviewMap, BasemapGallery, Basemap, BasemapLayer, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo, WMTSLayerInfo, WMTSLayer,WebTiledLayer) {
+    function (dom, domStyle, array, connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, GeometryService, Query, SimpleLineSymbol, SimpleFillSymbol, TextSymbol,
+        Measurement, OverviewMap, BasemapGallery, Basemap, BasemapLayer, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo) {
         parser.parse();
 
         var popup = new PopupMobile(null, domConstruct.create("div"));
