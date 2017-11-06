@@ -235,7 +235,7 @@ require([
         var clarityBasemap = new Basemap({
             layers: [clarity, etiquetas],
             id: 'clarity',
-            title: 'clarity word',
+            title: 'clarity world',
             thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/da10cf4ba254469caf8016cd66369157/info/thumbnail/imagery_clarity_sm.jpg'
         });
 
@@ -581,14 +581,14 @@ require([
                 infoTemplate: new InfoTemplate("${D_MUNI_INE}", templateMunicipios),
                 minCharacters: 0
             }, {
-                locator: new esri.tasks.Locator("//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
+                locator: new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
                 singleLineFieldName: "SingleLine",
                 name: "Geocoding Service",
                 localSearchOptions: {
                     minScale: 300000,
                     distance: 50000
                 },
-                placeholder: "Geocoder ESRI",
+                placeholder: "Búsqueda Geocoder",
                 maxResults: 3,
                 maxSuggestions: 6,
                 enableSuggestions: false,

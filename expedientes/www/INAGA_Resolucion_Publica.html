@@ -2,17 +2,24 @@
 <html lang="es-es">
 <head>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-eval' 'unsafe-inline';
-                     script-src 'self' https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://clarity.maptiles.arcgis.com https://tile.openstreetmap.org 'unsafe-eval' 'unsafe-inline' data: gap: https://ssl.gstatic.com 'unsafe-eval';
-                     style-src 'self'   https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://dojotoolkit.org 'unsafe-inline';
-                     connect-src 'self'  https://dojotoolkit.org https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' 'self' ws:;
-                     img-src 'self'   https://code.jquery.com  https://js.arcgis.com https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es  https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' blob: data: ; media-src *;
+                     script-src 'self' https://geocode.arcgis.com https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://clarity.maptiles.arcgis.com https://tile.openstreetmap.org 'unsafe-eval' 'unsafe-inline' data: gap: https://ssl.gstatic.com 'unsafe-eval';
+                     style-src 'self'  https://geocode.arcgis.com https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://dojotoolkit.org 'unsafe-inline';
+                     connect-src 'self' https://geocode.arcgis.com https://dojotoolkit.org https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' 'self' ws:;
+                     img-src 'self'  https://geocode.arcgis.com https://code.jquery.com  https://js.arcgis.com https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es  https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' blob: data: ; media-src *;
                      frame-src www.openstreetmap.org;
                      font-src  'self' https://js.arcgis.com https://code.jquery.com data:">
     <title>Visor Resoluciones</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset="UTF-8" name="viewport" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#4285f4">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#4285f4">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
     <script>
          var dojoConfig = { locale: "es-es" }
     </script>
