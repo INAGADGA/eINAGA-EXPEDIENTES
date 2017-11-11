@@ -52,9 +52,9 @@ require([
         valores = getGET();
 
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
-        var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
+        var rutaServicio = "http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
         var tituloVisor = "<center><font color='white'>Participación Pública</font></center>";
-        //var urlDocumentacion = "https://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
+        //var urlDocumentacion = "http://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
         dom.byId("tituloVisor").innerHTML = tituloVisor;
         var numCapaInf = 9;
         var searchFields = ["SOLICITANTE", "NUMEXP"];
@@ -283,8 +283,8 @@ require([
 
         // Capas necesarias -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         var fcInf = new FeatureLayer(rutaServicio + "/" + numCapaInf);
-        var fcMunis = new FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");
-        var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer", {
+        var fcMunis = new FeatureLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");
+        var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer", {
 
             id: "xLimites",
             outFields: ["*"]
@@ -536,7 +536,7 @@ require([
                 minCharacters: 0
                 //,infoTemplate: infoTemplate
             }, {
-                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
+                featureLayer: new esri.layers.FeatureLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
                 searchFields: ["REFPAR"],
                 displayField: "REFPAR",
                 labelSymbol: new TextSymbol("${REFPAR}"),

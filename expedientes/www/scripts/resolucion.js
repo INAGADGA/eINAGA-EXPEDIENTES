@@ -50,7 +50,7 @@ require([
         var popup = new PopupMobile(null, domConstruct.create("div"));
         valores = getGET();
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
-        var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
+        var rutaServicio = "http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
         var tituloVisor = "<center><font color='white'>Resoluciones Públicas</font></center>";
         dom.byId("tituloVisor").innerHTML = tituloVisor;        
         var numCapaInf = 1;
@@ -279,8 +279,8 @@ require([
 
         // Capas necesarias -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         var fcInf = new FeatureLayer(rutaServicio + "/" + numCapaInf);
-        var fcMunis = new FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");
-        var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer", {
+        var fcMunis = new FeatureLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");
+        var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer", {
             id: "xLimites",
             outFields: ["*"]
         });
@@ -598,7 +598,7 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layer1]
         };
-        var layerCat = new WMSLayer('https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
+        var layerCat = new WMSLayer('http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['Catastro']
 
@@ -673,7 +673,7 @@ require([
                 infoTemplate: new InfoTemplate("${D_MUNI_INE}", templateMunicipios),
                 minCharacters: 0
             }, {
-                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
+                featureLayer: new esri.layers.FeatureLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
                 searchFields: ["REFPAR"],
                 displayField: "REFPAR",
                 exactMatch: true,
