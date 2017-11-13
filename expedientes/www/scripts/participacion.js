@@ -464,7 +464,7 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layer1]
         };
-        var layerCat = new WMSLayer('https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
+        var layerCat = new WMSLayer('http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['Catastro']
 
