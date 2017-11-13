@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="es-es">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-eval' 'unsafe-inline';
+                     script-src 'self' https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://clarity.maptiles.arcgis.com https://tile.openstreetmap.org 'unsafe-eval' 'unsafe-inline' data: gap: https://ssl.gstatic.com 'unsafe-eval';
+                     style-src 'self'   https://code.jquery.com  https://js.arcgis.com  https://idearagon.aragon.es https://dojotoolkit.org 'unsafe-inline';
+                     connect-src 'self'  https://dojotoolkit.org https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' 'self' ws:;
+                     img-src 'self'   https://code.jquery.com  https://js.arcgis.com https://idearagon.aragon.es  https://sampleserver6.arcgisonline.com  https://server.arcgisonline.com  https://www.arcgis.com https://server.arcgisonline.com https://clarity.maptiles.arcgis.com  https://services.arcgisonline.com https://ovc.catastro.meh.es  https://tile.openstreetmap.org https://aplicaciones.aragon.es 'unsafe-eval' 'unsafe-inline' blob: data: ; media-src *;
+                     frame-src www.openstreetmap.org;
+                     font-src  'self' https://js.arcgis.com https://code.jquery.com data:">
+    <title>Visor Resoluciones</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1" http-equiv="content-type" charset="UTF-8" name="viewport" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    
+    <script>
+         var dojoConfig = { locale: "es-es" }
+    </script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+    
+   
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+    <script>
+         $(document).bind('mobileinit', function () {
+             $.mobile.changePage.defaults.changeHash = false;
+             $.mobile.hashListeningEnabled = false;
+             $.mobile.pushStateEnabled = false;
+         });
+    </script>
+
+       
+    <link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
+    <script src="https://js.arcgis.com/3.22compact/init.js"></script>
+    <script type="text/javascript" src="scripts/resolucion.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/popup.css">
+    <link rel="stylesheet" type="text/css" href="css/comunes.css">
+   
+   
+</head>
+<body>
+    <div data-role="page" id="pageone">
+        <div data-role="panel" id="myPanel" data-position="right" data-display="overlay" data-dismissible="true" data-swipe-close="false" style="z-Index:60;">
+            <div data-role="main" class="ui-content">
+                <div data-role="collapsible-set">
+                    <div class="ui-body ui-body-a ui-corner-all" style="background-color: rgb(230,230,230);">
+                        <!--<label><b>Selección:</b></label>-->
+                        <div id="selector" data-role="fieldcontain" class="ui-mini">
+                            <select name="select-choice-0" id="select-choice-1" data-theme="b">
+                                <option value="00">Tipología</option>
+                                <option value="01">T01.- Evaluación Impacto Ambiental (EIA)</option>
+                                <option value="02">T02.- Autorización Ambiental Integrada (IPPC)</option>
+                                <option value="71">T71.- Declaración Ambiental Estratégica</option>
+                            </select>
+                        </div>
+                        <div data-role="fieldcontain" style="margin: 0;">
+                            <label for="fechaini" style="font-size:0.8em;margin: 0;padding:0"><b>Fecha inicio:</b></label>
+                            <input id="fechaini" type="date" data-role="date">
+                        </div>
+                        <div data-role="fieldcontain" data-theme="b" style="margin: 0 0 0.5em 0;">
+                            <label for="fechafin" style="font-size:0.8em;margin: 0;padding:0"><b>Fecha fín:</b></label>
+                            <input id="fechafin" type="date" data-role="date">
+                        </div>
+                        <button type="button" id="buscar" style="width: 100%;height: 30px;font-size: 10px;background-color:#A4A4A4;color:#FFFFFF;text-shadow: 0 0px;margin-left: 0;"><b>Seleccionar</b></button>
+                    </div>
+                    <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                        <h3>Leyenda</h3>
+                        <div id="legendDiv"></div>
+                    </div>
+                    <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                        <h3>Medición y Coordenadas</h3>
+                        <div id="measurementDiv"></div>
+                        <div id="etrs" style="font-size: 12px;text-align: left;vertical-align: middle;"></div>
+                        <button type="button" id="clearGraphicsM" style="width: 150px;height: 40px;font-size: 10px;text-align: center;vertical-align: middle;position:relative;">Borra medición</button>
+                    </div>
+                    <div data-role="collapsible" data-inset="true" data-mini="true" data-iconpos="right" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+                        <h3>Opacidad</h3>
+                        <div id="opacidadDiv">
+                            <form>
+                                <input type="range" name="slider-10" id="slider-100" min="0" max="100" step=".1" value="100">
+                            </form>
+                        </div>
+                    </div>
+                    <hr />
+                    <fieldset data-role="controlgroup" data-mini="true">
+                        <legend>Capas Catastrales:</legend>
+                        <input type="radio" name="radio-0" id="radio-0" value="C" />
+                        <label for="radio-0">Catastro</label>
+                        <!--<input type="radio" name="radio-1" id="radio-1" value="S" />
+                    <label for="radio-1">Sigpac</label>-->
+                        <input type="radio" name="radio-2" id="radio-2" value="Q" checked />
+                        <label for="radio-2">Quitar capas</label>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="main" class="ui-content" style="height: 100%;">
+            <div id="map"
+                 data-dojo-type="dijit/layout/ContentPane"
+                 data-dojo-props="region:'center'"
+                 style="position: absolute;height: 100%;width: 100%;">
+                <a id="mapaBase" href="#popupNested" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-grid ui-btn-icon-left ui-btn-b ui-mini" data-transition="pop">Mapa Base</a>
+                <div data-role="popup" id="popupNested" data-theme="none" data-mini="true">
+                    <div id="basemapGallery" style="background-color: #ffffff;opacity:0.4"></div>
+                </div><!-- /popup -->
+                <div id="tituloVisor"></div>
+                <div id="HomeButton"></div>
+                <div id="LocateButton"></div>
+                <div id="search"></div>
+                <div id="herramientas">
+                    <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Herramientas</a>
+                </div>
+            </div>
+            <div id="procesando" class="container" style="position:absolute; right:50%; top:50%; z-Index:999;display: none;">
+                <div class="content">
+                    <div class="circle"></div>
+                    <div class="circle1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
