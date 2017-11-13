@@ -4,47 +4,31 @@
   <dict>
     <key>aragon.es</key>
     <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
       <key>NSExceptionAllowsInsecureHTTPLoads</key>
       <true/>
-      <key>NSExceptionRequiresForwardSecrecy</key>
-      <false/>
-      <key>NSExceptionMinimumTLSVersion</key>
-      <string>TLSv1.0</string>
+      <key>NSIncludesSubdomains</key>
+      <true/>
     </dict>
     <key>aplicaciones.aragon.es</key>
     <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
       <key>NSExceptionAllowsInsecureHTTPLoads</key>
       <true/>
-      <key>NSExceptionRequiresForwardSecrecy</key>
-      <false/>
-      <key>NSExceptionMinimumTLSVersion</key>
-      <string>TLSv1.2/></string>
+      <key>NSIncludesSubdomains</key>
+      <true/>
     </dict>
     <key>ovc.catastro.meh.es</key>
     <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
       <key>NSExceptionAllowsInsecureHTTPLoads</key>
       <true/>
-      <key>NSExceptionRequiresForwardSecrecy</key>
-      <false/>
-      <key>NSExceptionMinimumTLSVersion</key>
-      <string>TLSv1.2</string>
+      <key>NSIncludesSubdomains</key>
+      <true/>
     </dict>
     <key>idearagon.aragon.es</key>
     <dict>
-      <key>NSIncludesSubdomains</key>
-      <true/>
       <key>NSExceptionAllowsInsecureHTTPLoads</key>
       <true/>
-      <key>NSExceptionRequiresForwardSecrecy</key>
-      <false/>
-      <key>NSExceptionMinimumTLSVersion</key>
-      <string>TLSv1.2</string>
+      <key>NSIncludesSubdomains</key>
+      <true/>
     </dict>
     <key>dojotoolkit.org</key>
     <dict>
@@ -52,10 +36,6 @@
       <true/>
       <key>NSIncludesSubdomains</key>
       <true/>
-      <key>NSExceptionRequiresForwardSecrecy</key>
-      <false/>
-      <key>NSExceptionMinimumTLSVersion</key>
-      <string>TLSv1.1</string>
     </dict>
   </dict>
 </dict>
