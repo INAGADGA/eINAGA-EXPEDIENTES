@@ -21,7 +21,8 @@ require([
     "esri/tasks/GeometryService",
     "esri/tasks/query",
 
-    "esri/symbols/SimpleLineSymbol",
+    "esri/symbols/SimpleMarkerSymbol", 
+    "esri/symbols/SimpleLineSymbol", 
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/TextSymbol",
 
@@ -43,7 +44,7 @@ require([
     "esri/layers/WMSLayerInfo"
 
 ],
-    function (dom, domStyle, array, connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, GeometryService, Query, SimpleLineSymbol, SimpleFillSymbol, TextSymbol,
+    function (dom, domStyle, array, connect, parser, query, on, domConstruct, Color, esriConfig, Map, Graphic, Units, InfoTemplate, PopupMobile, GeometryService, Query, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, TextSymbol,
         Measurement, OverviewMap, BasemapGallery, Basemap, BasemapLayer, Scalebar, Search, HomeButton, Legend, LocateButton, FeatureLayer, ArcGISDynamicMapServiceLayer, WMSLayer, WMSLayerInfo) {
         parser.parse();
 
@@ -362,9 +363,9 @@ require([
             $("[data-role=panel]").panel("close");
         });
 
-        //on(dom.byId("posicion"), "click", function () {
-        //    getPosition();
-        //});
+        on(dom.byId("posicion"), "click", function () {
+            getPosition();
+        });
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         function getPosition() {
@@ -375,20 +376,27 @@ require([
             var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
             function onSuccess(position) {
-                alert('Latitude: ' + position.coords.latitude + '\n' +
-                    'Longitude: ' + position.coords.longitude + '\n' +
-                    'Altitude: ' + position.coords.altitude + '\n' +
-                    'Accuracy: ' + position.coords.accuracy + '\n' +
-                    'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
-                    'Heading: ' + position.coords.heading + '\n' +
-                    'Speed: ' + position.coords.speed + '\n' +
-                    'Timestamp: ' + position.timestamp + '\n');
+                //alert('Latitude: ' + position.coords.latitude + '\n' +
+                //    'Longitude: ' + position.coords.longitude + '\n' +
+                //    'Altitude: ' + position.coords.altitude + '\n' +
+                //    'Accuracy: ' + position.coords.accuracy + '\n' +
+                //    'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+                //    'Heading: ' + position.coords.heading + '\n' +
+                //    'Speed: ' + position.coords.speed + '\n' +
+                //    'Timestamp: ' + position.timestamp + '\n');
 
                 var miposicion = new esri.geometry.Point;
                 miposicion.x = position.coords.longitude;
                 miposicion.y = position.coords.latitude;
                 projectToEtrs89(miposicion);
-                map.centerAndZoom(miposicion, 17)                
+                map.centerAndZoom(miposicion, 17);
+                var markerSymbol = new SimpleMarkerSymbol();
+                //markerSymbol.setPath("M17.659,9.597h-1.224c-0.199-3.235-2.797-5.833-6.032-6.033V2.341c0-0.222-0.182-0.403-0.403-0.403S9.597,2.119,9.597,2.341v1.223c-3.235,0.2-5.833,2.798-6.033,6.033H2.341c-0.222,0-0.403,0.182-0.403,0.403s0.182,0.403,0.403,0.403h1.223c0.2,3.235,2.798,5.833,6.033,6.032v1.224c0,0.222,0.182,0.403,0.403,0.403s0.403-0.182,0.403-0.403v-1.224c3.235-0.199,5.833-2.797,6.032-6.032h1.224c0.222,0,0.403-0.182,0.403-0.403S17.881,9.597,17.659,9.597 M14.435,10.403h1.193c-0.198,2.791-2.434,5.026-5.225,5.225v-1.193c0-0.222-0.182-0.403-0.403-0.403s-0.403,0.182-0.403,0.403v1.193c-2.792-0.198-5.027-2.434-5.224-5.225h1.193c0.222,0,0.403-0.182,0.403-0.403S5.787,9.597,5.565,9.597H4.373C4.57,6.805,6.805,4.57,9.597,4.373v1.193c0,0.222,0.182,0.403,0.403,0.403s0.403-0.182,0.403-0.403V4.373c2.791,0.197,5.026,2.433,5.225,5.224h-1.193c-0.222,0-0.403,0.182-0.403,0.403S14.213,10.403,14.435,10.403");
+                markerSymbol.setPath("M40.94,5.617C37.318,1.995,32.502,0,27.38,0c-5.123,0-9.938,1.995-13.56,5.617c-6.703,6.702-7.536,19.312-1.804,26.952  L27.38,54.757L42.721,32.6C48.476,24.929,47.643,12.319,40.94,5.617z M27.557,26c-3.859,0-7-3.141-7-7s3.141-7,7-7s7,3.141,7,7  S31.416,26,27.557,26z");
+                markerSymbol.setColor(new Color([19, 24, 175, 0.80]));
+                markerSymbol.setSize(40);
+                map.graphics.clear();
+                map.graphics.add(new Graphic(miposicion, markerSymbol));
             };
 
             function onError(error) {

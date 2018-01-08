@@ -92,7 +92,9 @@ body {
 
 #posicion {
     position: absolute;
-    top: 250px;
+    /*top: 250px;
+    left: 19px;*/
+    top: 200px;
     left: 19px;
     z-index: 40;
     border-radius: 5px;
@@ -290,4 +292,23 @@ button {
     border-radius: 1em;
     width: 75%
 }
-					
+
+/* -----
+SVG Icons - svgicons.sparkk.fr
+----- */
+
+.svg-icon {
+    width: 1em;
+    height: 1em;
+}
+
+    .svg-icon path,
+    .svg-icon polygon,
+    .svg-icon rect {
+        fill: #4691f6;
+    }
+
+    .svg-icon circle {
+        stroke: #4691f6;
+        stroke-width: 1;
+    }
