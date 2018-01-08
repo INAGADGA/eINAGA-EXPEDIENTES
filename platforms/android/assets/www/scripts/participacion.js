@@ -52,9 +52,9 @@ require([
         valores = getGET();
 
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
-        var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
+        var rutaServicio = "http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Participacion_Ciudadana/MapServer";
         var tituloVisor = "<center><font color='white'>Participación Pública</font></center>";
-        //var urlDocumentacion = "https://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
+        //var urlDocumentacion = "http://idearagon.aragon.es/datosdescarga/descarga.php?file=medioambiente/inagis_docs/VisorINAGA_Participacion_Publica.html";
         dom.byId("tituloVisor").innerHTML = tituloVisor;
         var numCapaInf = 9;
         var searchFields = ["SOLICITANTE", "NUMEXP"];
@@ -235,7 +235,7 @@ require([
         var clarityBasemap = new Basemap({
             layers: [clarity, etiquetas],
             id: 'clarity',
-            title: 'clarity word',
+            title: 'clarity world',
             thumbnailUrl: 'https://www.arcgis.com/sharing/rest/content/items/da10cf4ba254469caf8016cd66369157/info/thumbnail/imagery_clarity_sm.jpg'
         });
 
@@ -283,8 +283,8 @@ require([
 
         // Capas necesarias -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         var fcInf = new FeatureLayer(rutaServicio + "/" + numCapaInf);
-        var fcMunis = new FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");
-        var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer", {
+        var fcMunis = new FeatureLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/3");
+        var dynamicMSLayerBasico = new esri.layers.ArcGISDynamicMapServiceLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer", {
 
             id: "xLimites",
             outFields: ["*"]
@@ -464,7 +464,7 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layer1]
         };
-        var layerCat = new WMSLayer('https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
+        var layerCat = new WMSLayer('http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['Catastro']
 
@@ -536,7 +536,7 @@ require([
                 minCharacters: 0
                 //,infoTemplate: infoTemplate
             }, {
-                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
+                featureLayer: new esri.layers.FeatureLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
                 searchFields: ["REFPAR"],
                 displayField: "REFPAR",
                 labelSymbol: new TextSymbol("${REFPAR}"),
@@ -581,14 +581,14 @@ require([
                 infoTemplate: new InfoTemplate("${D_MUNI_INE}", templateMunicipios),
                 minCharacters: 0
             }, {
-                locator: new esri.tasks.Locator("//geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
+                locator: new esri.tasks.Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"),
                 singleLineFieldName: "SingleLine",
                 name: "Geocoding Service",
                 localSearchOptions: {
                     minScale: 300000,
                     distance: 50000
                 },
-                placeholder: "Geocoder ESRI",
+                placeholder: "Búsqueda Geocoder",
                 maxResults: 3,
                 maxSuggestions: 6,
                 enableSuggestions: false,

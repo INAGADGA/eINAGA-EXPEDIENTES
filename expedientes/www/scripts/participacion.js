@@ -335,9 +335,10 @@ require([
             map.setMapCursor("default");
             domStyle.set(dom.byId("procesando"), "display", "none");
         });
+
         map.on("update-start", function () {
             map.setMapCursor("wait");
-            domStyle.set(dom.byId("procesando"), "display", "inline-block");
+            domStyle.set(dom.byId("basemapGallery"), "display", "inline-block");
             $("#popupNested").popup("close");
         });
 
@@ -361,9 +362,41 @@ require([
             $("[data-role=panel]").panel("close");
         });
 
-
+        //on(dom.byId("posicion"), "click", function () {
+        //    getPosition();
+        //});
 
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        function getPosition() {
+            var options = {
+                enableHighAccuracy: true,
+                maximumAge: 3600000
+            }
+            var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+            function onSuccess(position) {
+                alert('Latitude: ' + position.coords.latitude + '\n' +
+                    'Longitude: ' + position.coords.longitude + '\n' +
+                    'Altitude: ' + position.coords.altitude + '\n' +
+                    'Accuracy: ' + position.coords.accuracy + '\n' +
+                    'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+                    'Heading: ' + position.coords.heading + '\n' +
+                    'Speed: ' + position.coords.speed + '\n' +
+                    'Timestamp: ' + position.timestamp + '\n');
+
+                var miposicion = new esri.geometry.Point;
+                miposicion.x = position.coords.longitude;
+                miposicion.y = position.coords.latitude;
+                projectToEtrs89(miposicion);
+                map.centerAndZoom(miposicion, 17)                
+            };
+
+            function onError(error) {
+                alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+            }
+        }
+
+
         function getGET() {
             // capturamos la url
             var loc = document.location.href;
@@ -412,6 +445,7 @@ require([
                 dom.byId("etrs").innerHTML = "<hr /><b>Coordenada en ETRS89 30N</br><table style='width:100%'><tr><th>X</th><th>Y</th></tr><tr><td>" + pt.x.toFixed(0) + "</td><td>" + pt.y.toFixed(0) + "</td></tr></table><hr />";
             });
         }
+
         function dameCoord4326() {
             var outSR = new esri.SpatialReference(4326);
             var params = new esri.tasks.ProjectParameters();

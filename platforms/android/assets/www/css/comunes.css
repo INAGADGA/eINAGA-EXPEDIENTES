@@ -19,20 +19,40 @@ body {
     padding: 0;
 }
 
-#herramientas {
+#backButton {
     position: absolute;
-    left: 10px;
+    left: 18px;
     top: 10px;
+    border-radius: 5px;
+    background-color: rgba(7, 41, 101, 0.85);
+    padding: 2px;
+    width: 40px;
+    height: 30px;
     color: #000;
     z-index: 40
+}
+
+#herramientas {
+    position: absolute;
+    left: 18px;
+    top: 55px;
+    color: #000;
+    z-index: 40;
+    border-radius: 5px;
+    background-color: rgba(7, 41, 101, 0.85);
+    padding: 2px;
+    width: 40px;
+    height: 30px;
+    color: #000;
 }
 
 #search {
     display: block;
     position: absolute;
     z-index: 40;
-    top: 60px;
+    top: 110px;
     left: 18px;
+
 }
 #tituloVisor {
     position: absolute;
@@ -51,16 +71,23 @@ body {
 
 #HomeButton {
     position: absolute;
-    top: 105px;
-    left: 20px;
+    top: 155px;
+    left: 19px;
     z-index: 30;
 }
-
+.HomeButton .home {
+    width: 40px;
+    background-color: rgba(7, 41, 101, 0.85);
+}
 #LocateButton {
     position: absolute;
-    top: 145px;
-    left: 20px;
+    top: 200px;
+    left: 19px;
     z-index: 30;
+}
+.LocateButton .zoomLocateButton {
+    width: 40px;
+    background-color: rgba(7, 41, 101, 0.85);
 }
 
 #mapaBase {
@@ -70,7 +97,12 @@ body {
     z-Index: 30
 }
 
-.esriSimpleSliderTL {
+.arcgisSearch .searchBtn {
+    background-color: rgba(7, 41, 101, 0.85);
+    color: white;
+    border-color: #ddd;
+}
+    .esriSimpleSliderTL {
     display: none;
 }
 

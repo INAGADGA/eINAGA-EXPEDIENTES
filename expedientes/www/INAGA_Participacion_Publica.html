@@ -78,14 +78,14 @@
                         <input type="radio" name="radio-0" id="radio-0" value="C" />
                         <label for="radio-0">Catastro</label>
                         <!--<input type="radio" name="radio-1" id="radio-1" value="S" />
-            <label for="radio-1">Sigpac</label>-->
+                        <label for="radio-1">Sigpac</label>-->
                         <input type="radio" name="radio-2" id="radio-2" value="Q" checked />
                         <label for="radio-2">Quitar capas</label>
                     </fieldset>
                     <hr />
                 </div>
-                <p/>
-                
+                <p />
+
 
             </div>
 
@@ -100,14 +100,14 @@
                 <div data-role="popup" id="popupNested" data-theme="none" data-mini="true">
                     <div id="basemapGallery" style="background-color: #ffffff;opacity:0.4"></div>
                 </div><!-- /popup -->
+                <a id="backButton" href="index.html" target="_system" data-role="button" data-icon="arrow-l"></a>
                 <div id="tituloVisor"></div>
                 <div id="HomeButton"></div>
                 <div id="LocateButton"></div>
                 <div id="search"></div>
-                <div id="herramientas">
-                        <a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-mini">Herramientas</a>
-                    </div>
-                </div>
+                <a id="herramientas" href="#myPanel" data-role="button" data-icon="bars"></a>
+                <!--<a id="posicion" data-role="button" data-icon="location" onclick="getPosition()"></a>-->
+            </div>
             <div id="procesando" class="container" style="position:absolute; right:50%; top:50%; z-Index:999;display: none;">
                 <div class="content">
                     <div class="circle"></div>
@@ -117,6 +117,5 @@
         </div>
 
     </div>
-
 </body>
 </html>

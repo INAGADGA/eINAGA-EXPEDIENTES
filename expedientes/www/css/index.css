@@ -5,30 +5,25 @@
 body {
     -webkit-touch-callout: none;
     -webkit-text-size-adjust: none;
-    -ms-text-size-adjust:none;
+    -ms-text-size-adjust: none;
     -webkit-user-select: none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
-	background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
-    background-attachment:fixed;
-    font-size:1em;
-    height:100%;
-    margin:0;
-    padding:0;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #E4E4E4;
+    background-image: linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image: -webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0, #A7A7A7), color-stop(0.51, #E4E4E4) );
+    background-attachment: fixed;
+    font-size: 1em;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     /*text-transform:uppercase;*/
-    width:75%;	
-    background-color:#32383d;
+    width: 75%;
+    background-color: #32383d;
     font-family: 'RobotoRegular', 'Droid Sans', 'Segoe UI', Segoe, 'San Francisco', 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
+
 }
 
 #deviceready {
@@ -53,10 +48,14 @@ body {
     margin-top: 1em;    
 }
 #nombreApp {
-    margin: 0 auto;
+    margin: 10px;
     width: 100%;
     text-align: center;
-    text-shadow: 0 0 2px blue, 0 0 1px yellow;
+    /*text-shadow: 0 0 2px blue, 0 0 1px yellow;*/
+    color: rgba(7, 41, 101, 0.85);
+    /*background-color: #e7e5e4;*/
+    letter-spacing: .1em;
+    text-shadow: 1px -1px 0 #767676, -1px 2px 1px #d3d0d0, -2px 4px 1px #d3d0d0;
 }
 #contenedor {
     border-radius: 15px 50px;
@@ -122,7 +121,7 @@ body {
 
 h1 {
     font-size:24px;
-    font-weight:normal;
+    font-weight:700;
     margin:0;
     overflow:visible;
     padding:0;
