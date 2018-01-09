@@ -50,7 +50,7 @@ require([
         var popup = new PopupMobile(null, domConstruct.create("div"));
         valores = getGET();
         // variables capa de busqueda del servicio a consultar  ------------------------------------------------------------------------------------------------------------------------------
-        var rutaServicio = "http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
+        var rutaServicio = "https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Resoluciones_Publicas/MapServer";
         var tituloVisor = "<center><font color='white'>Resoluciones Públicas</font></center>";
         dom.byId("tituloVisor").innerHTML = tituloVisor;        
         var numCapaInf = 1;
