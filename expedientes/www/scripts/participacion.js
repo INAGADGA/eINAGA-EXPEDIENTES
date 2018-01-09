@@ -506,7 +506,7 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layer1]
         };
-        var layerCat = new WMSLayer('http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
+        var layerCat = new WMSLayer('https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['Catastro']
 
@@ -530,7 +530,7 @@ require([
         //    extent: customExtentAndSR,
         //    layerInfos: [layerSigpacPar, layerSigpacRec]
         //};
-        //var wmsSigpac = new WMSLayer('http://wms.magrama.es/wms/wms.aspx?', {
+        //var wmsSigpac = new WMSLayer('https://wms.magrama.es/wms/wms.aspx?', {
         //    resourceInfo: resourceInfo,
         //    visibleLayers: ['PARCELA', 'RECINTO']
 
@@ -578,7 +578,7 @@ require([
                 minCharacters: 0
                 //,infoTemplate: infoTemplate
             }, {
-                featureLayer: new esri.layers.FeatureLayer("http://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
+                featureLayer: new esri.layers.FeatureLayer("https://idearagon.aragon.es/servicios/rest/services/INAGA/INAGA_Ambitos/MapServer/5"),
                 searchFields: ["REFPAR"],
                 displayField: "REFPAR",
                 labelSymbol: new TextSymbol("${REFPAR}"),
