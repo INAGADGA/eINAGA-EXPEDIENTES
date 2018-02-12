@@ -455,7 +455,7 @@ require([
             var dia = d.getDate();
             var mes = d.getMonth() + 1;
             var diaIni = dia;
-
+            var anio = d.getFullYear();
             if (mes === 2) { // bisiesto
                 var bisiesto = (anio % 4 === 0 && (anio % 100 !== 0 || anio % 400 === 0));
                 if (dia > 29 || (dia === 29 && !bisiesto)) {
