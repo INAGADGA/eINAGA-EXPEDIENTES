@@ -506,7 +506,8 @@ require([
             extent: customExtentAndSR,
             layerInfos: [layer1]
         };
-        var layerCat = new WMSLayer('https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
+        // la ruta de ovc tiene que ser con http, desde ios no puede conectar por problemas de certificado
+        var layerCat = new WMSLayer('http://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?', {
             resourceInfo: resourceInfo,
             visibleLayers: ['Catastro']
 
@@ -516,6 +517,7 @@ require([
         layerCat.version = "1.1.1";
         layerCat.spatialReferences[0] = 3857;
         layerCat.visible = false;
+
         ////sigpac
 
         //var layerSigpacPar = new WMSLayerInfo({

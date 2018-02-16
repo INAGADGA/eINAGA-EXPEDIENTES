@@ -14,8 +14,8 @@
   <allow-intent href="http://*/*" />
   <allow-intent href="mailto:*" />
   <allow-intent href="geo:*" />
-  <allow-navigation href="about:" />
-  <allow-navigation href="data:" />
+  <allow-navigation href="about:*" />
+  <allow-navigation href="data:*" />
   <platform name="android">
     <allow-intent href="market:*" />
   </platform>

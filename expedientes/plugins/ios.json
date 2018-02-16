@@ -9,15 +9,15 @@
     "installed_plugins": {
         "cordova-plugin-geolocation": {
             "GEOLOCATION_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "es.inaga.expedientes"
+            "PACKAGE_NAME": "es.aragon.inaeie"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "es.inaga.expedientes"
+            "PACKAGE_NAME": "es.aragon.inaeie"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "es.inaga.expedientes"
+            "PACKAGE_NAME": "es.aragon.inaeie"
         }
     }
 }
