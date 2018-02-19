@@ -85,14 +85,14 @@
     <splash src="res/screens/ios/screen-iphone-portrait-736h.png" width="1242" height="2208" />
     <splash src="res/screens/ios/screen-iphone-landscape-736h.png" width="2208" height="1242" />
   </platform>
-  <plugin name="cordova-plugin-geolocation" spec="~2.4.3" >
+  <plugin name="cordova-plugin-geolocation" spec="~2.4.3">
     <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="Expedientes en su zona" />
-  </plugin> 
+  </plugin>
   <preference name="WindowsStoreDisplayName" value="eINAGA Expedientes" />
   <vs:platformSpecificValues>
     <vs:platformSpecificWidget platformName="windows" id="es.aragon.inaeie" version="1.0.1.0" />
   </vs:platformSpecificValues>
-  <preference name="android-maxSdkVersion" value="26" />
+  <preference name="android-maxSdkVersion" value="27" />
   <preference name="ShowTitle" value="False" />
   <preference name="android-minSdkVersion" value="16" />
   <preference name="BackupWebStorage" value="local" />
