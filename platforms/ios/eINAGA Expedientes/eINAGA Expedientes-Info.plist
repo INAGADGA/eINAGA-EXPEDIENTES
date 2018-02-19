@@ -57,6 +57,8 @@
           <true/>
           <key>NSIncludesSubdomains</key>
           <true/>
+		  <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
+            <false/>
         </dict>
         <key>aplicaciones.aragon.es</key>
         <dict>
@@ -64,6 +66,8 @@
           <true/>
           <key>NSIncludesSubdomains</key>
           <true/>
+		  <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
+            <false/>
         </dict>
         <key>ovc.catastro.meh.es</key>
         <dict>
@@ -71,6 +75,8 @@
           <true/>
           <key>NSIncludesSubdomains</key>
           <true/>
+		  <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
+            <false/>
         </dict>
         <key>idearagon.aragon.es</key>
         <dict>
@@ -78,6 +84,8 @@
           <true/>
           <key>NSIncludesSubdomains</key>
           <true/>
+		  <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
+            <false/>
         </dict>
         <key>dojotoolkit.org</key>
         <dict>
@@ -85,10 +93,12 @@
           <true/>
           <key>NSIncludesSubdomains</key>
           <true/>
+		  <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
+            <false/>
         </dict>
       </dict>
     </dict>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string></string>
+    <string>Expedientes en mi posición</string>
   </dict>
 </plist>
