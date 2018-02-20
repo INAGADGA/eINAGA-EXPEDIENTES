@@ -11,7 +11,8 @@
         // Controlar la pausa de Cordova y reanudar eventos
         document.addEventListener( 'pause', onPause.bind( this ), false );
         document.addEventListener( 'resume', onResume.bind( this ), false );
-        
+        document.addEventListener('backbutton', onBackKeyDown, false);
+
         // TODO: Cordova se ha cargado. Haga aquí las inicializaciones que necesiten Cordova.
         var parentElement = document.getElementById('deviceready');
         var enlaceParticipacion = document.getElementById('contenedor');
@@ -27,4 +28,11 @@
     function onResume() {
         // TODO: esta aplicación se ha reactivado. Restaure el estado de la aplicación aquí.
     }
+
+    function onBackKeyDown(e) {        
+        e.preventDefault();
+        navigator.app.exitApp();        
+    }
+
+
 } )();
