@@ -10,9 +10,10 @@
     function onDeviceReady() {
         // Controlar la pausa de Cordova y reanudar eventos
         document.addEventListener( 'pause', onPause.bind( this ), false );
-        document.addEventListener( 'resume', onResume.bind( this ), false );
-        document.addEventListener('backbutton', onBackKeyDown, false);
-
+        document.addEventListener('resume', onResume.bind(this), false);
+        if (navigator.userAgent.match(/Android/i)) {
+            document.addEventListener('backbutton', onBackKeyDown, false);
+        }
         // TODO: Cordova se ha cargado. Haga aquí las inicializaciones que necesiten Cordova.
         var parentElement = document.getElementById('deviceready');
         var enlaceParticipacion = document.getElementById('contenedor');
