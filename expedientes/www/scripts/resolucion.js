@@ -366,8 +366,7 @@ require([
         // funciones   -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         function getPosition() {
             var options = {
-                enableHighAccuracy: true,
-                maximumAge: 3600000
+                enableHighAccuracy: true
             }
             var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
